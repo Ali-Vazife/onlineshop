@@ -1,0 +1,573 @@
+extends base
+
+block content
+  main
+    article
+      //
+        - #HERO
+      section.section.hero(style="background-image: url('/images/hero-banner.png')")
+        .container
+          h2.h1.hero-title
+            | New Summer 
+            strong Shoes Collection
+          p.hero-text
+            | Competently expedite alternative benefits whereas leading-edge
+            | catalysts for change. Globally leverage existing an expanded array
+            | of leadership.
+          button.btn.btn-primary
+            span Shop Now
+            ion-icon(name='arrow-forward-outline' aria-hidden='true')
+      //
+        - #COLLECTION
+      section.section.collection
+        .container
+          ul.collection-list.has-scrollbar
+            li
+              .collection-card(style="background-image: url('/images/collection-1.jpg')")
+                h3.h4.card-title Men Collections
+                a.btn.btn-secondary(href='#')
+                  span Explore All
+                  ion-icon(name='arrow-forward-outline' aria-hidden='true')
+            //- li
+            //-   .collection-card(style="background-image: url('/images/collection-2.jpg')")
+            //-     h3.h4.card-title Women Collections
+            //-     a.btn.btn-secondary(href='#')
+            //-       span Explore All
+            //-       ion-icon(name='arrow-forward-outline' aria-hidden='true')
+            //- li
+            //-   .collection-card(style="background-image: url('/images/collection-3.jpg')")
+            //-     h3.h4.card-title Sports Collections
+            //-     a.btn.btn-secondary(href='#')
+            //-       span Explore All
+            //-       ion-icon(name='arrow-forward-outline' aria-hidden='true')
+      //
+        - #PRODUCT
+      section.section.product
+        .container
+          h2.h2.section-title Bestsellers Products
+          ul.filter-list
+            li
+              button.filter-btn.active All
+            li
+              button.filter-btn Nike
+            li
+              button.filter-btn Adidas
+            li
+              button.filter-btn Puma
+            li
+              button.filter-btn Bata
+            li
+              button.filter-btn Apex
+          ul.product-list
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-1.jpg' width='312' height='350' loading='lazy' alt='Running Sneaker Shoes')
+                  .card-badge New
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Women
+                  h3.h3.card-title
+                    a(href='#') Running Sneaker Shoes
+                  data.card-price(value='180.85') $180.85
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-2.jpg' width='312' height='350' loading='lazy' alt='Leather Mens Slipper')
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Sports
+                  h3.h3.card-title
+                    a(href='#') Leather Mens Slipper
+                  data.card-price(value='190.85') $190.85
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-3.jpg' width='312' height='350' loading='lazy' alt='Simple Fabric Shoe')
+                  .card-badge New
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Women
+                  h3.h3.card-title
+                    a(href='#') Simple Fabric Shoe
+                  data.card-price(value='160.85') $160.85
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-4.jpg' width='312' height='350' loading='lazy' alt='Air Jordan 7 Retro ')
+                  .card-badge -25%
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Sports
+                  h3.h3.card-title
+                    a(href='#') Air Jordan 7 Retro 
+                  data.card-price(value='170.85')
+                    | $170.85 
+                    del $200.21
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-5.jpg' width='312' height='350' loading='lazy' alt='Nike Air Max 270 SE')
+                  .card-badge New
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Women
+                  h3.h3.card-title
+                    a(href='#') Nike Air Max 270 SE
+                  data.card-price(value='120.85') $120.85
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-6.jpg' width='312' height='350' loading='lazy' alt='Adidas Sneakers Shoes')
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Women
+                  h3.h3.card-title
+                    a(href='#') Adidas Sneakers Shoes
+                  data.card-price(value='100.85') $100.85
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-7.jpg' width='312' height='350' loading='lazy' alt='Nike Basketball shoes')
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Sports
+                  h3.h3.card-title
+                    a(href='#') Nike Basketball shoes
+                  data.card-price(value='120.85') $120.85
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src='/images/product-8.jpg' width='312' height='350' loading='lazy' alt='Simple Fabric Shoe')
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-1')
+                        ion-icon(name='cart-outline')
+                      #card-label-1.card-action-tooltip
+                        | Add to Cart
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-2')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-3')
+                        ion-icon(name='eye-outline')
+                      #card-label-3.card-action-tooltip
+                        | Quick View
+                    li.card-action-item
+                      button.card-action-btn(aria-labelledby='card-label-4')
+                        ion-icon(name='repeat-outline')
+                      #card-label-4.card-action-tooltip
+                        | Compare
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href='#') Men
+                    |  /
+                    a.card-cat-link(href='#') Women
+                  h3.h3.card-title
+                    a(href='#') Simple Fabric Shoe
+                  data.card-price(value='100.85') $100.85
+      //
+        - #CTA
+      section.section.cta
+        .container
+          ul.cta-list
+            li
+              .cta-card(style="background-image: url('/images/cta-1.jpg')")
+                p.card-subtitle Adidas Shoes
+                h3.h2.card-title The Summer Sale Off 50%
+                a.btn.btn-link(href='#')
+                  span Shop Now
+                  ion-icon(name='arrow-forward-outline' aria-hidden='true')
+            li
+              .cta-card(style="background-image: url('/images/cta-2.jpg')")
+                p.card-subtitle Nike Shoes
+                h3.h2.card-title Makes Yourself Keep Sporty
+                a.btn.btn-link(href='#')
+                  span Shop Now
+                  ion-icon(name='arrow-forward-outline' aria-hidden='true')
+      //
+        - #SPECIAL
+      section.section.special
+        .container
+          .special-banner(style="background-image: url('/images/special-banner.jpg')")
+            h2.h3.banner-title New Trend Edition
+            a.btn.btn-link(href='#')
+              span Explore All
+              ion-icon(name='arrow-forward-outline' aria-hidden='true')
+          .special-product
+            h2.h2.section-title
+              span.text Nike Special
+              span.line
+            ul.has-scrollbar
+              li.product-item
+                .product-card(tabindex='0')
+                  figure.card-banner
+                    img.image-contain(src='/images/product-1.jpg' width='312' height='350' loading='lazy' alt='Running Sneaker Shoes')
+                    .card-badge New
+                    ul.card-action-list
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-1')
+                          ion-icon(name='cart-outline')
+                        #card-label-1.card-action-tooltip
+                          | Add to Cart
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-2')
+                          ion-icon(name='heart-outline')
+                        #card-label-2.card-action-tooltip
+                          | Add to Whishlist
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-3')
+                          ion-icon(name='eye-outline')
+                        #card-label-3.card-action-tooltip
+                          | Quick View
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-4')
+                          ion-icon(name='repeat-outline')
+                        #card-label-4.card-action-tooltip
+                          | Compare
+                  .card-content
+                    .card-cat
+                      a.card-cat-link(href='#') Men
+                      |  /
+                      a.card-cat-link(href='#') Women
+                    h3.h3.card-title
+                      a(href='#') Running Sneaker Shoes
+                    data.card-price(value='180.85') $180.85
+              li.product-item
+                .product-card(tabindex='0')
+                  figure.card-banner
+                    img.image-contain(src='/images/product-2.jpg' width='312' height='350' loading='lazy' alt='Leather Mens Slipper')
+                    ul.card-action-list
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-1')
+                          ion-icon(name='cart-outline')
+                        #card-label-1.card-action-tooltip
+                          | Add to Cart
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-2')
+                          ion-icon(name='heart-outline')
+                        #card-label-2.card-action-tooltip
+                          | Add to Whishlist
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-3')
+                          ion-icon(name='eye-outline')
+                        #card-label-3.card-action-tooltip
+                          | Quick View
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-4')
+                          ion-icon(name='repeat-outline')
+                        #card-label-4.card-action-tooltip
+                          | Compare
+                  .card-content
+                    .card-cat
+                      a.card-cat-link(href='#') Men
+                      |  /
+                      a.card-cat-link(href='#') Sports
+                    h3.h3.card-title
+                      a(href='#') Leather Mens Slipper
+                    data.card-price(value='190.85') $190.85
+              li.product-item
+                .product-card(tabindex='0')
+                  figure.card-banner
+                    img.image-contain(src='/images/product-3.jpg' width='312' height='350' loading='lazy' alt='Simple Fabric Shoe')
+                    .card-badge New
+                    ul.card-action-list
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-1')
+                          ion-icon(name='cart-outline')
+                        #card-label-1.card-action-tooltip
+                          | Add to Cart
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-2')
+                          ion-icon(name='heart-outline')
+                        #card-label-2.card-action-tooltip
+                          | Add to Whishlist
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-3')
+                          ion-icon(name='eye-outline')
+                        #card-label-3.card-action-tooltip
+                          | Quick View
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-4')
+                          ion-icon(name='repeat-outline')
+                        #card-label-4.card-action-tooltip
+                          | Compare
+                  .card-content
+                    .card-cat
+                      a.card-cat-link(href='#') Men
+                      |  /
+                      a.card-cat-link(href='#') Women
+                    h3.h3.card-title
+                      a(href='#') Simple Fabric Shoe
+                    data.card-price(value='160.85') $160.85
+              li.product-item
+                .product-card(tabindex='0')
+                  figure.card-banner
+                    img.image-contain(src='/images/product-4.jpg' width='312' height='350' loading='lazy' alt='Air Jordan 7 Retro ')
+                    .card-badge -25%
+                    ul.card-action-list
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-1')
+                          ion-icon(name='cart-outline')
+                        #card-label-1.card-action-tooltip
+                          | Add to Cart
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-2')
+                          ion-icon(name='heart-outline')
+                        #card-label-2.card-action-tooltip
+                          | Add to Whishlist
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-3')
+                          ion-icon(name='eye-outline')
+                        #card-label-3.card-action-tooltip
+                          | Quick View
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-4')
+                          ion-icon(name='repeat-outline')
+                        #card-label-4.card-action-tooltip
+                          | Compare
+                  .card-content
+                    .card-cat
+                      a.card-cat-link(href='#') Men
+                      |  /
+                      a.card-cat-link(href='#') Sports
+                    h3.h3.card-title
+                      a(href='#') Air Jordan 7 Retro 
+                    data.card-price(value='170.85')
+                      | $170.85 
+                      del $200.21
+      //
+        - #SERVICE
+      section.section.service
+        .container
+          ul.service-list
+            li.service-item
+              .service-card
+                .card-icon
+                  img(src='/images/service-1.png' width='53' height='28' loading='lazy' alt='Service icon')
+                div
+                  h3.h4.card-title Free Shiping
+                  p.card-text
+                    | All orders over 
+                    span $150
+            li.service-item
+              .service-card
+                .card-icon
+                  img(src='/images/service-2.png' width='43' height='35' loading='lazy' alt='Service icon')
+                div
+                  h3.h4.card-title Quick Payment
+                  p.card-text 100% secure payment
+            li.service-item
+              .service-card
+                .card-icon
+                  img(src='/images/service-3.png' width='40' height='40' loading='lazy' alt='Service icon')
+                div
+                  h3.h4.card-title Free Returns
+                  p.card-text Money back in 30 days
+            li.service-item
+              .service-card
+                .card-icon
+                  img(src='/images/service-4.png' width='40' height='40' loading='lazy' alt='Service icon')
+                div
+                  h3.h4.card-title 24/7 Support
+                  p.card-text Get Quick Support
+      //
+        - #INSTA POST
+      section.section.insta-post
+        ul.insta-post-list.has-scrollbar
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-1.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-2.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-3.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-4.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-5.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-6.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-7.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+          li.insta-post-item
+            img.insta-post-banner.image-contain(src='/images/insta-8.jpg' width='100' height='100' loading='lazy' alt='Instagram post')
+            a.insta-post-link(href='#')
+              ion-icon(name='logo-instagram')
+
