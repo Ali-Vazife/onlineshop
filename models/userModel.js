@@ -1,4 +1,5 @@
-const { Sequelize, Op, Model, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
+// const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
@@ -6,9 +7,8 @@ const UserAccount = sequelize.define(
   'UserAccount',
   {
     id: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
-      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
@@ -42,9 +42,8 @@ const UserLogin = sequelize.define(
   'UserLogin',
   {
     id: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
-      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
@@ -63,7 +62,7 @@ const UserLogin = sequelize.define(
       allowNull: false,
     },
     emailIsVerified: {
-      type: DataTypes.BOOLEAN,
+      type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
@@ -96,9 +95,8 @@ const UserRole = sequelize.define(
   'UserRole',
   {
     id: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       default: Sequelize.UUIDV4,
-      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
       unique: true,
@@ -117,9 +115,8 @@ const UserAddress = sequelize.define(
   'UserAddress',
   {
     id: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       default: Sequelize.UUIDV4,
-      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
       unique: true,
@@ -149,9 +146,8 @@ const UserLike = sequelize.define(
   'UserLike',
   {
     id: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       default: Sequelize.UUIDV4,
-      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
       unique: true,
