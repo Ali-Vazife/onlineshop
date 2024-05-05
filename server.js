@@ -1,24 +1,12 @@
 const dotenv = require('dotenv');
 const fs = require('fs');
 const app = require('./app');
-const sequelize = require('./util/database');
-const {
-  UserAccount,
-  UserLogin,
-  UserRole,
-  UserAddress,
-  UserLike,
-} = require('./models/userModel');
 
-const {
-  Product,
-  Category,
-  Discount,
-  ProductItem,
-  VariationId,
-  SizeOption,
-  ColorOption,
-} = require('./models/productModel');
+const { sequelize } = require('./sequelize/db');
+
+const port = process.env.PORT || 3000;
+
+dotenv.config({ path: 'config.env' });
 
 process.on('uncaughtException', (err, source) => {
   console.log('UNCAUGHT EXCEPTION! Shutting down... 🤐');
@@ -30,16 +18,22 @@ process.on('uncaughtException', (err, source) => {
   process.exit(1);
 });
 
-const port = process.env.PORT || 3000;
-dotenv.config({ path: 'config.env' });
-
 sequelize
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
   })
-  .catch((error) => {
-    console.error('Unable to connect to the database: ', error);
+  .catch((err) => {
+    console.error('Unable to connect to the database: ', err);
+  });
+
+sequelize
+  .sync({ force: true })
+  .then(() => {
+    console.log('tables created successfully!');
+  })
+  .catch((err) => {
+    console.error('Unable to create table : ', err);
   });
 
 const server = app.listen(port, () => {
