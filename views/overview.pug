@@ -22,24 +22,25 @@ block content
       section.section.collection
         .container
           ul.collection-list.has-scrollbar
-            li
-              .collection-card(style="background-image: url('/images/collection-1.jpg')")
-                h3.h4.card-title Men Collections
-                a.btn.btn-secondary(href='#')
-                  span Explore All
-                  ion-icon(name='arrow-forward-outline' aria-hidden='true')
-            //- li
-            //-   .collection-card(style="background-image: url('/images/collection-2.jpg')")
-            //-     h3.h4.card-title Women Collections
-            //-     a.btn.btn-secondary(href='#')
-            //-       span Explore All
-            //-       ion-icon(name='arrow-forward-outline' aria-hidden='true')
-            //- li
-            //-   .collection-card(style="background-image: url('/images/collection-3.jpg')")
-            //-     h3.h4.card-title Sports Collections
-            //-     a.btn.btn-secondary(href='#')
-            //-       span Explore All
-            //-       ion-icon(name='arrow-forward-outline' aria-hidden='true')
+            each c in category
+              li
+                .collection-card(style=`background-image: url(/images/${c.image}.jpg)`)
+                  h3.h4.card-title= `${c.name} Collections`
+                  a.btn.btn-secondary(href='#')
+                    span Explore All
+                    ion-icon(name='arrow-forward-outline' aria-hidden='true')
+              //- li
+              //-   .collection-card(style="background-image: url('/images/collection-2.jpg')")
+              //-     h3.h4.card-title Women Collections
+              //-     a.btn.btn-secondary(href='#')
+              //-       span Explore All
+              //-       ion-icon(name='arrow-forward-outline' aria-hidden='true')
+              //- li
+              //-   .collection-card(style="background-image: url('/images/collection-3.jpg')")
+              //-     h3.h4.card-title Sports Collections
+              //-     a.btn.btn-secondary(href='#')
+              //-       span Explore All
+              //-       ion-icon(name='arrow-forward-outline' aria-hidden='true')
       //
         - #PRODUCT
       section.section.product

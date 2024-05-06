@@ -14,10 +14,10 @@ const defineModels = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      category: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
+      // category: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      // },
       ShortDescription: {
         type: DataTypes.STRING,
       },
@@ -33,6 +33,25 @@ const defineModels = (sequelize) => {
 
   const Category = sequelize.define(
     'Category',
+    {
+      // id: {
+      //   type: DataTypes.UUID,
+      //   defaultValue: DataTypes.UUIDV4,
+      //   allowNull: false,
+      //   primaryKey: true,
+      // },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      freezeTableName: true,
+    },
+  );
+
+  const Brand = sequelize.define(
+    'Brand',
     {
       // id: {
       //   type: DataTypes.UUID,
@@ -182,6 +201,7 @@ const defineModels = (sequelize) => {
   return {
     Product,
     Category,
+    Brand,
     Discount,
     ProductItem,
     VariationId,

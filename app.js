@@ -1,6 +1,11 @@
 const path = require('path');
 const express = require('express');
 
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const viewRoutes = require('./routes/viewRoutes');
+
 const app = express();
 
 app.set('view engine', 'pug');
@@ -8,12 +13,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req, res) => {
-  res.render('overview');
-});
-
-// app.use('/api/v1/products', 's');
-// app.use('/api/v1/users', 's');
-// app.use('/api/v1/bookings', 's');
+app.use('/', viewRoutes);
+// app.use('/api/v1/users', userRoutes);
+// app.use('/api/v1/products', productRoutes);
+// app.use('/api/v1/bookings', bookingRoutes);
 
 module.exports = app;

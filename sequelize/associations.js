@@ -3,6 +3,7 @@ module.exports.applyAssociations = (userModel, productModel) => {
   const {
     Product,
     Category,
+    Brand,
     Discount,
     ProductItem,
     VariationId,
@@ -20,8 +21,8 @@ module.exports.applyAssociations = (userModel, productModel) => {
   // UserAccount.hasMany(UserLike);
   // UserLike.belongsTo(UserAccount);
 
-  UserAccount.hasOne(UserRole);
-  UserRole.belongsTo(UserAccount);
+  // UserAccount.hasOne(UserRole);
+  UserAccount.belongsTo(UserRole);
 
   // Product
   Product.belongsTo(Category);
@@ -29,6 +30,9 @@ module.exports.applyAssociations = (userModel, productModel) => {
 
   Category.hasMany(Discount);
   Discount.belongsTo(Category);
+
+  Brand.hasMany(Product);
+  Product.belongsTo(Brand);
 
   Product.hasMany(ProductItem);
   ProductItem.belongsTo(Product);

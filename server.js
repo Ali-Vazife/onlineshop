@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 const fs = require('fs');
 const app = require('./app');
-
 const { sequelize } = require('./sequelize/db');
 
 const port = process.env.PORT || 3000;
@@ -27,14 +26,14 @@ sequelize
     console.error('Unable to connect to the database: ', err);
   });
 
-sequelize
-  .sync({ force: true })
-  .then(() => {
-    console.log('tables created successfully!');
-  })
-  .catch((err) => {
-    console.error('Unable to create table : ', err);
-  });
+// sequelize
+//   .sync({ force: true })
+//   .then(() => {
+//     console.log('tables created successfully!');
+//   })
+//   .catch((err) => {
+//     console.error('Unable to create table : ', err);
+//   });
 
 const server = app.listen(port, () => {
   console.log(`server is running on port ${port}`);
