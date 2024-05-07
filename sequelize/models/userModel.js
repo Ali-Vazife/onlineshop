@@ -15,6 +15,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      createdAt: 'UserAccountCreatedAt', // Change the default createdAt column name
+      updatedAt: 'UserAccountUpdatedAt', // Change the default updatedAt column name
     },
   );
 
@@ -54,6 +56,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      createdAt: 'loginCreatedAt', // Change the default createdAt column name
+      updatedAt: 'loginUpdatedAt', // Change the default updatedAt column name
     },
   );
 
@@ -67,6 +71,7 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 
@@ -91,15 +96,17 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      createdAt: 'addressCreatedAt', // Change the default createdAt column name
+      updatedAt: 'addressUpdatedAt', // Change the default updatedAt column name
     },
   );
 
   const UserLike = sequelize.define(
     'UserLike',
-    {
-    },
+    {},
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 

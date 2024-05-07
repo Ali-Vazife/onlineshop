@@ -5,10 +5,9 @@ module.exports.applyAssociations = (userModel, productModel) => {
     Category,
     Brand,
     Discount,
-    ProductItem,
-    VariationId,
-    SizeOption,
-    ColorOption,
+    Variant,
+    Attribute,
+    VariantAttribute,
   } = productModel;
 
   // User
@@ -34,19 +33,22 @@ module.exports.applyAssociations = (userModel, productModel) => {
   Brand.hasMany(Product);
   Product.belongsTo(Brand);
 
-  Product.hasMany(ProductItem);
-  ProductItem.belongsTo(Product);
+  Product.hasMany(Variant);
+  Variant.belongsTo(Product);
 
-  ProductItem.hasMany(VariationId);
-  VariationId.belongsTo(ProductItem);
+  // ProductItem.hasMany(VariationId);
+  // VariationId.belongsTo(ProductItem);
 
-  SizeOption.hasMany(VariationId);
-  VariationId.belongsTo(SizeOption);
+  // SizeOption.hasMany(VariationId);
+  // VariationId.belongsTo(SizeOption);
 
-  ColorOption.hasMany(VariationId);
-  VariationId.belongsTo(ColorOption);
+  // ColorOption.hasMany(VariationId);
+  // VariationId.belongsTo(ColorOption);
 
   // Junction
   UserAccount.belongsToMany(Product, { through: UserLike });
   Product.belongsToMany(UserAccount, { through: UserLike });
+
+  Variant.belongsToMany(Attribute, { through: VariantAttribute });
+  Attribute.belongsToMany(Variant, { through: VariantAttribute });
 };

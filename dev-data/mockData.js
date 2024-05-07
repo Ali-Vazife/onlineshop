@@ -1,9 +1,9 @@
 const { sequelize } = require('../sequelize/db');
 
 const categories = [
-  { name: 'Sneakers' },
-  { name: 'Boots' },
-  { name: 'Sandals' },
+  { name: 'Sneakers', imageCover: 'collection-1.jpg' },
+  { name: 'Boots', imageCover: 'collection-2.jpg' },
+  { name: 'Sandals', imageCover: 'collection-3.jpg' },
 ];
 
 const brands = [{ name: 'Nike' }, { name: 'Adidas' }, { name: 'Puma' }];
@@ -29,87 +29,72 @@ const products = [
   {
     name: 'Nike Air Max 270',
     ShortDescription: 'Running sneakers',
-    coverImage: 'air_max_270.jpg',
+    coverImage: 'product-1.jpg',
     CategoryId: 1,
     BrandId: 1,
   },
   {
     name: 'Adidas Superstar',
     ShortDescription: 'Classic sneakers',
-    coverImage: 'superstar.jpg',
+    coverImage: 'product-2.jpg',
     CategoryId: 1,
     BrandId: 2,
   },
   {
     name: 'Puma RS-X',
     ShortDescription: 'Retro sneakers',
-    coverImage: 'rs_x.jpg',
+    coverImage: 'product-3.jpg',
     CategoryId: 1,
     BrandId: 3,
   },
   {
     name: 'Nike Air Force 1',
     ShortDescription: 'Iconic sneakers',
-    coverImage: 'air_force_1.jpg',
+    coverImage: 'product-4.jpg',
     CategoryId: 1,
     BrandId: 1,
   },
   {
     name: 'Timberland 6-Inch Premium',
     ShortDescription: 'Classic boots',
-    coverImage: 'timberland.jpg',
+    coverImage: 'product-5.jpg',
     CategoryId: 2,
     BrandId: 1,
   },
   {
     name: 'Dr. Martens 1460',
     ShortDescription: 'Iconic boots',
-    coverImage: 'dr_martens.jpg',
+    coverImage: 'product-6.jpg',
     CategoryId: 2,
     BrandId: 2,
   },
   {
     name: 'Adidas Adilette',
     ShortDescription: 'Slide sandals',
-    coverImage: 'adilette.jpg',
+    coverImage: 'product-7.jpg',
     CategoryId: 3,
     BrandId: 2,
   },
 ];
 
-const productItems = [
-  { price: 129.99, ProductId: 1 },
-  { price: 109.99, ProductId: 2 },
-  { price: 89.99, ProductId: 3 },
-  { price: 99.99, ProductId: 4 },
-  { price: 199.99, ProductId: 5 },
-  { price: 159.99, ProductId: 6 },
-  { price: 49.99, ProductId: 7 },
+const variant = [
+  { price: 99.99, qtyInStock: 50, skuNumber: 12345 },
+  { price: 79.99, qtyInStock: 30, skuNumber: 54321 },
+  { price: 59.99, qtyInStock: 20, skuNumber: 98765 },
 ];
 
-const sizeOptions = [
-  { option: 'US 7' },
-  { option: 'US 8' },
-  { option: 'US 9' },
-  { option: 'US 10' },
-  { option: 'US 11' },
+const attribute = [
+  { type: 'size', value: '10' },
+  { type: 'color', value: 'red' },
 ];
 
-const colorOptions = [
-  { option: 'Black' },
-  { option: 'White' },
-  { option: 'Red' },
-  { option: 'Blue' },
-];
-
-const variationIds = [
-  { qtyInStock: 100, ProductItemId: 1, SizeOptionId: 1, ColorOptionId: 1 },
-  { qtyInStock: 200, ProductItemId: 2, SizeOptionId: 2, ColorOptionId: 2 },
-  { qtyInStock: 150, ProductItemId: 3, SizeOptionId: 3, ColorOptionId: 3 },
-  { qtyInStock: 120, ProductItemId: 4, SizeOptionId: 4, ColorOptionId: 4 },
-  { qtyInStock: 80, ProductItemId: 5, SizeOptionId: 5, ColorOptionId: 1 },
-  { qtyInStock: 90, ProductItemId: 6, SizeOptionId: 1, ColorOptionId: 2 },
-  { qtyInStock: 300, ProductItemId: 7, SizeOptionId: 2, ColorOptionId: 3 },
+const variantAttribute = [
+  { VariantId: 1, AttributeId: 1 },
+  { VariantId: 1, AttributeId: 2 },
+  { VariantId: 2, AttributeId: 1 },
+  { VariantId: 2, AttributeId: 2 },
+  { VariantId: 3, AttributeId: 1 },
+  { VariantId: 3, AttributeId: 2 },
 ];
 
 // Execute script to insert mock data
@@ -124,16 +109,13 @@ sequelize
       });
       await sequelize.models.Brand.bulkCreate(brands, { transaction: t });
       await sequelize.models.Product.bulkCreate(products, { transaction: t });
-      await sequelize.models.ProductItem.bulkCreate(productItems, {
+      await sequelize.models.Attribute.bulkCreate(attribute, {
         transaction: t,
       });
-      await sequelize.models.SizeOption.bulkCreate(sizeOptions, {
+      await sequelize.models.Variant.bulkCreate(variant, {
         transaction: t,
       });
-      await sequelize.models.ColorOption.bulkCreate(colorOptions, {
-        transaction: t,
-      });
-      await sequelize.models.VariationId.bulkCreate(variationIds, {
+      await sequelize.models.VariantAttribute.bulkCreate(variantAttribute, {
         transaction: t,
       });
       // await sequelize.models.Discount.bulkCreate(discounts, { transaction: t });

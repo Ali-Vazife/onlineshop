@@ -4,20 +4,10 @@ const defineModels = (sequelize) => {
   const Product = sequelize.define(
     'Product',
     {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      // category: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
       ShortDescription: {
         type: DataTypes.STRING,
       },
@@ -28,37 +18,32 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      createdAt: 'productCreatedAt', // Change the default createdAt column name
+      updatedAt: 'productUpdatedAt', // Change the default updatedAt column name
     },
   );
 
   const Category = sequelize.define(
     'Category',
     {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
       name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      imageCover: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 
   const Brand = sequelize.define(
     'Brand',
     {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -66,22 +51,13 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 
   const Discount = sequelize.define(
     'Discount',
     {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
-      // categoryId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
       startDate: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -104,97 +80,54 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
+      createdAt: 'discountCreatedAt', // Change the default createdAt column name
+      updatedAt: 'discountUpdatedAt', // Change the default updatedAt column name
     },
   );
 
-  const ProductItem = sequelize.define(
-    'ProductItem',
+  const Variant = sequelize.define(
+    'Variant',
     {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
-      // productId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
       price: {
         type: DataTypes.DECIMAL(10, 2),
       },
-    },
-    {
-      freezeTableName: true,
-    },
-  );
-
-  const VariationId = sequelize.define(
-    'VariationId',
-    {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
-      // productId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
-      // sizeId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
-      // colorId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
       qtyInStock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      skuNumber: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 
-  const SizeOption = sequelize.define(
-    'SizeOption',
+  const Attribute = sequelize.define(
+    'Attribute',
     {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
-      option: {
+      type: {
         type: DataTypes.STRING,
-        allowNull: false,
+      },
+      value: {
+        type: DataTypes.STRING,
       },
     },
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 
-  const ColorOption = sequelize.define(
-    'ColorOption',
-    {
-      // id: {
-      //   type: DataTypes.UUID,
-      //   defaultValue: DataTypes.UUIDV4,
-      //   allowNull: false,
-      //   primaryKey: true,
-      // },
-      option: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    },
+  const VariantAttribute = sequelize.define(
+    'VariantAttribute',
+    {},
     {
       freezeTableName: true,
+      timestamps: false,
     },
   );
 
@@ -203,10 +136,9 @@ const defineModels = (sequelize) => {
     Category,
     Brand,
     Discount,
-    ProductItem,
-    VariationId,
-    SizeOption,
-    ColorOption,
+    Variant,
+    Attribute,
+    VariantAttribute,
   };
 };
 
