@@ -1,43 +1,71 @@
-const catchAsync = require('../utils/catchAsync');
-const { Product,
+const factory = require('./handlerFactory');
+const {
+  Product,
   Category,
   Brand,
   Discount,
-  ProductItem,
-  VariationId,
-  SizeOption,
-  ColorOption,
+  Variant,
+  VariantAttribute,
+  Attribute,
 } = require('../sequelize/db');
 
-exports.getAllProducts = catchAsync(async (req, res, next) => {
-  const products = await Product.findAll();
-  console.log('products:', products);
+// Product
+exports.getAllProducts = factory.getAll(Product);
+exports.getProduct = factory.getOne(Product);
+exports.createProduct = factory.createOne(Product);
+exports.updateProduct = factory.updateOne(Product);
+exports.deleteProduct = factory.deleteOne(Product);
 
-  res.status(200).json({ status: 'success!', data: { products } });
-});
+// Category
+exports.getAllCategories = factory.getAll(Category);
+exports.getCategory = factory.getOne(Category);
+exports.createCategory = factory.createOne(Category);
+exports.updateCategory = factory.updateOne(Category);
+exports.deleteCategory = factory.deleteOne(Category);
 
-exports.getAllCategories = catchAsync(async (req, res, next) => {
-  const categories = await Category.findAll();
-  console.log('categories:', categories);
+// Brand
+exports.getAllBrands = factory.getAll(Brand);
+exports.getBrand = factory.getOne(Brand);
+exports.createBrand = factory.createOne(Brand);
+exports.updateBrand = factory.updateOne(Brand);
+exports.deleteBrand = factory.deleteOne(Brand);
 
-  res.status(200).json({ status: 'success!', data: { categories } });
-});
+// Discount
+exports.getAllDiscounts = factory.getAll(Discount);
+exports.getDiscount = factory.getOne(Discount);
+exports.createDiscount = factory.createOne(Discount);
+exports.updateDiscount = factory.updateOne(Discount);
+exports.deleteDiscount = factory.deleteOne(Discount);
 
-exports.getProduct = catchAsync(async (req, res, next) => {
-  const product = await Product.findbyByPk();
-  console.log('product:', product);
+// Variant
+exports.getAllVariants = factory.getAll(Variant);
+exports.getVariant = factory.getOne(Variant);
+exports.createVariant = factory.createOne(Variant);
+exports.updateVariant = factory.updateOne(Variant);
+exports.deleteVariant = factory.deleteOne(Variant);
 
-  res.status(200).json({ status: 'success!', data: { product } });
-});
+// Attribute
+exports.getAllAttributes = factory.getAll(Attribute);
+exports.getAttribute = factory.getOne(Attribute);
+exports.createAttribute = factory.createOne(Attribute);
+exports.updateAttribute = factory.updateOne(Attribute);
+exports.deleteAttribute = factory.deleteOne(Attribute);
 
-exports.createProduct = catchAsync(async (req, res, next) => {
-  // const product = Product.create(req.params)
-});
-
-exports.deleteProduct = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const product = await Product.destroy(id);
-  console.log('product:', product);
-
-  res.status(200).json({ status: 'success!', data: { product } });
-});
+// Variant Attribute (Junction)
+exports.getAllVariantsAttributes = factory.getAll(VariantAttribute);
+exports.createVariantAttribute = factory.createOne(VariantAttribute);
+exports.getVariantAttribute = factory.junctionGetOne(
+  VariantAttribute,
+  'VariantId',
+  'AttributeId',
+);
+exports.updateVariantAttribute = factory.junctionUpdateOne(
+  VariantAttribute,
+  'VariantId',
+  'AttributeId',
+);
+exports.deleteVariantAttribute = factory.junctionDeleteOne(
+  VariantAttribute,
+  'VariantId',
+  'AttributeId',
+);

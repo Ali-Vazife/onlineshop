@@ -78,9 +78,9 @@ const products = [
 ];
 
 const variant = [
-  { price: 99.99, qtyInStock: 50, skuNumber: 12345 },
-  { price: 79.99, qtyInStock: 30, skuNumber: 54321 },
-  { price: 59.99, qtyInStock: 20, skuNumber: 98765 },
+  { ProductId: 1, price: 99.99, qtyInStock: 50, skuNumber: 12345 },
+  { ProductId: 2, price: 79.99, qtyInStock: 30, skuNumber: 54321 },
+  { ProductId: 3, price: 59.99, qtyInStock: 20, skuNumber: 98765 },
 ];
 
 const attribute = [
