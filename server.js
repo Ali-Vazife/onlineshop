@@ -35,8 +35,10 @@ sequelize
 //     console.error('Unable to create table : ', err);
 //   });
 
+console.log(`Env:${process.env.NODE_ENV}`);
+
 const server = app.listen(port, () => {
-  console.log(`server is running on port ${port}`);
+  console.log(`Server is running on port ${port} 🚀`);
 });
 
 process.on('unhandledRejection', (err) => {
