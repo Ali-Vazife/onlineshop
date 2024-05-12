@@ -50,16 +50,16 @@ router
   .route('/getAllVariantsAttributes')
   .get(productController.getAllVariantsAttributes);
 router
-  .route('/getVariantAttribute/:id1/:id2')
+  .route('/getVariantAttribute/:vari/:attr')
   .get(productController.getVariantAttribute);
 router
   .route('/createVariantAttribute')
   .post(productController.createVariantAttribute);
 router
-  .route('/updateVariantAttribute/:id1/:id2')
+  .route('/updateVariantAttribute/:vari/:attr')
   .patch(productController.updateVariantAttribute);
 router
-  .route('/deleteVariantAttribute/:id1/:id2')
+  .route('/deleteVariantAttribute/:vari/:attr')
   .delete(productController.deleteVariantAttribute);
 
 module.exports = router;

@@ -15,6 +15,10 @@ exports.getOne = (Model) =>
     const { id } = req.params;
     const doc = await Model.findByPk(id);
 
+    if (!doc) {
+      return next(new AppError('No document found with that id', 404));
+    }
+
     res.status(200).json({ status: 'success!', data: { doc } });
   });
 
@@ -35,41 +39,58 @@ exports.updateOne = (Model) =>
       returning: true,
     });
 
+    if (!updatedRowsCount) {
+      return next(new AppError('No document found with that id', 404));
+    }
+
     res.status(200).json({ status: 'updated!', data: { updatedDoc } });
   });
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const docId = req.params.id;
-
-    await Model.destroy({
+    const doc = await Model.destroy({
       where: {
         id: docId,
       },
     });
+
+    if (!doc) {
+      return next(new AppError('No document found with that id', 404));
+    }
+
     res.status(204).json({ status: 'deleted!' });
   });
 
 // Junction
 exports.junctionGetOne = (Model, fk1, fk2) =>
   catchAsync(async (req, res, next) => {
-    const { id1, id2 } = req.params;
+    const { vari, attr } = req.params;
     const doc = await Model.findOne({
-      where: { [fk1]: id1, [fk2]: id2 },
+      where: { [fk1]: vari, [fk2]: attr },
       // include: [Model.associations[fk1].target, Model.associations[fk2].target]
     });
+
+    if (!doc) {
+      return next(new AppError('No document found with that id', 404));
+    }
+
     res.status(200).json({ status: 'success!', data: { doc } });
   });
 
 exports.junctionUpdateOne = (Model, fk1, fk2) =>
   catchAsync(async (req, res, next) => {
-    const { id1, id2 } = req.params;
+    const { vari, attr } = req.params;
     const updates = req.body;
     console.log(updates);
     const [updatedRowsCount, updatedDoc] = await Model.update(updates, {
-      where: { [fk1]: id1, [fk2]: id2 },
+      where: { [fk1]: vari, [fk2]: attr },
       returning: true,
     });
+
+    if (!updatedRowsCount) {
+      return next(new AppError('No document found with that id', 404));
+    }
 
     if (updatedRowsCount === 0) {
       return res
@@ -82,10 +103,14 @@ exports.junctionUpdateOne = (Model, fk1, fk2) =>
 
 exports.junctionDeleteOne = (Model, fk1, fk2) =>
   catchAsync(async (req, res, next) => {
-    const { id1, id2 } = req.params;
-    await Model.destroy({
-      where: { [fk1]: id1, [fk2]: id2 },
+    const { vari, attr } = req.params;
+    const doc = await Model.destroy({
+      where: { [fk1]: vari, [fk2]: attr },
     });
+
+    if (!doc) {
+      return next(new AppError('No document found with that id', 404));
+    }
 
     res.status(204).json({ status: 'deleted!' });
   });
