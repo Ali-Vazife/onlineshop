@@ -1,12 +1,18 @@
 const { sequelize } = require('../sequelize/db');
 
 const categories = [
-  { name: 'Sneakers', imageCover: 'collection-1.jpg' },
-  { name: 'Boots', imageCover: 'collection-2.jpg' },
-  { name: 'Sandals', imageCover: 'collection-3.jpg' },
+  { name: 'Sneakers', coverImage: 'collection-1.jpg' },
+  { name: 'Boots', coverImage: 'collection-2.jpg' },
+  { name: 'Sandals', coverImage: 'collection-3.jpg' },
 ];
 
 const brands = [{ name: 'Nike' }, { name: 'Adidas' }, { name: 'Puma' }];
+
+const ProductGenders = [
+  { name: 'Men', coverImage: 'manCategory.jpg' },
+  { name: 'Women', coverImage: 'womanCategory.jpg' },
+  { name: 'Unisex', coverImage: 'manCategory.jpg' },
+];
 
 const discounts = [
   {
@@ -30,50 +36,50 @@ const products = [
     name: 'Nike Air Max 270',
     ShortDescription: 'Running sneakers',
     coverImage: 'product-1.jpg',
-    CategoryId: 1,
     BrandId: 1,
+    ProductGenderId: 2,
   },
   {
     name: 'Adidas Superstar',
     ShortDescription: 'Classic sneakers',
     coverImage: 'product-2.jpg',
-    CategoryId: 1,
     BrandId: 2,
+    ProductGenderId: 3,
   },
   {
     name: 'Puma RS-X',
     ShortDescription: 'Retro sneakers',
     coverImage: 'product-3.jpg',
-    CategoryId: 1,
     BrandId: 3,
+    ProductGenderId: 1,
   },
   {
     name: 'Nike Air Force 1',
     ShortDescription: 'Iconic sneakers',
     coverImage: 'product-4.jpg',
-    CategoryId: 1,
     BrandId: 1,
+    ProductGenderId: 3,
   },
   {
     name: 'Timberland 6-Inch Premium',
     ShortDescription: 'Classic boots',
     coverImage: 'product-5.jpg',
-    CategoryId: 2,
     BrandId: 1,
+    ProductGenderId: 2,
   },
   {
     name: 'Dr. Martens 1460',
     ShortDescription: 'Iconic boots',
     coverImage: 'product-6.jpg',
-    CategoryId: 2,
     BrandId: 2,
+    ProductGenderId: 3,
   },
   {
     name: 'Adidas Adilette',
     ShortDescription: 'Slide sandals',
     coverImage: 'product-7.jpg',
-    CategoryId: 3,
     BrandId: 2,
+    ProductGenderId: 3,
   },
 ];
 
@@ -97,6 +103,13 @@ const variantAttribute = [
   { VariantId: 3, AttributeId: 2 },
 ];
 
+const productCategory = [
+  { ProductId: 1, CategoryId: 1 },
+  { ProductId: 2, CategoryId: 2 },
+  { ProductId: 3, CategoryId: 3 },
+  { ProductId: 3, CategoryId: 2 },
+];
+
 // Execute script to insert mock data
 sequelize
   .sync({ force: true }) // Use { force: true } to drop existing tables and recreate them
@@ -108,6 +121,9 @@ sequelize
         transaction: t,
       });
       await sequelize.models.Brand.bulkCreate(brands, { transaction: t });
+      await sequelize.models.ProductGender.bulkCreate(ProductGenders, {
+        transaction: t,
+      });
       await sequelize.models.Product.bulkCreate(products, { transaction: t });
       await sequelize.models.Attribute.bulkCreate(attribute, {
         transaction: t,
@@ -116,6 +132,9 @@ sequelize
         transaction: t,
       });
       await sequelize.models.VariantAttribute.bulkCreate(variantAttribute, {
+        transaction: t,
+      });
+      await sequelize.models.ProductCategory.bulkCreate(productCategory, {
         transaction: t,
       });
       // await sequelize.models.Discount.bulkCreate(discounts, { transaction: t });

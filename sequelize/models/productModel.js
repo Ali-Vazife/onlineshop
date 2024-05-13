@@ -23,6 +23,24 @@ const defineModels = (sequelize) => {
     },
   );
 
+  const ProductGender = sequelize.define(
+    'ProductGender',
+    {
+      name: {
+        type: DataTypes.ENUM('Men', 'Women', 'Unisex'),
+        allowNull: false,
+      },
+      coverImage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      freezeTableName: true,
+      timestamps: false,
+    },
+  );
+
   const Category = sequelize.define(
     'Category',
     {
@@ -30,11 +48,20 @@ const defineModels = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      imageCover: {
+      coverImage: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
+    {
+      freezeTableName: true,
+      timestamps: false,
+    },
+  );
+
+  const ProductCategory = sequelize.define(
+    'ProductCategory',
+    {},
     {
       freezeTableName: true,
       timestamps: false,
@@ -134,6 +161,8 @@ const defineModels = (sequelize) => {
   return {
     Product,
     Category,
+    ProductCategory,
+    ProductGender,
     Brand,
     Discount,
     Variant,

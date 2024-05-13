@@ -1,7 +1,9 @@
 const factory = require('./handlerFactory');
 const {
   Product,
+  ProductGender,
   Category,
+  ProductCategory,
   Brand,
   Discount,
   Variant,
@@ -15,6 +17,13 @@ exports.getProduct = factory.getOne(Product);
 exports.createProduct = factory.createOne(Product);
 exports.updateProduct = factory.updateOne(Product);
 exports.deleteProduct = factory.deleteOne(Product);
+
+// Product Gender
+exports.getAllProductGenders = factory.getAll(ProductGender);
+exports.getProductGender = factory.getOne(ProductGender);
+exports.createProductGender = factory.createOne(ProductGender);
+exports.updateProductGender = factory.updateOne(ProductGender);
+exports.deleteProductGender = factory.deleteOne(ProductGender);
 
 // Category
 exports.getAllCategories = factory.getAll(Category);
@@ -68,4 +77,23 @@ exports.deleteVariantAttribute = factory.junctionDeleteOne(
   VariantAttribute,
   'VariantId',
   'AttributeId',
+);
+
+// product category (Junction)
+exports.getAllProductCategories = factory.getAll(ProductCategory);
+exports.createProductCategory = factory.createOne(ProductCategory);
+exports.getProductCategory = factory.junctionGetOne(
+  ProductCategory,
+  'ProductId',
+  'CategoryId',
+);
+exports.updateProductCategory = factory.junctionUpdateOne(
+  ProductCategory,
+  'ProductId',
+  'CategoryId',
+);
+exports.deleteProductCategory = factory.junctionDeleteOne(
+  ProductCategory,
+  'ProductId',
+  'CategoryId',
 );

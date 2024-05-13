@@ -103,9 +103,9 @@ exports.junctionUpdateOne = (Model, fk1, fk2) =>
 
 exports.junctionDeleteOne = (Model, fk1, fk2) =>
   catchAsync(async (req, res, next) => {
-    const { vari, attr } = req.params;
+    const { id1, id2 } = req.params;
     const doc = await Model.destroy({
-      where: { [fk1]: vari, [fk2]: attr },
+      where: { [fk1]: id1, [fk2]: id2 },
     });
 
     if (!doc) {
