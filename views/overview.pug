@@ -24,7 +24,7 @@ block content
           ul.collection-list.has-scrollbar
             each c in categories
               li
-                .collection-card(style=`background-image: url(/images/${c.imageCover})`)
+                .collection-card(style=`background-image: url(/images/${c.coverImage})`)
                   h3.h4.card-title= `${c.name} Collections`
                   a.btn.btn-secondary(href='#')
                     span Explore All
@@ -42,7 +42,7 @@ block content
                 a(href=`/${b.name}`)
                   button.filter-btn= `${b.name}`
           ul.product-list
-            each p,i in products
+            each p in products
               li.product-item
                 .product-card(tabindex='0')
                   figure.card-banner
@@ -71,10 +71,10 @@ block content
                           | Compare
                   .card-content
                     .card-cat
-                      a.card-cat-link(href='#')= `${p.ProductGender.dataValues.name}`
+                      a.card-cat-link(href='#')= `${p.ProductGender.name}`
                     h3.h3.card-title
                       a(href='#')= `${p.name}`
-                    data.card-price(value='180.85') $180.85
+                    data.card-price(value='180.85')= `$ ${p.Variants.price}`
       //
         - #CTA
       section.section.cta
@@ -105,146 +105,42 @@ block content
               ion-icon(name='arrow-forward-outline' aria-hidden='true')
           .special-product
             h2.h2.section-title
-              span.text Nike Special
+              span.text New Trends
               span.line
             ul.has-scrollbar
-              li.product-item
-                .product-card(tabindex='0')
-                  figure.card-banner
-                    img.image-contain(src='/images/product-1.jpg' width='312' height='350' loading='lazy' alt='Running Sneaker Shoes')
-                    .card-badge New
-                    ul.card-action-list
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-1')
-                          ion-icon(name='cart-outline')
-                        #card-label-1.card-action-tooltip
-                          | Add to Cart
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-2')
-                          ion-icon(name='heart-outline')
-                        #card-label-2.card-action-tooltip
-                          | Add to Whishlist
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-3')
-                          ion-icon(name='eye-outline')
-                        #card-label-3.card-action-tooltip
-                          | Quick View
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-4')
-                          ion-icon(name='repeat-outline')
-                        #card-label-4.card-action-tooltip
-                          | Compare
-                  .card-content
-                    .card-cat
-                      a.card-cat-link(href='#') Men
-                      |  /
-                      a.card-cat-link(href='#') Women
-                    h3.h3.card-title
-                      a(href='#') Running Sneaker Shoes
-                    data.card-price(value='180.85') $180.85
-              li.product-item
-                .product-card(tabindex='0')
-                  figure.card-banner
-                    img.image-contain(src='/images/product-2.jpg' width='312' height='350' loading='lazy' alt='Leather Mens Slipper')
-                    ul.card-action-list
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-1')
-                          ion-icon(name='cart-outline')
-                        #card-label-1.card-action-tooltip
-                          | Add to Cart
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-2')
-                          ion-icon(name='heart-outline')
-                        #card-label-2.card-action-tooltip
-                          | Add to Whishlist
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-3')
-                          ion-icon(name='eye-outline')
-                        #card-label-3.card-action-tooltip
-                          | Quick View
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-4')
-                          ion-icon(name='repeat-outline')
-                        #card-label-4.card-action-tooltip
-                          | Compare
-                  .card-content
-                    .card-cat
-                      a.card-cat-link(href='#') Men
-                      |  /
-                      a.card-cat-link(href='#') Sports
-                    h3.h3.card-title
-                      a(href='#') Leather Mens Slipper
-                    data.card-price(value='190.85') $190.85
-              li.product-item
-                .product-card(tabindex='0')
-                  figure.card-banner
-                    img.image-contain(src='/images/product-3.jpg' width='312' height='350' loading='lazy' alt='Simple Fabric Shoe')
-                    .card-badge New
-                    ul.card-action-list
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-1')
-                          ion-icon(name='cart-outline')
-                        #card-label-1.card-action-tooltip
-                          | Add to Cart
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-2')
-                          ion-icon(name='heart-outline')
-                        #card-label-2.card-action-tooltip
-                          | Add to Whishlist
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-3')
-                          ion-icon(name='eye-outline')
-                        #card-label-3.card-action-tooltip
-                          | Quick View
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-4')
-                          ion-icon(name='repeat-outline')
-                        #card-label-4.card-action-tooltip
-                          | Compare
-                  .card-content
-                    .card-cat
-                      a.card-cat-link(href='#') Men
-                      |  /
-                      a.card-cat-link(href='#') Women
-                    h3.h3.card-title
-                      a(href='#') Simple Fabric Shoe
-                    data.card-price(value='160.85') $160.85
-              li.product-item
-                .product-card(tabindex='0')
-                  figure.card-banner
-                    img.image-contain(src='/images/product-4.jpg' width='312' height='350' loading='lazy' alt='Air Jordan 7 Retro ')
-                    .card-badge -25%
-                    ul.card-action-list
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-1')
-                          ion-icon(name='cart-outline')
-                        #card-label-1.card-action-tooltip
-                          | Add to Cart
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-2')
-                          ion-icon(name='heart-outline')
-                        #card-label-2.card-action-tooltip
-                          | Add to Whishlist
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-3')
-                          ion-icon(name='eye-outline')
-                        #card-label-3.card-action-tooltip
-                          | Quick View
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-4')
-                          ion-icon(name='repeat-outline')
-                        #card-label-4.card-action-tooltip
-                          | Compare
-                  .card-content
-                    .card-cat
-                      a.card-cat-link(href='#') Men
-                      |  /
-                      a.card-cat-link(href='#') Sports
-                    h3.h3.card-title
-                      a(href='#') Air Jordan 7 Retro 
-                    data.card-price(value='170.85')
-                      | $170.85 
-                      del $200.21
+              each newp in trendsproducts
+                li.product-item
+                  .product-card(tabindex='0')
+                    figure.card-banner
+                      img.image-contain(src=`/images/${newp.coverImage}` width='312' height='350' loading='lazy' alt=`${newp.name}`)
+                      .card-badge New
+                      ul.card-action-list
+                        li.card-action-item
+                          button.card-action-btn(aria-labelledby='card-label-1')
+                            ion-icon(name='cart-outline')
+                          #card-label-1.card-action-tooltip
+                            | Add to Cart
+                        li.card-action-item
+                          button.card-action-btn(aria-labelledby='card-label-2')
+                            ion-icon(name='heart-outline')
+                          #card-label-2.card-action-tooltip
+                            | Add to Whishlist
+                        li.card-action-item
+                          button.card-action-btn(aria-labelledby='card-label-3')
+                            ion-icon(name='eye-outline')
+                          #card-label-3.card-action-tooltip
+                            | Quick View
+                        li.card-action-item
+                          button.card-action-btn(aria-labelledby='card-label-4')
+                            ion-icon(name='repeat-outline')
+                          #card-label-4.card-action-tooltip
+                            | Compare
+                    .card-content
+                      .card-cat
+                        a.card-cat-link(href='#')= `${newp.ProductGender.name}`
+                      h3.h3.card-title
+                        a(href='#')= `${newp.name}`
+                      data.card-price(value='180.85')= `$ ${newp.Variants.price}`
       //
         - #SERVICE
       section.section.service

@@ -15,10 +15,9 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 module.exports.getOverview = catchAsync(async (req, res, next) => {
-  let products;
-
   const categories = await Category.findAll({ limit: 5 });
   const brands = await Brand.findAll({ limit: 6 });
+  let products;
 
   if (req.query.brand) {
     const brandName = req.query.brand;
@@ -30,21 +29,50 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
         {
           model: ProductGender,
           attributes: ['name'],
-          as: 'ProductGender', // This alias should match with your association alias
+          as: 'ProductGender',
+        },
+        {
+          model: Variant,
+          attributes: ['price'],
         },
       ],
+      raw: true,
+      nest: true,
     });
   } else {
     products = await Product.findAll({
-      // raw: true,
       limit: 15,
       include: [
         {
           model: ProductGender,
         },
+        {
+          model: Variant,
+          attributes: ['price'],
+        },
       ],
+      raw: true,
+      nest: true,
     });
   }
-  console.log('q:', products[0].ProductGender.dataValues.name);
-  res.status(200).render('overview', { categories, products, brands });
+
+  const trendsproducts = await Product.findAll({
+    limit: 8,
+    order: [['productCreatedAt', 'DESC']],
+    include: [
+      {
+        model: ProductGender,
+      },
+      {
+        model: Variant,
+        attributes: ['price'],
+      },
+    ],
+    raw: true,
+    nest: true,
+  });
+
+  res
+    .status(200)
+    .render('overview', { categories, products, trendsproducts, brands });
 });
