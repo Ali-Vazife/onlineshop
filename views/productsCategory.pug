@@ -1,0 +1,44 @@
+extends base
+
+block content
+  main
+    article
+      section.section.product
+        .container
+          h2.h2.section-title=`${products[0].Categories.name}`
+          //- figure.card-banner
+          //-   img.image-contain(src=`/images/${products[0].Categories.coverImage}` width='312' height='350' loading='lazy' alt=`${products[0].Categories.name}`)
+          ul.product-list
+            each p in products
+              li.product-item
+                .product-card(tabindex='0')
+                  figure.card-banner
+                    img.image-contain(src=`/images/${p.coverImage}` width='312' height='350' loading='lazy' alt=`${p.name}`)
+                    //- .card-badge New
+                    ul.card-action-list
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-1')
+                          ion-icon(name='cart-outline')
+                        #card-label-1.card-action-tooltip
+                          | Add to Cart
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-2')
+                          ion-icon(name='heart-outline')
+                        #card-label-2.card-action-tooltip
+                          | Add to Whishlist
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-3')
+                          ion-icon(name='eye-outline')
+                        #card-label-3.card-action-tooltip
+                          | Quick View
+                      li.card-action-item
+                        button.card-action-btn(aria-labelledby='card-label-4')
+                          ion-icon(name='repeat-outline')
+                        #card-label-4.card-action-tooltip
+                          | Compare
+                  .card-content
+                    .card-cat
+                      a.card-cat-link(href='#')= `${p.ProductGender.name}`
+                    h3.h3.card-title
+                      a(href='#')= `${p.name}`
+                    data.card-price(value='180.85')= `$ ${p.Variants.price}`
