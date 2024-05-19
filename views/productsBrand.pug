@@ -38,7 +38,7 @@ block content
                           | Compare
                   .card-content
                     .card-cat
-                      a.card-cat-link(href='#')= `${p.ProductGender.name}`
+                      a.card-cat-link(href=`/productsGender/${p.ProductGender.id}`)= `${p.ProductGender.name}`
                     h3.h3.card-title
-                      a(href='#')= `${p.name}`
+                      a(href=`/products/${p.id}`)= `${p.name}`
                     data.card-price(value='180.85')= `$ ${p.Variants.price}`

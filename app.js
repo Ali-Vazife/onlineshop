@@ -21,8 +21,8 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 app.use('/', viewRoutes);
-// app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/products', productRoutes);
+// app.use('/api/v1/users', userRoutes);
 // app.use('/api/v1/bookings', bookingRoutes);
 
 app.all('*', (req, res, next) => {

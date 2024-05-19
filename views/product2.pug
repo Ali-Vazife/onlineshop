@@ -1,0 +1,42 @@
+extends base
+
+block content
+  link(rel='stylesheet' href='/css/product.css')
+  script(src='https://code.jquery.com/jquery-3.4.1.min.js' integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=' crossorigin='anonymous')
+  .boddyy
+    .product_container
+      .imgBx
+        img(src=`/images/${product.coverImage}` alt=`${product.name}`)
+      .details
+        .content
+          h2=`${product.name}`
+            br
+            span=`${product.Brand.name}`
+            span=`${product.ProductGender.name}`
+          p=`Description: ${product.ShortDescription}`
+          each v in variants
+            - if (v.Attributes.type === 'size')
+              p.product-colors= [`${v.Attributes.value}`]
+            - else 
+              p.product-colors= `[${v.id} ${v.Attributes.value}]`
+
+            //- p.product-colors=`${products.Variants.Attributes.color}`
+              //- | Available Colors: 
+              //- span.black.active(data-color-primary='#000' data-color-sec='#212121' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto.png?raw=true')
+              //- span.black.active(data-color-primary='#000' data-color-sec='#212121' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto.png?raw=true')
+              //- span.red(data-color-primary='#7E021C' data-color-sec='#bd072d' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto_red_black.png?raw=true')
+              //- span.orange(data-color-primary='#CE5B39' data-color-sec='#F18557' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto_orange_black.png?raw=true')
+          h3=`$ ${variants[0].price}`
+          button Buy Now
+  script.
+    $(".product-colors span").click(function() {
+    $(".product-colors span").removeClass("active");
+    $(this).addClass("active");
+    $(".active").css("border-color", $(this).attr("data-color-sec"))
+    $("body").css("background", $(this).attr("data-color-primary"));
+    $(".content h2").css("color", $(this).attr("data-color-sec"));
+    $(".content h3").css("color", $(this).attr("data-color-sec"));
+    $(".container .imgBx").css("background", $(this).attr("data-color-sec"));
+    $(".container .details button").css("background", $(this).attr("data-color-sec"));
+    $(".imgBx img").attr('src', $(this).attr("data-pic"));
+    });

@@ -26,7 +26,7 @@ block content
               li
                 .collection-card(style=`background-image: url(/images/${c.coverImage})`)
                   h3.h4.card-title= `${c.name} Collections`
-                  a.btn.btn-secondary(href='#')
+                  a.btn.btn-secondary(href=`/productsCategory/${c.id}`)
                     span Explore All
                     ion-icon(name='arrow-forward-outline' aria-hidden='true')
       //
@@ -39,7 +39,7 @@ block content
               button.filter-btn.active All
             each b in brands
               li
-                a(href=`/${b.name}`)
+                a(href=`/productsBrand/${b.id}`)
                   button.filter-btn= `${b.name}`
           ul.product-list
             each p in products
@@ -71,10 +71,10 @@ block content
                           | Compare
                   .card-content
                     .card-cat
-                      a.card-cat-link(href='#')= `${p.ProductGender.name}`
+                      a.card-cat-link(href=`/productsGender/${p.ProductGender.id}`)= `${p.ProductGender.name}`
                     h3.h3.card-title
-                      a(href='#')= `${p.name}`
-                    data.card-price(value='180.85')= `$ ${p.Variants.price}`
+                      a(href= `/products/${p.id}`)= `${p.name}`
+                    data.card-price(value=`${p.Variants.price}`)= `$ ${p.Variants.price}`
       //
         - #CTA
       section.section.cta
@@ -137,9 +137,9 @@ block content
                             | Compare
                     .card-content
                       .card-cat
-                        a.card-cat-link(href='#')= `${newp.ProductGender.name}`
+                        a.card-cat-link(href=`/productsGender/${newp.id}`)= `${newp.ProductGender.name}`
                       h3.h3.card-title
-                        a(href='#')= `${newp.name}`
+                        a(href=`/products/${newp.id}`)= `${newp.name}`
                       data.card-price(value='180.85')= `$ ${newp.Variants.price}`
       //
         - #SERVICE

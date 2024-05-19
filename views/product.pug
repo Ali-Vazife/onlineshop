@@ -1,45 +1,39 @@
 extends base
-
 block content
-  main
-    article
-      section.section.product
-        .container
-          h2.h2.section-title Bestsellers Products
-          ul.filter-list
-            li
-              a(href=`/${brands.name}`)
-                button.filter-btn= `${brands.name}`
-          ul.product-list
-            li.product-item
-              .product-card(tabindex='0')
-                figure.card-banner
-                  img.image-contain(src=`/images/${products.coverImage}` width='312' height='350' loading='lazy' alt=`${products.name}`)
-                  .card-badge New
-                  ul.card-action-list
-                    li.card-action-item
-                      button.card-action-btn(aria-labelledby='card-label-1')
-                        ion-icon(name='cart-outline')
-                      #card-label-1.card-action-tooltip
-                        | Add to Cart
-                    li.card-action-item
-                      button.card-action-btn(aria-labelledby='card-label-2')
-                        ion-icon(name='heart-outline')
-                      #card-label-2.card-action-tooltip
-                        | Add to Whishlist
-                    li.card-action-item
-                      button.card-action-btn(aria-labelledby='card-label-3')
-                        ion-icon(name='eye-outline')
-                      #card-label-3.card-action-tooltip
-                        | Quick View
-                    li.card-action-item
-                      button.card-action-btn(aria-labelledby='card-label-4')
-                        ion-icon(name='repeat-outline')
-                      #card-label-4.card-action-tooltip
-                        | Compare
-                .card-content
-                  .card-cat
-                    a.card-cat-link(href='#')= `${products.ProductGender.dataValues.name}`
-                  h3.h3.card-title
-                    a(href='#')= `${products.name}`
-                  data.card-price(value='180.85') $180.85
+  link(rel='stylesheet' href='/css/product.css')
+  .card
+    .left
+      img(src=`/images/${product.coverImage}` alt=`${product.name}`)
+      i.fa.fa-long-arrow-left
+      i.fa.fa-long-arrow-right
+    .right
+      .product-info
+        .product-name
+          h1 #{product.name}
+          i.fa.fa-search
+          i.fa.fa-user
+          i.fa.fa-shopping-cart
+        .details
+          h2 #{product.ProductGender.name}
+          h2 #{product.Brand.name}
+          h3 #{product.ShortDescription}
+          h4
+            span.fa.fa-dollar= `$ ${defaultProduct[0].price}`
+          //- h4.dis
+          //-   span.fa.fa-dollar
+          //-   | $ #{variant.price}
+          //- li.li SIZE
+        ul.ul
+          li.li COLOR
+          each c in uniqueColors
+            li(class=`li ${c}`)
+        ul.ul
+          li.li SIZE:
+          each s in defaultProduct
+            li.li.bg= `${s.Attributes.value}`
+        span.foot
+          i.fa.fa-shopping-bag
+          | Buy Now
+        span.foot
+          i.fa.fa-shopping-cart
+          | Add TO Cart
