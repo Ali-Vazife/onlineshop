@@ -165,29 +165,14 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   const productId = req.params.id;
 
   const product = await Product.findOne({
-    where: {
-      id: productId,
-    },
-    include: [
-      {
-        model: ProductGender,
-      },
-      {
-        model: Brand,
-      },
-    ],
-    exclude: ['productCreatedAt', 'productUpdatedAt'],
-    raw: true,
-    nest: true,
+    where: { id: productId },
+    include: [ProductGender, Brand],
   });
-
-  console.log('product', product);
-
   if (!product) {
     return next(new AppError('No id or colors found for this product!', 404));
   }
 
-  // ------------------------------------------
+  // Get all the colors
   const variantColors = await Variant.findAll({
     where: {
       ProductId: productId,
@@ -210,27 +195,29 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   if (!variantColors) {
     return next(new AppError('No id or colors found for this product!', 404));
   }
+  console.log('variantColors', variantColors);
 
-  const defaultColor = variantColors[0].Attributes.value;
-  console.log('defaultColor', variantColors);
+  // Pick up one of them for default
+  const selectedColor = variantColors[0].Attributes.value;
+  console.log('selectedColor', selectedColor);
 
-  let variantIdArr = [];
-  variantColors.forEach((el) => {
-    if (el.Attributes.value === variantColors[0].Attributes.value) {
-      variantIdArr.push(el.id);
-    }
-  });
+  // Get colors vId
+  const variantIdArr = variantColors
+    .filter(el => el.Attributes.value === selectedColor)
+    .map(el => el.id);
+  console.log('variantIdArr', variantIdArr);
 
+  // Remove duplicate ones
   const uniqueColors = [
     ...new Set(variantColors.map((uniq) => uniq.Attributes.value)),
   ];
   console.log('uniqueColors', uniqueColors);
 
-  console.log('variantIdArr', variantIdArr);
-
-  // ------------------------------------------
-  const defaultProduct = await Variant.findAll({
-    where: [{ ProductId: productId }, { id: variantIdArr }],
+  // Get default size of selected color
+  const defaultSizes = await Variant.findAll({
+    where: {
+      id: variantIdArr,
+    },
     include: [
       {
         model: Attribute,
@@ -246,22 +233,51 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
     nest: true,
   });
 
-  console.log('defaultProduct', defaultProduct);
+  console.log('defaultSizes', defaultSizes);
 
-  if (!defaultProduct) {
-    return next(new AppError('No sizes found for this color!', 404));
+  if (!defaultSizes) {
+    return next(new AppError('No sizes found!', 404));
   }
 
-  // const defaultPriceSize = defaultProduct.Attributes.value;
-  // console.log(defaultPriceSize);
+  // Remove duplicate ones
+  const uniqueSizes = [...new Set(defaultSizes.map((uniq) => uniq))];
+  console.log('uniqueSizes', uniqueSizes);
 
-  res.status(200).render('product', {
+  res.status(200).render('product2', {
     product,
-    // variantColors,
     uniqueColors,
-    defaultProduct,
+    uniqueSizes,
   });
 });
+
+module.exports.getProductPrice = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { color, size } = req.query;
+
+  // Fetch the variant with the specified color and size
+  const variant = await Variant.findOne({
+    where: { ProductId: id },
+    include: [
+      {
+        model: Attribute,
+        where: { type: 'color', value: color },
+        through: { attributes: [] },
+      },
+      {
+        model: Attribute,
+        where: { type: 'size', value: size },
+        through: { attributes: [] },
+      },
+    ],
+  });
+
+  if (!variant) {
+    return res.status(404).json({ status: 'fail', message: 'Variant not found' });
+  }
+
+  res.status(200).json({ status: 'success', price: variant.price });
+});
+
 
 // ------------------------------------------
 // Fetch price for the default color and size

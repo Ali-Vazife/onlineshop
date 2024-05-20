@@ -2,41 +2,71 @@ extends base
 
 block content
   link(rel='stylesheet' href='/css/product.css')
-  script(src='https://code.jquery.com/jquery-3.4.1.min.js' integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=' crossorigin='anonymous')
-  .boddyy
-    .product_container
-      .imgBx
-        img(src=`/images/${product.coverImage}` alt=`${product.name}`)
-      .details
-        .content
-          h2=`${product.name}`
-            br
-            span=`${product.Brand.name}`
-            span=`${product.ProductGender.name}`
-          p=`Description: ${product.ShortDescription}`
-          each v in variants
-            - if (v.Attributes.type === 'size')
-              p.product-colors= [`${v.Attributes.value}`]
-            - else 
-              p.product-colors= `[${v.id} ${v.Attributes.value}]`
+  .card
+    .left
+      img(src=`/images/${product.coverImage}` alt=`${product.name}`)
+      i.fa.fa-long-arrow-left
+      i.fa.fa-long-arrow-right
+    .right
+      .product-info
+        .product-name
+          h1 #{product.name}
+          i.fa.fa-search
+          i.fa.fa-user
+          i.fa.fa-shopping-cart
+        .details
+          h2 #{product.ProductGender.name}
+          h2 #{product.Brand.name}
+          h3 #{product.ShortDescription}
+          h4
+            span.fa.fa-dollar= `$ ${uniqueSizes[0].price}`
+        ul.ul
+          li.li COLOR
+          each color, index in uniqueColors
+            li(class=`li color ${color}` data-color=color)
+        ul.ul
+          li.li SIZE:
+          each size, index in uniqueSizes
+            li(class=`li size ${size.Attributes.value}` data-size=size.Attributes.value)= size.Attributes.value
+        span.foot
+          i.fa.fa-shopping-bag
+          | Buy Now
+        span.foot
+          i.fa.fa-shopping-cart
+          | Add TO Cart
 
-            //- p.product-colors=`${products.Variants.Attributes.color}`
-              //- | Available Colors: 
-              //- span.black.active(data-color-primary='#000' data-color-sec='#212121' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto.png?raw=true')
-              //- span.black.active(data-color-primary='#000' data-color-sec='#212121' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto.png?raw=true')
-              //- span.red(data-color-primary='#7E021C' data-color-sec='#bd072d' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto_red_black.png?raw=true')
-              //- span.orange(data-color-primary='#CE5B39' data-color-sec='#F18557' data-pic='https://github.com/anuzbvbmaniac/Responsive-Product-Card---CSS-ONLY/blob/master/assets/img/jordan_proto_orange_black.png?raw=true')
-          h3=`$ ${variants[0].price}`
-          button Buy Now
-  script.
-    $(".product-colors span").click(function() {
-    $(".product-colors span").removeClass("active");
-    $(this).addClass("active");
-    $(".active").css("border-color", $(this).attr("data-color-sec"))
-    $("body").css("background", $(this).attr("data-color-primary"));
-    $(".content h2").css("color", $(this).attr("data-color-sec"));
-    $(".content h3").css("color", $(this).attr("data-color-sec"));
-    $(".container .imgBx").css("background", $(this).attr("data-color-sec"));
-    $(".container .details button").css("background", $(this).attr("data-color-sec"));
-    $(".imgBx img").attr('src', $(this).attr("data-pic"));
-    });
+  //- script.
+  //-   document.addEventListener('DOMContentLoaded', () => {
+  //-   const colorOptions = document.querySelectorAll('.color');
+  //-   const sizeOptions = document.querySelectorAll('.size');
+  //-   const priceDisplay = document.querySelector('.details h4 span');
+  //-   let selectedColor = "#{defaultVariant.Attributes.find(attr => attr.type === 'color').value}";
+  //-   let selectedSize = "#{defaultVariant.Attributes.find(attr => attr.type === 'size').value}";
+
+  //-   const updatePrice = async () => {
+  //-   try {
+  //-   const response = await fetch(`/products/1/price?color=${selectedColor}&size=${selectedSize}`);
+  //-   if (!response.ok) {
+  //-   throw new Error('Network response was not ok');
+  //-   }
+  //-   const data = await response.json();
+  //-   priceDisplay.textContent = `$${data.price}`;
+  //-   } catch (error) {
+  //-   console.error('Error fetching price:', error);
+  //-   }
+  //-   };
+
+  //-   colorOptions.forEach(option => {
+  //-   option.addEventListener('click', (event) => {
+  //-   selectedColor = event.target.getAttribute('data-color');
+  //-   updatePrice();
+  //-   });
+  //-   });
+
+  //-   sizeOptions.forEach(option => {
+  //-   option.addEventListener('click', (event) => {
+  //-   selectedSize = event.target.getAttribute('data-size');
+  //-   updatePrice();
+  //-   });
+  //-   });
+  //-   });
