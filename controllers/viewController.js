@@ -36,11 +36,11 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
       },
       {
         model: ProductGender,
-        attributes: [], // The attributes are referenced via sequelize.col
+        attributes: [],
       },
       {
         model: Brand,
-        attributes: [], // The attributes are referenced via sequelize.col
+        attributes: [],
       },
     ],
     group: [
@@ -81,31 +81,68 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
 module.exports.getProductsCategory = catchAsync(async (req, res, next) => {
   const categoryId = req.params.id;
 
+  // {
+  //   model: Category,
+  //   where: { id: categoryId },
+  //   through: {
+  //     model: ProductCategory,
+  //   },
+  // },
+
   const products = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('Categories.id'), 'categoryid'],
+      [sequelize.col('Categories.name'), 'categoryname'],
+      [sequelize.col('Categories.coverImage'), 'coverImage'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
     include: [
       {
-        model: Category,
-        where: { id: categoryId },
-        through: {
-          model: ProductCategory,
-        },
+        model: Variant,
+        attributes: [],
       },
       {
         model: ProductGender,
+        attributes: [],
       },
       {
-        model: Variant,
-        attributes: ['price', 'qtyInStock'],
+        model: Brand,
+        attributes: [],
+      },
+      {
+        model: Category,
+        attributes: [],
+        as: 'Categories',
+        through: {
+          model: ProductCategory,
+          attributes: [],
+        },
+        where: { id: categoryId },
       },
     ],
-    attributes: {
-      exclude: ['productCreatedAt', 'productUpdatedAt', 'ShortDescription'],
-    },
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'Categories.id',
+      'Categories.name',
+      'Categories.coverImage',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
     raw: true,
     nest: true,
   });
 
-  console.log(products[0]);
+  console.log(products);
 
   if (!products || products.length === 0) {
     return next(new AppError('No products found for this category!', 404));
@@ -118,22 +155,39 @@ module.exports.getProductsBrand = catchAsync(async (req, res, next) => {
   const brandId = req.params.id;
 
   const products = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
     include: [
       {
-        model: Brand,
-        where: { id: brandId },
+        model: Variant,
+        attributes: [], // We don't need any attributes from Variant itself
       },
       {
         model: ProductGender,
+        attributes: [],
       },
       {
-        model: Variant,
-        attributes: ['price', 'qtyInStock'],
+        model: Brand,
+        attributes: [],
+        where: { id: brandId },
       },
     ],
-    attributes: {
-      exclude: ['productCreatedAt', 'productUpdatedAt', 'ShortDescription'],
-    },
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
     raw: true,
     nest: true,
   });
@@ -151,22 +205,39 @@ module.exports.getProductsGender = catchAsync(async (req, res, next) => {
   const genderId = req.params.id;
 
   const products = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
     include: [
       {
+        model: Variant,
+        attributes: [], // We don't need any attributes from Variant itself
+      },
+      {
         model: ProductGender,
+        attributes: [],
         where: { id: genderId },
       },
       {
         model: Brand,
-      },
-      {
-        model: Variant,
-        attributes: ['price', 'qtyInStock'],
+        attributes: [],
       },
     ],
-    attributes: {
-      exclude: ['productCreatedAt', 'productUpdatedAt', 'ShortDescription'],
-    },
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
     raw: true,
     nest: true,
   });

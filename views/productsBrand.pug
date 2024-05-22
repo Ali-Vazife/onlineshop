@@ -5,15 +5,13 @@ block content
     article
       section.section.product
         .container
-          //- h2.h2.section-title=`${products[0].Categories.name}`
-          //- figure.card-banner
-          //-   img.image-contain(src=`/images/${products[0].Categories.coverImage}` width='312' height='350' loading='lazy' alt=`${products[0].Categories.name}`)
+          h2.h2.section-title=`${products[0].brandname}`
           ul.product-list
             each p in products
               li.product-item
                 .product-card(tabindex='0')
                   figure.card-banner
-                    img.image-contain(src=`/images/${p.coverImage}` width='312' height='350' loading='lazy' alt=`${p.name}`)
+                    img.image-contain(src=`/images/${p.imagecover}` width='312' height='350' loading='lazy' alt=`${p.name}`)
                     //- .card-badge New
                     ul.card-action-list
                       li.card-action-item
@@ -39,7 +37,10 @@ block content
                   .card-content
                     .card-cat
                       a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
-                      a.card-cat-link(href=`/productsBrand/${p.genderid}`)= `${p.brandname}`
+                      a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brandname}`
                     h3.h3.card-title
                       a(href=`/products/${p.id}`)= `${p.name}`
-                    data.card-price(value='180.85')= `$ ${p.price}`
+                    - if (`${p.minPrice}` === `${p.maxPrice}`)  
+                      data.card-price= `$ ${p.minPrice}`
+                    - else 
+                      data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`

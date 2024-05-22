@@ -72,7 +72,7 @@ block content
                   .card-content
                     .card-cat
                       a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
-                      a.card-cat-link(href=`/productsBrand/${p.genderid}`)= `${p.brandname}`
+                      a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brandname}`
                     h3.h3.card-title
                       a(href= `/products/${p.id}`)= `${p.name}`
                     - if (`${p.minPrice}` === `${p.maxPrice}`)  
