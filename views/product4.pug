@@ -1,0 +1,42 @@
+extends base
+
+block content
+  link(rel='stylesheet' href='/css/product.css')
+  .card
+    .left
+      img(src=`/images/${product.coverImage}` alt=`${product.name}`)
+      i.fa.fa-long-arrow-left
+      i.fa.fa-long-arrow-right
+    .right
+      .product-info
+        .product-name
+          h1 #{product.name}
+          i.fa.fa-search
+          i.fa.fa-user
+          i.fa.fa-shopping-cart
+        .details
+          h2 #{product.ProductGender.name}
+          h2 #{product.Brand.name}
+          h3 #{product.ShortDescription}
+          h4
+            span.fa.fa-dollar= `$ `
+        ul.ul
+          li.li COLOR
+          form
+          each color, index in uniqueColors
+            //- li(class=`li color ${color} ${index === 0 ? 'default-product': ''}` data-color=color)
+            //- input(id=`productcolor-${index}` class='li-color color' type='radio' name='product_color' value=`${color }` checked=index  === 0)
+            input(id=`productcolor-${index}` class='li-color color' type='radio' name='product_color' value=`${color }` checked=index  === 0)
+            label.li-color__label(for=`productcolor-${index}`) #{color}
+        ul.ul
+          li.li.li_size SIZE:
+            //- each size, index in uniqueSizes
+            //- li(class=`li size ${size.Attributes.value}` data-size=size.Attributes.value checked=index === 1)= size.Attributes.value
+            //- input(id='productsize' class='li-size size' data-size='' type='radio' name='product_size' value='' )
+            //- label.li_size__label(for='productsize') 
+        span.foot
+          i.fa.fa-shopping-bag
+          | Buy Now
+        span.foot
+          i.fa.fa-shopping-cart
+          | Add TO Cart

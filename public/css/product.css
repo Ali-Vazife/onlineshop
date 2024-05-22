@@ -84,6 +84,27 @@ h4.dis span {
   margin-right: 25px;
 }
 
+.li_color {
+  display: inline-block;
+}
+
+.li-color__label {
+  padding: 5px;
+  margin-right: 25px;
+}
+
+input {
+  width: auto;
+}
+
+.li_size__label {
+  padding: 5px;
+}
+
+.li_size__label {
+  margin-right: 25px;
+}
+
 .ul li {
   color: #ffffff;
   font-family: 'muli';
@@ -259,4 +280,11 @@ h4.dis span {
   height: 394px;
   width: 305px;
   z-index: 10;
+}
+
+.default-product {
+  font-weight: bold; /* Make the text bold */
+  color: #fff; /* White text color */
+  border: 2px solid #0056b3; /* Darker blue border */
+  border-radius: 5px; /* Rounded corners */
 }

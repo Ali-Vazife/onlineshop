@@ -1,4 +1,4 @@
-const { where, Op } = require('sequelize');
+const { where, Op, Sequelize } = require('sequelize');
 const {
   Product,
   Category,
@@ -159,8 +159,6 @@ module.exports.getProductsGender = catchAsync(async (req, res, next) => {
   res.status(200).render('productsGender', { products });
 });
 
-
-
 module.exports.getProduct = catchAsync(async (req, res, next) => {
   const productId = req.params.id;
 
@@ -198,14 +196,14 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   console.log('variantColors', variantColors);
 
   // Pick up one of them for default
-  const selectedColor = variantColors[0].Attributes.value;
-  console.log('selectedColor', selectedColor);
+  // const selectedColor = variantColors[0].Attributes.value;
+  // console.log('selectedColor', selectedColor);
 
   // Get colors vId
-  const variantIdArr = variantColors
-    .filter(el => el.Attributes.value === selectedColor)
-    .map(el => el.id);
-  console.log('variantIdArr', variantIdArr);
+  // const variantIdArr = variantColors
+  //   .filter(el => el.Attributes.value === selectedColor)
+  //   .map(el => el.id);
+  // console.log('variantIdArr', variantIdArr);
 
   // Remove duplicate ones
   const uniqueColors = [
@@ -213,40 +211,94 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   ];
   console.log('uniqueColors', uniqueColors);
 
-  // Get default size of selected color
-  const defaultSizes = await Variant.findAll({
-    where: {
-      id: variantIdArr,
-    },
+  // // Get default size of selected color
+  // const defaultSizes = await Variant.findAll({
+  //   where: {
+  //     id: variantIdArr,
+  //   },
+  //   include: [
+  //     {
+  //       model: Attribute,
+  //       where: {
+  //         type: 'size',
+  //       },
+  //       through: { attributes: [] },
+  //       attributes: ['value'],
+  //     },
+  //   ],
+  //   // attributes: ['id', 'price', 'qtyInStock'],
+  //   raw: true,
+  //   nest: true,
+  // });
+
+  // console.log('defaultSizes', defaultSizes);
+
+  // if (!defaultSizes) {
+  //   return next(new AppError('No sizes found!', 404));
+  // }
+
+  // Remove duplicate ones
+  // const uniqueSizes = [...new Set(defaultSizes.map((uniq) => uniq))];
+  // console.log('uniqueSizes', uniqueSizes);
+
+  res.status(200).render('product4', {
+    product,
+    uniqueColors,
+  });
+});
+
+module.exports.getSizes = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { color } = req.query;
+
+  console.log(`ProductId: ${id}, Color: ${color}`);
+
+  const varSizeId = await Variant.findAll({
+    where: { ProductId: id },
     include: [
       {
         model: Attribute,
-        where: {
-          type: 'size',
-        },
+        where: { type: 'color', value: color },
         through: { attributes: [] },
-        attributes: ['value'],
       },
     ],
-    attributes: ['id', 'price', 'qtyInStock'],
+    attributes: ['id'],
     raw: true,
     nest: true,
   });
 
-  console.log('defaultSizes', defaultSizes);
+  console.log('varSizeId', varSizeId);
 
-  if (!defaultSizes) {
-    return next(new AppError('No sizes found!', 404));
+  //   // Get colors vId
+  const UniqueSize = varSizeId
+    .filter(el => el.Attributes.value === color)
+    .map(el => el.id);
+  console.log('UniqueSize', UniqueSize);
+
+  const sizes = await Variant.findAll({
+    where: { id: UniqueSize },
+    include: [
+      {
+        model: Attribute,
+        where: { type: 'size' },
+        through: { attributes: [] },
+        attributes: ['value'],
+      },
+    ],
+    attributes: [],
+    raw: true,
+    nest: true,
+  });
+
+  console.log(sizes);
+
+  if (!sizes) {
+    return res.status(404).json({ status: 'fail', message: 'Sizes not found' });
   }
 
-  // Remove duplicate ones
-  const uniqueSizes = [...new Set(defaultSizes.map((uniq) => uniq))];
-  console.log('uniqueSizes', uniqueSizes);
-
-  res.status(200).render('product2', {
-    product,
-    uniqueColors,
-    uniqueSizes,
+  res.status(200).json({
+    status: 'success',
+    sizes: sizes.map((size) => size.Attributes.value),
   });
 });
 
@@ -279,204 +331,91 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
 });
 
 
-// ------------------------------------------
-// Fetch price for the default color and size
-// const priceQuery = await Product.findOne({
-//   where: { id: productId },
-//   include: {
-//     model: Variant,
-//     attributes: ['price'],
-//     include: [
-//       {
-//         model: Attribute,
-//         where: { type: 'color', value: defaultColor },
-//         through: { attributes: [] }, // Do not fetch data from the join table
-//         attributes: [],
-//       },
-//       {
-//         model: Attribute,
-//         where: { type: 'size', value: defaultPriceSize },
-//         through: { attributes: [] }, // Do not fetch data from the join table
-//         attributes: [],
-//       },
-//     ],
-//   },
-//   attributes: [],
-//   raw: true,
-// });
-
-// console.log('priceQuery', priceQuery);
-
-// const price = priceQuery ? priceQuery['Variants.price'] : null;
-
 // module.exports.getProduct = catchAsync(async (req, res, next) => {
 //   const productId = req.params.id;
 
 //   const product = await Product.findOne({
-//     where: {
-//       id: productId,
-//     },
-//     include: [
-//       {
-//         model: ProductGender,
-//       },
-//       {
-//         model: Brand,
-//       },
-//       // {
-//       //   model: Variant,
-//       //   attributes: ['price', 'qtyInStock'],
-//       //   include: [
-//       //     {
-//       //       model: Attribute,
-//       //       through: {
-//       //         model: VariantAttribute,
-//       //       },
-//       //     },
-//       //   ],
-//       // },
-//     ],
-//     attributes: {
-//       exclude: ['productCreatedAt', 'productUpdatedAt'],
-//     },
-//     raw: true,
-//     nest: true,
+//     where: { id: productId },
+//     include: [ProductGender, Brand],
 //   });
-
-//   if (!product || product.length === 0) {
-//     return next(new AppError('No product found!', 404));
+//   if (!product) {
+//     return next(new AppError('No id or colors found for this product!', 404));
 //   }
 
-//   const variants = await Variant.findAll({
+//   // Get all the colors
+//   const variantColors = await Variant.findAll({
 //     where: {
 //       ProductId: productId,
 //     },
 //     include: [
 //       {
 //         model: Attribute,
+//         where: { type: 'color' },
 //         through: {
-//           model: VariantAttribute,
+//           attributes: [],
 //         },
+//         attributes: ['value'],
 //       },
 //     ],
+//     attributes: ['id'],
 //     raw: true,
 //     nest: true,
 //   });
 
-//   console.log(variants);
+//   if (!variantColors) {
+//     return next(new AppError('No id or colors found for this product!', 404));
+//   }
+//   console.log('variantColors', variantColors);
 
-//   // Group attributes by variant
-//   // const groupedVariants = {};
-//   // variants.forEach((variant) => {
-//   //   if (!groupedVariants[variant.id]) {
-//   //     groupedVariants[variant.id] = {
-//   //       ...variant,
-//   //       attributes: [],
-//   //     };
-//   //   }
-//   //   if (variant.Attributes) {
-//   //     groupedVariants[variant.id].attributes.push({
-//   //       type: variant.Attributes.type,
-//   //       value: variant.Attributes.value,
-//   //     });
-//   //   }
-//   // });
+//   // Pick up one of them for default
+//   const selectedColor = variantColors[0].Attributes.value;
+//   console.log('selectedColor', selectedColor);
 
-//   // // Convert grouped variants to array
-//   // const variantArray = Object.values(groupedVariants);
-//   // console.log('variantArray', variantArray);
+//   // Get colors vId
+//   const variantIdArr = variantColors
+//     .filter(el => el.Attributes.value === selectedColor)
+//     .map(el => el.id);
+//   console.log('variantIdArr', variantIdArr);
 
-//   res.status(200).render('product', { product, variants });
-//   // const variant = await Variant.findOne({
-//   //   where: {
-//   //     ProductId: productId,
-//   //   },
-//   //   include: [
-//   //     {
-//   //       model: Product,
-//   //       include: [
-//   //         {
-//   //           model: Brand,
-//   //         },
-//   //       ],
-//   //     },
-//   //     // {
-//   //     //   model: Brand,
-//   //     // },
-//   //     // {
-//   //     //   model: ProductGender,
-//   //     // },
-//   //     {
-//   //       model: Attribute,
-//   //       through: {
-//   //         model: VariantAttribute,
-//   //       },
-//   //     },
-//   //   ],
-//   //   attributes: {
-//   //     exclude: ['productCreatedAt', 'productUpdatedAt', 'ShortDescription'],
-//   //   },
-//   //   raw: true,
-//   //   nest: true,
-//   // });
+//   // Remove duplicate ones
+//   const uniqueColors = [
+//     ...new Set(variantColors.map((uniq) => uniq.Attributes.value)),
+//   ];
+//   console.log('uniqueColors', uniqueColors);
 
-//   // console.log(variant);
-
-//   // res.status(200).render('variant', { variant });
-// });
-
-
-// const availableSizes = await Product.findAll({
-//   where: { id: productId },
-//   include: {
-//     model: Variant,
-//     attributes: [],
+//   // Get default size of selected color
+//   const defaultSizes = await Variant.findAll({
+//     where: {
+//       id: variantIdArr,
+//     },
 //     include: [
 //       {
 //         model: Attribute,
-//         where: { type: 'size' },
-//         through: { attributes: [] }, // Do not fetch data from the join table
+//         where: {
+//           type: 'size',
+//         },
+//         through: { attributes: [] },
 //         attributes: ['value'],
 //       },
-//       {
-//         model: Attribute,
-//         where: { type: 'color', value: defaultColor },
-//         through: { attributes: [] }, // Do not fetch data from the join table
-//       },
 //     ],
-//   },
-//   // attributes: [],
-//   // group: ['Attribute.value'],
-//   // order: [['Attribute', 'value', 'ASC']],
-//   raw: true,
-//   nest: true,
-// });
+//     attributes: ['id', 'price', 'qtyInStock'],
+//     raw: true,
+//     nest: true,
+//   });
 
+//   console.log('defaultSizes', defaultSizes);
 
-// Fetch available sizes for the default color
-// const availableSizes = await Variant.findAll({
-//   where: {
-//     ProductId: productId,
-//   },
-//   include: [
-//     {
-//       model: Attribute,
-//       where: {
-//         type: 'size',
-//       },
-//       through: { model: VariantAttribute, attributes: [] },
-//       attributes: ['value'],
-//     },
-//     {
-//       model: Attribute,
-//       where: { type: 'color', value: defaultColor },
-//       through: { model: VariantAttribute, attributes: [] },
-//       attributes: ['value'],
-//     },
-//   ],
-//   attributes: [],
-//   // group: ['Attribute.value'],
-//   // order: [['Attribute', 'value', 'ASC']],
-//   raw: true,
-//   nest: true,
+//   if (!defaultSizes) {
+//     return next(new AppError('No sizes found!', 404));
+//   }
+
+//   // Remove duplicate ones
+//   const uniqueSizes = [...new Set(defaultSizes.map((uniq) => uniq))];
+//   console.log('uniqueSizes', uniqueSizes);
+
+//   res.status(200).render('product2', {
+//     product,
+//     uniqueColors,
+//     uniqueSizes,
+//   });
 // });
