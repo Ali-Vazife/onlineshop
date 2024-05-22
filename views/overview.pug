@@ -46,7 +46,7 @@ block content
               li.product-item
                 .product-card(tabindex='0')
                   figure.card-banner
-                    img.image-contain(src=`/images/${p.coverImage}` width='312' height='350' loading='lazy' alt=`${p.name}`)
+                    img.image-contain(src=`/images/${p.imagecover}` width='312' height='350' loading='lazy' alt=`${p.name}`)
                     //- .card-badge New
                     ul.card-action-list
                       li.card-action-item
@@ -71,10 +71,15 @@ block content
                           | Compare
                   .card-content
                     .card-cat
-                      a.card-cat-link(href=`/productsGender/${p.ProductGender.id}`)= `${p.ProductGender.name}`
+                      a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
+                      a.card-cat-link(href=`/productsBrand/${p.genderid}`)= `${p.brandname}`
                     h3.h3.card-title
                       a(href= `/products/${p.id}`)= `${p.name}`
-                    data.card-price(value=`${p.Variants.price}`)= `$ ${p.Variants.price}`
+                    - if (`${p.minPrice}` === `${p.maxPrice}`)  
+                      data.card-price= `$ ${p.minPrice}`
+                    - else 
+                      data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`
+
       //
         - #CTA
       section.section.cta
@@ -140,7 +145,7 @@ block content
                         a.card-cat-link(href=`/productsGender/${newp.id}`)= `${newp.ProductGender.name}`
                       h3.h3.card-title
                         a(href=`/products/${newp.id}`)= `${newp.name}`
-                      data.card-price(value='180.85')= `$ ${newp.Variants.price}`
+                      //- data.card-price(value='180.85')= `$ ${newp.Variants.price}`
       //
         - #SERVICE
       section.section.service

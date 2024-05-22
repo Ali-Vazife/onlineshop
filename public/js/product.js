@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const liElem = document.querySelector('.li_size');
 
   const colorOptions = document.querySelectorAll('.li-color__label');
-  const sizeOptions = document.querySelectorAll('.size');
+  let sizeOptions;
 
   let selectedColor = colorOptions[0].textContent;
   let selectedSize;
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updatePrice = async () => {
     try {
+      console.log('DUO:', selectedColor, selectedSize);
       const response = await fetch(
         `/products/1/price?color=${selectedColor}&size=${selectedSize}`,
       );
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createSizeElements(sizes) {
     liElem.innerHTML = '';
-    console.log(sizes[0]);
+
     sizes.forEach(size => {
       // Create input element
       const input = document.createElement('input');
@@ -49,8 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // Append input and label to the liElem
       liElem.appendChild(input);
       liElem.appendChild(label);
-      updatePrice(selectedSize);
+      console.log('adwdwawa', sizeOptions);
     });
+
+    sizeOptions = document.querySelectorAll('.li_size__label');
+    sizeOptions.forEach(el => {
+      el.addEventListener('click', (event) => {
+        console.log('tap');
+        selectedSize = event.target.innerHTML;
+        console.log('selectedSize', selectedSize);
+        updatePrice();
+      });
+    });
+
+    updatePrice(selectedSize);
   };
 
   const updateSize = async () => {
@@ -60,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      console.log(data);
       createSizeElements(data.sizes);
     } catch (error) {
       console.error('Error fetching Size:', error);
@@ -69,16 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   colorOptions.forEach(el => {
     el.addEventListener('click', (event) => {
-      console.log('---------------!!!!!-------------');
       selectedColor = event.target.innerHTML;
       updateSize();
-    });
-  });
-
-  sizeOptions.forEach(el => {
-    el.addEventListener('click', (event) => {
-      selectedSize = event.target.innerHTML;
-      updatePrice();
     });
   });
 

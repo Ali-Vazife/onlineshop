@@ -1,5 +1,5 @@
 const { where, Op, Sequelize } = require('sequelize');
-const {
+const { sequelize,
   Product,
   Category,
   ProductCategory,
@@ -7,7 +7,6 @@ const {
   Brand,
   Discount,
   Variant,
-  VariantAttribute,
   Attribute,
 } = require('../sequelize/db');
 
@@ -18,23 +17,44 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
   const categories = await Category.findAll({ limit: 5 });
   const brands = await Brand.findAll({ limit: 6 });
 
-  const products = await Product.findAll({
-    limit: 15,
+  const AllProducts = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
     include: [
       {
-        model: ProductGender,
+        model: Variant,
+        attributes: [], // We don't need any attributes from Variant itself
       },
       {
-        model: Variant,
-        attributes: ['price', 'qtyInStock'],
+        model: ProductGender,
+        attributes: [], // The attributes are referenced via sequelize.col
+      },
+      {
+        model: Brand,
+        attributes: [], // The attributes are referenced via sequelize.col
       },
     ],
-    attributes: {
-      exclude: ['productCreatedAt', 'productUpdatedAt', 'ShortDescription'],
-    },
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
     raw: true,
     nest: true,
   });
+
+  console.log(AllProducts);
 
   const trendsproducts = await Product.findAll({
     limit: 8,
@@ -43,18 +63,19 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
       {
         model: ProductGender,
       },
-      {
-        model: Variant,
-        attributes: ['price', 'qtyInStock'],
-      },
     ],
     raw: true,
     nest: true,
   });
 
-  res
-    .status(200)
-    .render('overview', { categories, products, trendsproducts, brands });
+  // console.log(trendsproducts);
+
+  res.status(200).render('overview', {
+    categories,
+    products: AllProducts,
+    trendsproducts,
+    brands,
+  });
 });
 
 module.exports.getProductsCategory = catchAsync(async (req, res, next) => {
