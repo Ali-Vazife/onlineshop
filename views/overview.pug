@@ -35,12 +35,13 @@ block content
         .container
           h2.h2.section-title Bestsellers Products
           ul.filter-list
-            li
-              button.filter-btn.active All
+            li.brand-li
+                button(class='filter-btn' data-brand-id='allBrands') All
             each b in brands
-              li
-                a(href=`/productsBrand/${b.id}`)
-                  button.filter-btn= `${b.name}`
+              li.brand-li.filter-li-brands
+                button(class='filter-btn' data-brand-id=`${b.id}`)= `${b.name}`
+                //- a(href=`/productsBrand/${b.id}`)
+                //-   button.filter-btn= `${b.name}`
           ul.product-list
             each p in products
               li.product-item
@@ -79,7 +80,6 @@ block content
                       data.card-price= `$ ${p.minPrice}`
                     - else 
                       data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`
-
       //
         - #CTA
       section.section.cta
@@ -94,9 +94,9 @@ block content
                   ion-icon(name='arrow-forward-outline' aria-hidden='true')
             li
               .cta-card(style="background-image: url('/images/cta-2.jpg')")
-                p.card-subtitle Nike Shoes
+                p.card-subtitle #{brands[0].name}
                 h3.h2.card-title Makes Yourself Keep Sporty
-                a.btn.btn-link(href='#')
+                a.btn.btn-link(href=`/productsBrand/${brands[0].id}`)
                   span Shop Now
                   ion-icon(name='arrow-forward-outline' aria-hidden='true')
       //
@@ -106,7 +106,7 @@ block content
           .special-banner(style="background-image: url('/images/special-banner.jpg')")
             h2.h3.banner-title New Trend Edition
             a.btn.btn-link(href='#')
-              span Explore All
+              //- span Explore All
               ion-icon(name='arrow-forward-outline' aria-hidden='true')
           .special-product
             h2.h2.section-title
@@ -117,7 +117,7 @@ block content
                 li.product-item
                   .product-card(tabindex='0')
                     figure.card-banner
-                      img.image-contain(src=`/images/${newp.coverImage}` width='312' height='350' loading='lazy' alt=`${newp.name}`)
+                      img.image-contain(src=`/images/${newp.imagecover}` width='312' height='350' loading='lazy' alt=`${newp.name}`)
                       .card-badge New
                       ul.card-action-list
                         li.card-action-item
@@ -142,10 +142,14 @@ block content
                             | Compare
                     .card-content
                       .card-cat
-                        a.card-cat-link(href=`/productsGender/${newp.id}`)= `${newp.ProductGender.name}`
+                        a.card-cat-link(href=`/productsGender/${newp.genderid}`)= `${newp.gendername}`
+                        a.card-cat-link(href=`/productsBrand/${newp.brandid}`)= `${newp.brandname}`
                       h3.h3.card-title
                         a(href=`/products/${newp.id}`)= `${newp.name}`
-                      //- data.card-price(value='180.85')= `$ ${newp.Variants.price}`
+                      - if (`${newp.minPrice}` === `${newp.maxPrice}`)  
+                        data.card-price= `$ ${newp.minPrice}`
+                      - else 
+                        data.card-price= `$ ${newp.minPrice} - ${newp.maxPrice}`
       //
         - #SERVICE
       section.section.service
@@ -218,3 +222,4 @@ block content
             a.insta-post-link(href='#')
               ion-icon(name='logo-instagram')
 
+  script(src='/js/productsBrand.js')
