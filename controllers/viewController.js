@@ -13,6 +13,51 @@ const { sequelize,
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
+module.exports.getAllProducts = catchAsync(async (req, res, next) => {
+  const brands = await Brand.findAll({ limit: 6 });
+
+  const AllProducts = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
+    include: [
+      {
+        model: Variant,
+        attributes: [],
+      },
+      {
+        model: ProductGender,
+        attributes: [],
+      },
+      {
+        model: Brand,
+        attributes: [],
+      },
+    ],
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
+    raw: true,
+    nest: true,
+  });
+
+  res.status(200).render('allProducts', {
+    products: AllProducts,
+    brands,
+  });
+});
 module.exports.getOverview = catchAsync(async (req, res, next) => {
   const categories = await Category.findAll({ limit: 5 });
   const brands = await Brand.findAll({ limit: 6 });
@@ -407,7 +452,7 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   ];
   console.log('uniqueColors', uniqueColors);
 
-  res.status(200).render('product4', {
+  res.status(200).render('productDetail', {
     product,
     uniqueColors,
   });

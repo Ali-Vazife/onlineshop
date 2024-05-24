@@ -124,6 +124,14 @@ async function fetchProducts(brandId, typeOfFilter) {
 
 allBrands.forEach((el) => {
   el.addEventListener('click', (event) => {
+    let activeBrandsBtns = document.getElementsByClassName('active-brand-btn');
+    while (activeBrandsBtns.length)
+      activeBrandsBtns[0].className = activeBrandsBtns[0].className.replace(
+        /\bactive-brand-btn\b/g,
+        '',
+      );
+
+    el.classList.add('active-brand-btn');
     let { brandId } = event.target.dataset;
     let typeOfFilter = brandId === 'allBrands' ? 'all' : brandId;
     console.log(typeOfFilter);

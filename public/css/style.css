@@ -193,6 +193,11 @@ body {
   border: 1px solid var(--border-color, var(--bittersweet));
 }
 
+.active-brand-btn {
+  border: 1.5px solid rgb(30, 10, 102);
+  border-radius: 30px;
+}
+
 .btn-primary:is(:hover, :focus) {
   --background: var(--salmon);
   --border-color: var(--salmon);

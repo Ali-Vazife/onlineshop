@@ -5,10 +5,15 @@ block content
     article
       section.section.product
         .container
-          h2.h2.section-title=`${products[0].categoryname}`
-          //- figure.card-banner
-            //- img.image-contain(src=`/images/${products[0].coverImage}` width='312' height='350' loading='lazy' alt=`${products[0].categoryname}`)
-          br
+          h2.h2.section-title Bestsellers Products
+          ul.filter-list
+            li.brand-li.active-brand-btn
+              button(class='filter-btn' data-brand-id='allBrands') All
+            each b in brands
+              li.brand-li.filter-li-brands
+                button(class='filter-btn' data-brand-id=`${b.id}`)= `${b.name}`
+                //- a(href=`/productsBrand/${b.id}`)
+                //-   button.filter-btn= `${b.name}`
           ul.product-list
             each p in products
               li.product-item
@@ -42,8 +47,9 @@ block content
                       a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
                       a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brandname}`
                     h3.h3.card-title
-                      a(href=`/products/${p.id}`)= `${p.name}`
+                      a(href= `/products/${p.id}`)= `${p.name}`
                     - if (`${p.minPrice}` === `${p.maxPrice}`)  
                       data.card-price= `$ ${p.minPrice}`
                     - else 
                       data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`
+  script(src='/js/productsBrand.js')
