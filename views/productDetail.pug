@@ -24,9 +24,7 @@ block content
           li.li COLOR
           form
           each color, index in uniqueColors
-            //- li(class=`li color ${color} ${index === 0 ? 'default-product': ''}` data-color=color)
-            //- input(id=`productcolor-${index}` class='li-color color' type='radio' name='product_color' value=`${color }` checked=index  === 0)
-            input(id=`productcolor-${index}` class='li-color color' type='radio' name='product_color' value=`${color }` checked=index  === 0)
+            input(id=`productcolor-${index}` class='li-color color' type='radio' data-productId=`${product.id}` name='product_color' value=`${color }` checked=index  === 0)
             label.li-color__label(for=`productcolor-${index}`) #{color}
         ul.ul
           li.li.li_size SIZE:
@@ -40,4 +38,4 @@ block content
         span.foot
           i.fa.fa-shopping-cart
           | Add TO Cart
-  script(src='/js/product.js')
+  script(src='/js/productDetail.js')

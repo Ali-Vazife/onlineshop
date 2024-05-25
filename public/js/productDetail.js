@@ -1,25 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   const liElem = document.querySelector('.li_size');
+  const productId = document.querySelector('#productcolor-0').dataset.productid;
 
   const colorOptions = document.querySelectorAll('.li-color__label');
-  let sizeOptions;
-
   let selectedColor = colorOptions[0].textContent;
   let selectedSize;
+  let sizeOptions;
 
   const priceDisplay = document.querySelector('.details h4 span');
 
   const updatePrice = async () => {
     try {
-      console.log('DUO:', selectedColor, selectedSize);
+      console.log('selectedColor,selectedSize', selectedColor, selectedSize);
       const response = await fetch(
-        `/products/1/price?color=${selectedColor}&size=${selectedSize}`,
+        `/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
       );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      priceDisplay.textContent = `$${data.price}`;
+      console.log('data', response);
+      priceDisplay.textContent = `$ ${data.price}`;
     } catch (error) {
       console.error('Error fetching price:', error);
     }
@@ -29,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     liElem.innerHTML = '';
 
     sizes.forEach(size => {
-      // Create input element
       const input = document.createElement('input');
       input.id = 'productsize_' + size;
       input.className = 'li-size size';
@@ -56,9 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sizeOptions = document.querySelectorAll('.li_size__label');
     sizeOptions.forEach(el => {
       el.addEventListener('click', (event) => {
-        console.log('tap');
         selectedSize = event.target.innerHTML;
-        console.log('selectedSize', selectedSize);
         updatePrice();
       });
     });
@@ -68,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateSize = async () => {
     try {
-      const response = await fetch(`/products/1/size?color=${selectedColor}`);
+      const response = await fetch(
+        `/products/${productId}/size?color=${selectedColor}`,
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
