@@ -1,4 +1,6 @@
 const { where, Op, Sequelize } = require('sequelize');
+const { QueryTypes } = require('sequelize'); // Import QueryTypes
+
 const { sequelize,
   Product,
   Category,
@@ -8,6 +10,7 @@ const { sequelize,
   Discount,
   Variant,
   Attribute,
+  VariantAttribute,
 } = require('../sequelize/db');
 
 const AppError = require('../utils/appError');
@@ -516,23 +519,35 @@ module.exports.getSizes = catchAsync(async (req, res, next) => {
 module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const { color, size } = req.query;
+  // console.log('id,color,size:', id, color, size);
 
-  // Fetch the variant with the specified color and size
-  const variant = await Variant.findOne({
-    where: { ProductId: id },
-    include: [
-      {
-        model: Attribute,
-        where: { type: 'color', value: color },
-        through: { attributes: [] },
-      },
-      {
-        model: Attribute,
-        where: { type: 'size', value: size },
-        through: { attributes: [] },
-      },
-    ],
+  const sqlQuery = `
+  SELECT v.id, v.price, v."ProductId"
+  FROM "Variant" AS v
+  WHERE v."ProductId" = :productId
+  AND v.id IN (
+    SELECT v2.id 
+    FROM "Variant" AS v2
+    INNER JOIN "VariantAttribute" AS va ON v2.id = va."VariantId"
+    INNER JOIN "Attribute" AS a ON va."AttributeId" = a.id
+    WHERE a."type" = 'color' AND a."value" = :color
+    AND v2.id IN (
+      SELECT v3.id 
+      FROM "Variant" AS v3
+      INNER JOIN "VariantAttribute" AS va2 ON v3.id = va2."VariantId"
+      INNER JOIN "Attribute" AS a2 ON va2."AttributeId" = a2.id
+      WHERE a2."type" = 'size' AND a2."value" = :size
+    )
+  )
+`;
+
+  // Execute the SQL query with replacements for placeholders
+  const variant = await sequelize.query(sqlQuery, {
+    replacements: { productId: id, color, size },
+    type: QueryTypes.SELECT,
   });
+
+  // console.log('variant:', variant);
 
   if (!variant) {
     return res
@@ -540,5 +555,5 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
       .json({ status: 'fail', message: 'Variant not found' });
   }
 
-  res.status(200).json({ status: 'success', price: variant.price });
+  res.status(200).json({ status: 'success', price: variant });
 });

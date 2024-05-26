@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updatePrice = async () => {
     try {
-      console.log('selectedColor,selectedSize', selectedColor, selectedSize);
+      // console.log('selectedColor,selectedSize', selectedColor, selectedSize);
       const response = await fetch(
         `/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
       );
@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      console.log('data', response);
-      priceDisplay.textContent = `$ ${data.price}`;
+      // console.log('data', data.price[0].price);
+      priceDisplay.textContent = `$ ${data.price[0].price}`;
     } catch (error) {
       console.error('Error fetching price:', error);
     }
