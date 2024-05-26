@@ -4,6 +4,18 @@ const productController = require('../controllers/productController');
 const router = express.Router();
 
 // Product
+router.get('/:id/size', productController.getSizes);
+router.get('/:id/price', productController.getProductPrice);
+
+router.get(
+  '/productsSelectedBrand',
+  productController.getSelectedProductsBrand,
+);
+router.get(
+  '/productsSelectedAllBrands',
+  productController.getProductsAllBrands,
+);
+//
 router.route('/getAllProducts').get(productController.getAllProducts);
 router.route('/getProduct/:id').get(productController.getProduct);
 router.route('/createProduct').post(productController.createProduct);

@@ -27,9 +27,7 @@ function renderProducts(productsArr) {
     cardActionList.classList.add('card-action-list');
 
     const actions = [
-      { name: 'cart-outline', label: 'Add to Cart' },
       { name: 'heart-outline', label: 'Add to Wishlist' },
-      { name: 'eye-outline', label: 'Quick View' },
       { name: 'repeat-outline', label: 'Compare' },
     ];
 
@@ -109,8 +107,8 @@ async function fetchProducts(brandId, typeOfFilter) {
   try {
     const url =
       typeOfFilter === 'all'
-        ? `/productsSelectedAllBrands`
-        : `/productsSelectedBrand?brandId=${brandId}`;
+        ? `/api/v1/products/productsSelectedAllBrands`
+        : `/api/v1/products/productsSelectedBrand?brandId=${brandId}`;
 
     const response = await fetch(url);
     const products = await response.json();

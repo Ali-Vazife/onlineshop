@@ -19,6 +19,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(
+  '/scripts',
+  express.static(path.join(__dirname, 'node_modules/ionicons/dist/ionicons/')),
+);
 
 app.use('/', viewRoutes);
 app.use('/api/v1/products', productRoutes);

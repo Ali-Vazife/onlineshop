@@ -1,5 +1,10 @@
+const { where, Op, Sequelize } = require('sequelize');
+const { QueryTypes } = require('sequelize');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 const {
+  sequelize,
   Product,
   ProductGender,
   Category,
@@ -12,6 +17,194 @@ const {
 } = require('../sequelize/db');
 
 // Product
+module.exports.getProductsAllBrands = catchAsync(async (req, res, next) => {
+
+  const products = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
+    include: [
+      {
+        model: Variant,
+        attributes: [],
+      },
+      {
+        model: ProductGender,
+        attributes: [],
+      },
+      {
+        model: Brand,
+        attributes: [],
+      },
+    ],
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
+    raw: true,
+    nest: true,
+  });
+
+  if (!products || products.length === 0) {
+    return next(new AppError('No products found for this brand!', 404));
+  }
+
+  res.status(200).json({ products });
+});
+
+module.exports.getSelectedProductsBrand = catchAsync(async (req, res, next) => {
+  const { brandId } = req.query;
+
+  const products = await Product.findAll({
+    attributes: [
+      'id',
+      'name',
+      ['coverImage', 'imagecover'],
+      [sequelize.col('Brand.id'), 'brandid'],
+      [sequelize.col('Brand.name'), 'brandname'],
+      [sequelize.col('ProductGender.id'), 'genderid'],
+      [sequelize.col('ProductGender.name'), 'gendername'],
+      [sequelize.fn('MIN', sequelize.col('Variants.price')), 'minPrice'],
+      [sequelize.fn('MAX', sequelize.col('Variants.price')), 'maxPrice'],
+    ],
+    include: [
+      {
+        model: Variant,
+        attributes: [],
+      },
+      {
+        model: ProductGender,
+        attributes: [],
+      },
+      {
+        model: Brand,
+        attributes: [],
+        where: { id: brandId },
+      },
+    ],
+    group: [
+      'Product.id',
+      'Brand.id',
+      'Brand.name',
+      'ProductGender.id',
+      'ProductGender.name',
+    ],
+    raw: true,
+    nest: true,
+  });
+
+  if (!products || products.length === 0) {
+    return next(new AppError('No products found for this brand!', 404));
+  }
+
+  res.status(200).json({ products });
+});
+
+module.exports.getSizes = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { color } = req.query;
+
+  // console.log(`ProductId: ${id}, Color: ${color}`);
+
+  const varSizeId = await Variant.findAll({
+    where: { ProductId: id },
+    include: [
+      {
+        model: Attribute,
+        where: { type: 'color', value: color },
+        through: { attributes: [] },
+      },
+    ],
+    attributes: ['id'],
+    raw: true,
+    nest: true,
+  });
+
+  // console.log('varSizeId', varSizeId);
+
+  // Get colors vId
+  const UniqueSize = varSizeId
+    .filter(el => el.Attributes.value === color)
+    .map(el => el.id);
+  // console.log('UniqueSize', UniqueSize);
+
+  const sizes = await Variant.findAll({
+    where: { id: UniqueSize },
+    include: [
+      {
+        model: Attribute,
+        where: { type: 'size' },
+        through: { attributes: [] },
+        attributes: ['value'],
+      },
+    ],
+    attributes: [],
+    raw: true,
+    nest: true,
+  });
+
+  // console.log(sizes);
+
+  if (!sizes || sizes.length === 0) {
+    return next(new AppError('No sizes found for this color!', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    sizes: sizes.map((size) => size.Attributes.value),
+  });
+});
+
+module.exports.getProductPrice = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { color, size } = req.query;
+  // console.log('id,color,size:', id, color, size);
+
+  const sqlQuery = `
+  SELECT v.id, v.price, v."ProductId"
+  FROM "Variant" AS v
+  WHERE v."ProductId" = :productId
+  AND v.id IN (
+    SELECT v2.id 
+    FROM "Variant" AS v2
+    INNER JOIN "VariantAttribute" AS va ON v2.id = va."VariantId"
+    INNER JOIN "Attribute" AS a ON va."AttributeId" = a.id
+    WHERE a."type" = 'color' AND a."value" = :color
+    AND v2.id IN (
+      SELECT v3.id 
+      FROM "Variant" AS v3
+      INNER JOIN "VariantAttribute" AS va2 ON v3.id = va2."VariantId"
+      INNER JOIN "Attribute" AS a2 ON va2."AttributeId" = a2.id
+      WHERE a2."type" = 'size' AND a2."value" = :size
+    )
+  )
+`;
+
+  // Execute the SQL query with replacements for placeholders
+  const variant = await sequelize.query(sqlQuery, {
+    replacements: { productId: id, color, size },
+    type: QueryTypes.SELECT,
+  });
+
+  if (!variant || variant.length === 0) {
+    return next(new AppError('No price found for this product!', 404));
+  }
+
+  res.status(200).json({ status: 'success', price: variant });
+});
+
+//    factory
 exports.getAllProducts = factory.getAll(Product);
 exports.getProduct = factory.getOne(Product);
 exports.createProduct = factory.createOne(Product);

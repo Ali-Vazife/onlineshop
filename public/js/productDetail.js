@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // console.log('selectedColor,selectedSize', selectedColor, selectedSize);
       const response = await fetch(
-        `/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
+        `/api/v1/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
       );
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -62,12 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updatePrice(selectedSize);
-  };
+  }
 
   const updateSize = async () => {
     try {
       const response = await fetch(
-        `/products/${productId}/size?color=${selectedColor}`,
+        `/api/v1/products/${productId}/size?color=${selectedColor}`,
       );
       if (!response.ok) {
         throw new Error('Network response was not ok');
