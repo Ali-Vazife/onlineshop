@@ -1,26 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
   const liElem = document.querySelector('.li_size');
-  const productId = document.querySelector('#productcolor-0').dataset.productid;
+  const productId = document.querySelector('.li-color.selected').dataset.productid;
 
-  const colorOptions = document.querySelectorAll('.li-color__label');
-  let selectedColor = colorOptions[0].textContent;
+  const colorButtons = document.querySelectorAll('.li-color');
+  let selectedColor =
+    document.querySelector('.li-color.selected').dataset.color;
+
   let selectedSize;
-  let sizeOptions;
+  let sizeButtons;
 
   const priceDisplay = document.querySelector('.details h4 span');
+  const quantityDisplay = document.querySelector('.quantity');
 
   const updatePrice = async () => {
     try {
       // console.log('selectedColor,selectedSize', selectedColor, selectedSize);
-      const response = await fetch(
-        `/api/v1/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      // console.log('data', data.price[0].price);
-      priceDisplay.textContent = `$ ${data.price[0].price}`;
+      const response = await axios({
+        method: 'GET',
+        url: `/api/v1/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
+      });
+
+      const { price } = response.data.price[0];
+      console.log('data', response.data);
+
+      priceDisplay.textContent = `$ ${price}`;
+      quantityDisplay.textContent = `Quantity in stock: ${response.data.price[0].qtyInStock}`;
     } catch (error) {
       console.error('Error fetching price:', error);
     }
@@ -30,33 +34,25 @@ document.addEventListener('DOMContentLoaded', () => {
     liElem.innerHTML = '';
 
     sizes.forEach(size => {
-      const input = document.createElement('input');
-      input.id = 'productsize_' + size;
-      input.className = 'li-size size';
-      input.setAttribute('data-size', size);
-      input.type = 'radio';
-      input.name = 'product_size';
-      input.value = size;
+      const button = document.createElement('button');
+      button.id = 'productsize_' + size;
+      button.className = 'li-size size';
+      button.setAttribute('data-size', size);
+      button.textContent = size;
       if (sizes[0] === size) {
-        input.setAttribute('checked', true);
+        button.classList.add('selected');
         selectedSize = sizes[0];
       }
-      // Create label element
-      const label = document.createElement('label');
-      label.className = 'li_size__label';
-      label.setAttribute('for', input.id);
-      label.textContent = size;
 
-      // Append input and label to the liElem
-      liElem.appendChild(input);
-      liElem.appendChild(label);
-      console.log('adwdwawa', sizeOptions);
+      liElem.appendChild(button);
     });
 
-    sizeOptions = document.querySelectorAll('.li_size__label');
-    sizeOptions.forEach(el => {
-      el.addEventListener('click', (event) => {
-        selectedSize = event.target.innerHTML;
+    sizeButtons = document.querySelectorAll('.li-size');
+    sizeButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        sizeButtons.forEach(btn => btn.classList.remove('selected'));
+        event.target.classList.add('selected');
+        selectedSize = event.target.getAttribute('data-size');
         updatePrice();
       });
     });
@@ -66,25 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateSize = async () => {
     try {
-      const response = await fetch(
-        `/api/v1/products/${productId}/size?color=${selectedColor}`,
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      createSizeElements(data.sizes);
+      const response = await axios({
+        method: 'GET',
+        url: `/api/v1/products/${productId}/size?color=${selectedColor}`,
+      });
+      const { sizes } = response.data;
+      // console.log(sizes);
+
+      createSizeElements(sizes);
     } catch (error) {
       console.error('Error fetching Size:', error);
     }
   };
 
-  colorOptions.forEach(el => {
-    el.addEventListener('click', (event) => {
-      selectedColor = event.target.innerHTML;
+  colorButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      colorButtons.forEach(btn => btn.classList.remove('selected'));
+      event.target.classList.add('selected');
+      selectedColor = event.target.getAttribute('data-color');
       updateSize();
     });
   });
-
   updateSize();
 });

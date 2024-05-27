@@ -1,8 +1,8 @@
 const allBrands = document.querySelectorAll('.brand-li');
 
 function renderProducts(productsArr) {
-  let productContainer = document.querySelector('.product-list');
-  productContainer.innerHTML = ''
+  const productContainer = document.querySelector('.product-list');
+  productContainer.innerHTML = '';
 
   productsArr.forEach(p => {
     const productItem = document.createElement('li');
@@ -110,11 +110,15 @@ async function fetchProducts(brandId, typeOfFilter) {
         ? `/api/v1/products/productsSelectedAllBrands`
         : `/api/v1/products/productsSelectedBrand?brandId=${brandId}`;
 
-    const response = await fetch(url);
-    const products = await response.json();
-    // const productsArr = products.products;
-    console.log(products.products);
-    renderProducts(products.products);
+    const response = await axios({
+      method: 'GET',
+      url: url,
+    });
+
+    const { products } = response.data;
+    // console.log(products);
+
+    renderProducts(products);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -122,7 +126,7 @@ async function fetchProducts(brandId, typeOfFilter) {
 
 allBrands.forEach((el) => {
   el.addEventListener('click', (event) => {
-    let activeBrandsBtns = document.getElementsByClassName('active-brand-btn');
+    const activeBrandsBtns = document.getElementsByClassName('active-brand-btn');
     while (activeBrandsBtns.length)
       activeBrandsBtns[0].className = activeBrandsBtns[0].className.replace(
         /\bactive-brand-btn\b/g,
@@ -130,9 +134,9 @@ allBrands.forEach((el) => {
       );
 
     el.classList.add('active-brand-btn');
-    let { brandId } = event.target.dataset;
-    let typeOfFilter = brandId === 'allBrands' ? 'all' : brandId;
-    console.log(typeOfFilter);
+    const { brandId } = event.target.dataset;
+    const typeOfFilter = brandId === 'allBrands' ? 'all' : brandId;
+    // console.log(typeOfFilter);
     fetchProducts(brandId, typeOfFilter);
   });
 });

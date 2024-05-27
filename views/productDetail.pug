@@ -18,24 +18,24 @@ block content
           h2 #{product.ProductGender.name}
           h2 #{product.Brand.name}
           h3 #{product.ShortDescription}
+          span.fa.quantity
           h4
             span.fa.fa-dollar= `$ `
-        ul.ul
-          li.li COLOR
-          form
+        ul.ul.ul__colors
+          li.li.color-text SELECT COLOR & SIZE
+          br
           each color, index in uniqueColors
-            input(id=`productcolor-${index}` class='li-color color' type='radio' data-productId=`${product.id}` name='product_color' value=`${color }` checked=index  === 0)
-            label.li-color__label(for=`productcolor-${index}`) #{color}
-        ul.ul
+            button(class=`li-color color ${index === 0 ? 'selected' : ''}` data-productId=`${product.id}` data-color=`${color}`)
+              | #{color}
+        ul.ul.ul__sizes
           li.li.li_size SIZE:
-            //- each size, index in uniqueSizes
-            //- li(class=`li size ${size.Attributes.value}` data-size=size.Attributes.value checked=index === 1)= size.Attributes.value
-            //- input(id='productsize' class='li-size size' data-size='' type='radio' name='product_size' value='' )
-            //- label.li_size__label(for='productsize') 
-        span.foot
-          i.fa.fa-shopping-bag
-          | Buy Now
-        span.foot
-          i.fa.fa-shopping-cart
-          | Add TO Cart
+        ul.cart-buy
+          button.buynow Buy now
+          button.addtocart Add to cart
+        //- span.foot
+        //-   i.fa.fa-shopping-bag
+        //-   | Buy Now
+        //- span.foot
+        //-   i.fa.fa-shopping-cart
+        //-   | Add TO Cart
   script(src='/js/productDetail.js')

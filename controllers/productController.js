@@ -172,7 +172,7 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   // console.log('id,color,size:', id, color, size);
 
   const sqlQuery = `
-  SELECT v.id, v.price, v."ProductId"
+  SELECT v.id, v.price, v."ProductId", v."qtyInStock"
   FROM "Variant" AS v
   WHERE v."ProductId" = :productId
   AND v.id IN (
