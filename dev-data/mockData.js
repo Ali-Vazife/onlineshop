@@ -84,23 +84,48 @@ const products = [
 ];
 
 const variant = [
-  { ProductId: 1, price: 99.99, qtyInStock: 50, skuNumber: 12345 },
-  { ProductId: 2, price: 79.99, qtyInStock: 30, skuNumber: 54321 },
+  { ProductId: 1, price: 99.99, qtyInStock: 10, skuNumber: 54321 },
+  { ProductId: 1, price: 89.99, qtyInStock: 25, skuNumber: 54321 },
+  { ProductId: 1, price: 79.99, qtyInStock: 50, skuNumber: 12345 },
+  { ProductId: 2, price: 59.99, qtyInStock: 20, skuNumber: 98765 },
   { ProductId: 3, price: 59.99, qtyInStock: 20, skuNumber: 98765 },
+  { ProductId: 4, price: 70.99, qtyInStock: 10, skuNumber: 32134 },
+  { ProductId: 4, price: 80.88, qtyInStock: 11, skuNumber: 51134 },
+  { ProductId: 5, price: 65.78, qtyInStock: 75, skuNumber: 24132 },
+  { ProductId: 6, price: 32.12, qtyInStock: 75, skuNumber: 43253 },
+  { ProductId: 7, price: 32.78, qtyInStock: 88, skuNumber: 43221 },
 ];
 
 const attribute = [
   { type: 'size', value: '10' },
+  { type: 'size', value: '46' },
+  { type: 'size', value: '34' },
   { type: 'color', value: 'red' },
+  { type: 'color', value: 'green' },
+  { type: 'color', value: 'yellow' },
 ];
 
 const variantAttribute = [
-  { VariantId: 1, AttributeId: 1 },
+  { VariantId: 3, AttributeId: 5 },
+  { VariantId: 4, AttributeId: 5 },
+  { VariantId: 5, AttributeId: 3 },
+  { VariantId: 5, AttributeId: 6 },
+  { VariantId: 6, AttributeId: 3 },
+  { VariantId: 6, AttributeId: 6 },
+  { VariantId: 8, AttributeId: 1 },
+  { VariantId: 8, AttributeId: 4 },
+  { VariantId: 9, AttributeId: 2 },
+  { VariantId: 9, AttributeId: 5 },
+  { VariantId: 10, AttributeId: 2 },
+  { VariantId: 10, AttributeId: 4 },
   { VariantId: 1, AttributeId: 2 },
-  { VariantId: 2, AttributeId: 1 },
-  { VariantId: 2, AttributeId: 2 },
+  { VariantId: 2, AttributeId: 5 },
+  { VariantId: 1, AttributeId: 4 },
   { VariantId: 3, AttributeId: 1 },
-  { VariantId: 3, AttributeId: 2 },
+  { VariantId: 2, AttributeId: 3 },
+  { VariantId: 7, AttributeId: 2 },
+  { VariantId: 7, AttributeId: 4 },
+  { VariantId: 4, AttributeId: 3 },
 ];
 
 const productCategory = [
@@ -108,6 +133,10 @@ const productCategory = [
   { ProductId: 2, CategoryId: 2 },
   { ProductId: 3, CategoryId: 3 },
   { ProductId: 3, CategoryId: 2 },
+  { ProductId: 4, CategoryId: 1 },
+  { ProductId: 5, CategoryId: 3 },
+  { ProductId: 6, CategoryId: 2 },
+  { ProductId: 7, CategoryId: 1 },
 ];
 
 // Execute script to insert mock data
