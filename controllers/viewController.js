@@ -390,9 +390,9 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
 });
 
 module.exports.signup = catchAsync(async (req, res, next) => {
-  res.status(200).render('signup', {});
+  res.status(200).render('signup');
 });
 
 module.exports.login = catchAsync(async (req, res, next) => {
-  res.status(200).render('login', {});
+  res.status(200).render('login');
 });

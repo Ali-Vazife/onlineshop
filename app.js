@@ -6,7 +6,7 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
-const bookingRoutes = require('./routes/bookingRoutes');
+// const bookingRoutes = require('./routes/bookingRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 
 const app = express();
@@ -23,7 +23,7 @@ app.use('/scripts', express.static(path.join(__dirname, 'node_modules/')));
 
 app.use('/', viewRoutes);
 app.use('/api/v1/products', productRoutes);
-// app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/users', userRoutes);
 // app.use('/api/v1/bookings', bookingRoutes);
 
 app.all('*', (req, res, next) => {

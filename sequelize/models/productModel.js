@@ -18,8 +18,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
-      createdAt: 'productCreatedAt', // Change the default createdAt column name
-      updatedAt: 'productUpdatedAt', // Change the default updatedAt column name
+      createdAt: 'productCreatedAt',
+      updatedAt: 'productUpdatedAt',
     },
   );
 
@@ -107,8 +107,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
-      createdAt: 'discountCreatedAt', // Change the default createdAt column name
-      updatedAt: 'discountUpdatedAt', // Change the default updatedAt column name
+      createdAt: 'discountCreatedAt',
+      updatedAt: 'discountUpdatedAt',
     },
   );
 

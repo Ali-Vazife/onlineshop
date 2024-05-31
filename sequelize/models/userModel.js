@@ -12,6 +12,11 @@ const defineModels = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      UserRoleId: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
@@ -29,6 +34,10 @@ const defineModels = (sequelize) => {
         unique: true,
       },
       password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      passwordConfirm: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -65,7 +74,8 @@ const defineModels = (sequelize) => {
     'UserRole',
     {
       role: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
+        values: ['user', 'admin', 'owner'],
         allowNull: false,
       },
     },

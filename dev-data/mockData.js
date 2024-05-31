@@ -139,39 +139,60 @@ const productCategory = [
   { ProductId: 7, CategoryId: 1 },
 ];
 
-// Execute script to insert mock data
-sequelize
-  .sync({ force: true }) // Use { force: true } to drop existing tables and recreate them
-  .then(() => {
-    console.log('Tables created successfully');
-    // applyAssociations(sequelize); // Apply associations
-    return sequelize.transaction(async (t) => {
-      await sequelize.models.Category.bulkCreate(categories, {
-        transaction: t,
+const userRole = [{ role: 'user' }, { role: 'admin' }, { role: 'owner' }];
+console.log(process.argv[2]);
+if (process.argv[2] === 'product') {
+  sequelize
+    .sync({ force: true })
+    .then(() => {
+      console.log('Tables created successfully');
+      // applyAssociations(sequelize); // Apply associations
+      return sequelize.transaction(async (t) => {
+        await sequelize.models.Category.bulkCreate(categories, {
+          transaction: t,
+        });
+        await sequelize.models.Brand.bulkCreate(brands, { transaction: t });
+        await sequelize.models.ProductGender.bulkCreate(ProductGenders, {
+          transaction: t,
+        });
+        await sequelize.models.Product.bulkCreate(products, { transaction: t });
+        await sequelize.models.Attribute.bulkCreate(attribute, {
+          transaction: t,
+        });
+        await sequelize.models.Variant.bulkCreate(variant, {
+          transaction: t,
+        });
+        await sequelize.models.VariantAttribute.bulkCreate(variantAttribute, {
+          transaction: t,
+        });
+        await sequelize.models.ProductCategory.bulkCreate(productCategory, {
+          transaction: t,
+        });
+        // await sequelize.models.Discount.bulkCreate(discounts, { transaction: t });
       });
-      await sequelize.models.Brand.bulkCreate(brands, { transaction: t });
-      await sequelize.models.ProductGender.bulkCreate(ProductGenders, {
-        transaction: t,
-      });
-      await sequelize.models.Product.bulkCreate(products, { transaction: t });
-      await sequelize.models.Attribute.bulkCreate(attribute, {
-        transaction: t,
-      });
-      await sequelize.models.Variant.bulkCreate(variant, {
-        transaction: t,
-      });
-      await sequelize.models.VariantAttribute.bulkCreate(variantAttribute, {
-        transaction: t,
-      });
-      await sequelize.models.ProductCategory.bulkCreate(productCategory, {
-        transaction: t,
-      });
-      // await sequelize.models.Discount.bulkCreate(discounts, { transaction: t });
+    })
+    .then(() => {
+      console.log('Product Mock data inserted successfully');
+    })
+    .catch((err) => {
+      console.error('Error:', err);
     });
-  })
-  .then(() => {
-    console.log('Mock data inserted successfully');
-  })
-  .catch((err) => {
-    console.error('Error:', err);
-  });
+} else if (process.argv[2] === 'user') {
+  sequelize
+    .sync({ force: true })
+    .then(() => {
+      console.log('User tables created successfully');
+      // applyAssociations(sequelize); // Apply associations
+      return sequelize.transaction(async (t) => {
+        await sequelize.models.UserRole.bulkCreate(userRole, {
+          transaction: t,
+        });
+      });
+    })
+    .then(() => {
+      console.log('User Mock data inserted successfully');
+    })
+    .catch((err) => {
+      console.error('Error:', err);
+    });
+}
