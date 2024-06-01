@@ -12,6 +12,11 @@ const defineModels = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      image: {
+        type: DataTypes.STRING,
+        defaultValue: 'defaultUser.png',
+        allowNull: false,
+      },
       UserRoleId: {
         type: DataTypes.INTEGER,
         defaultValue: 1,
@@ -34,10 +39,6 @@ const defineModels = (sequelize) => {
         unique: true,
       },
       password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      passwordConfirm: {
         type: DataTypes.STRING,
         allowNull: false,
       },

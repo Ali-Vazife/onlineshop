@@ -7,6 +7,12 @@ block content
       h2.heading-secondary.ma-bt-lg Signup in our website
       form#signup.form.form--signup
         .form__group
+          label.form__label(for='firstName') first name
+          input#firstName.form__input(type='text', placeholder='alex', required)
+        .form__group
+          label.form__label(for='lastName') last name
+          input#lastName.form__input(type='text', placeholder='kross', required)
+        .form__group
           label.form__label(for='email') email
           input#email.form__input(type='email', placeholder='example@gmail.com', required)
         .form__group.ma-bt-md

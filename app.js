@@ -1,5 +1,7 @@
 const path = require('path');
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -10,6 +12,14 @@ const productRoutes = require('./routes/productRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 
 const app = express();
+
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 100,
+});
+app.use('/api', limiter);
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
