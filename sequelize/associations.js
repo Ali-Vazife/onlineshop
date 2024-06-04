@@ -13,7 +13,9 @@ module.exports.applyAssociations = (userModel, productModel) => {
   } = productModel;
 
   // User
-  UserAccount.hasOne(UserLogin);
+  UserAccount.hasOne(UserLogin, {
+    onDelete: 'CASCADE',
+  });
   UserLogin.belongsTo(UserAccount);
 
   UserAccount.hasOne(UserAddress);

@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
 
 const defineModels = (sequelize) => {
   const UserAccount = sequelize.define(
@@ -61,7 +62,7 @@ const defineModels = (sequelize) => {
       },
       active: {
         type: DataTypes.BOOLEAN,
-        default: true,
+        defaultValue: true,
       },
     },
     {
@@ -70,6 +71,17 @@ const defineModels = (sequelize) => {
       updatedAt: 'loginUpdatedAt', // Change the default updatedAt column name
     },
   );
+
+  UserLogin.prototype.comparePassword = async function (
+    candidatePassword,
+    userPassword,
+  ) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+  };
+
+  UserLogin.beforeCreate(async (user) => {
+    user.password = await bcrypt.hash(user.password, 12);
+  });
 
   const UserRole = sequelize.define(
     'UserRole',
