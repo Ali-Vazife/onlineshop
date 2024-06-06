@@ -81,14 +81,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     firstName,
     lastName,
   });
-  console.log('newUserAcc', newUserAcc);
+  // console.log('newUserAcc', newUserAcc);
 
   const newUserLog = await UserLogin.create({
     emailAddress: emailAddress,
     password: password,
     UserAccountId: newUserAcc.id,
   });
-  console.log('newUserLog', newUserLog);
+  // console.log('newUserLog', newUserLog);
 
   createSendToken(newUserAcc, 201, req, res);
 });
@@ -100,11 +100,19 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   const user = await UserLogin.findOne({ where: { emailAddress } });
-  console.log('user', user);
 
   if (!user || !(await user.comparePassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
   createSendToken(user, 200, req, res);
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({ status: 'success' });
 });
