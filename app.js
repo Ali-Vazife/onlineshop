@@ -2,10 +2,13 @@ const path = require('path');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const { v4: uuidv4, v4 } = require('uuid');
 
+const { sequelize } = require('./sequelize/db');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 // const bookingRoutes = require('./routes/bookingRoutes');
@@ -31,6 +34,51 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use('/scripts', express.static(path.join(__dirname, 'node_modules/')));
 
+// session
+function extendDefaultFields(defaults, sessionData) {
+  return {
+    data: defaults.data,
+    expires: defaults.expires,
+    UserAccountId: sessionData.userId,
+  };
+}
+
+const myStore = new SequelizeStore({
+  db: sequelize,
+  table: 'UserSession',
+  extendDefaultFields: extendDefaultFields,
+});
+
+// myStore.sync();
+
+app.use(
+  session({
+    name: 'sid',
+    secret: process.env.SESSION_SECRET,
+    store: myStore,
+    resave: false,
+    saveUninitialized: false,
+    genid: (req) => v4(),
+    cookie: {
+      maxAge: 600000,
+      httpOnly: true,
+      sameSite: 'strict',
+    },
+  }),
+);
+
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+  app.use(
+    session({
+      cookie: {
+        secure: true,
+      },
+    }),
+  );
+}
+
+// route
 app.use('/', viewRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/users', userRoutes);

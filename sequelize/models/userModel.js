@@ -133,8 +133,32 @@ const defineModels = (sequelize) => {
     },
   );
 
+  const UserSession = sequelize.define(
+    'UserSession',
+    {
+      sid: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      expires: {
+        type: DataTypes.DATE,
+      },
+      data: {
+        type: DataTypes.TEXT,
+      },
+      UserAccountId: {
+        type: DataTypes.INTEGER,
+      },
+    },
+    {
+      freezeTableName: true,
+    },
+  );
+
   return {
     UserAccount,
+    UserSession,
     UserLogin,
     UserRole,
     UserAddress,

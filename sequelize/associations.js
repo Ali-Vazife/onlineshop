@@ -1,5 +1,12 @@
 module.exports.applyAssociations = (userModel, productModel) => {
-  const { UserAccount, UserLogin, UserRole, UserAddress, UserLike } = userModel;
+  const {
+    UserAccount,
+    UserSession,
+    UserLogin,
+    UserRole,
+    UserAddress,
+    UserLike,
+  } = userModel;
   const {
     Product,
     Category,
@@ -17,6 +24,9 @@ module.exports.applyAssociations = (userModel, productModel) => {
     onDelete: 'CASCADE',
   });
   UserLogin.belongsTo(UserAccount);
+
+  UserAccount.hasMany(UserSession);
+  UserSession.belongsTo(UserAccount);
 
   UserAccount.hasOne(UserAddress);
   UserAddress.belongsTo(UserAccount);
