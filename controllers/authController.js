@@ -1,12 +1,6 @@
 const { matchedData, validationResult } = require('express-validator');
 
-const { where, Op, Sequelize } = require('sequelize');
-const { QueryTypes } = require('sequelize');
-const { sequelize,
-  UserAccount,
-  UserLogin,
-  UserRole,
-} = require('../sequelize/db');
+const { UserAccount, UserLogin, UserRole } = require('../sequelize/db');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 

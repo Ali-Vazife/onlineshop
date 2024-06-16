@@ -1,4 +1,5 @@
 const signupForm = document.querySelector('.form--signup');
+import { hideAlert, showAlert } from './alert';
 
 const signup = async (
   firstName,
@@ -28,7 +29,7 @@ const signup = async (
       }, 1500);
     }
   } catch (err) {
-    // showAlert('error', err.response.data.message);
+    showAlert('error', err.response.data.message);
     console.log('error', err.response.data.message);
   }
 };

@@ -10,6 +10,8 @@ const { sequelize,
   Discount,
   Variant,
   Attribute,
+  UserLogin,
+  UserAccount,
 } = require('../sequelize/db');
 
 const AppError = require('../utils/appError');
@@ -395,4 +397,17 @@ module.exports.signup = catchAsync(async (req, res, next) => {
 
 module.exports.login = catchAsync(async (req, res, next) => {
   res.status(200).render('login');
+});
+
+module.exports.me = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
+  const getEmailAddress = await UserLogin.findOne({
+    where: {
+      UserAccountId: userId,
+    },
+    attributes: ['emailAddress'],
+  });
+
+  console.log(getEmailAddress);
+  res.status(200).render('account', { getEmailAddress });
 });
