@@ -27,9 +27,14 @@ header.header(data-header='')
             ion-icon(name='search-outline' aria-hidden='true')
             span.nav-action-text Search
         li
-          a.nav-action-btn(href='/signup')
-            ion-icon(name='person-outline' aria-hidden='true')
-            span.nav-action-text Login / Register
+          if user
+            a.nav-action-btn(href='/me')
+              img.nav__user-img(src=`/images/users/${user.image}` alt=`Photo of ${user.firstName}`)
+              span.nav-action-text me
+          else
+            a.nav-action-btn(href='/signup')
+              ion-icon(name='person-outline' aria-hidden='true')
+              span.nav-action-text Register
         li
           button.nav-action-btn
             ion-icon(name='heart-outline' aria-hidden='true')

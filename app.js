@@ -60,7 +60,7 @@ app.use(
     saveUninitialized: false,
     genid: (req) => v4(),
     cookie: {
-      maxAge: 600000,
+      maxAge: 6000000,
       httpOnly: true,
       sameSite: 'strict',
     },

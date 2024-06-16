@@ -1,5 +1,6 @@
 const express = require('express');
 const productController = require('../controllers/productController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -17,7 +18,15 @@ router.get(
 );
 //
 router.route('/getAllProducts').get(productController.getAllProducts);
-router.route('/getProduct/:id').get(productController.getProduct);
+
+router
+  .route('/getProduct/:id')
+  .get(
+    authController.isLoggedIn,
+    authController.protect,
+    productController.getProduct,
+  );
+
 router.route('/createProduct').post(productController.createProduct);
 router.route('/updateProduct/:id').patch(productController.updateProduct);
 router.route('/deleteProduct/:id').delete(productController.deleteProduct);

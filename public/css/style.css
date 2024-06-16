@@ -213,6 +213,20 @@ body {
   --background: hsla(0, 0%, 0%, 0.1);
 }
 
+.nav__user-img {
+  height: 3.5rem;
+  width: 3.5rem;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.shop__Now-btn a:link {
+  color: #ffff;
+}
+.shop__Now-btn span {
+  color: #ffff;
+}
+
 .has-scrollbar {
   display: flex;
   gap: 25px;

@@ -1,4 +1,4 @@
-const createUserValidationschema = {
+const signupValidationSchema = {
   firstName: {
     notEmpty: {
       errorMessage: 'Firstname is required',
@@ -38,4 +38,24 @@ const createUserValidationschema = {
   },
 };
 
-module.exports = createUserValidationschema;
+const loginValidationSchema = {
+  emailAddress: {
+    isEmail: {
+      errorMessage: 'Invalid email address',
+    },
+    notEmpty: {
+      errorMessage: 'Email address is required',
+    },
+  },
+  password: {
+    isLength: {
+      options: { min: 8 },
+      errorMessage: 'Password must be at least 8 characters long',
+    },
+    notEmpty: {
+      errorMessage: 'Password is required',
+    },
+  },
+};
+
+module.exports = { signupValidationSchema, loginValidationSchema };
