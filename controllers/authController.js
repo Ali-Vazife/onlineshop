@@ -95,6 +95,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       exclude: ['UserAccountCreatedAt', 'UserAccountUpdatedAt'],
     },
   });
+
   if (!currentUser) {
     return next(
       new AppError('The user belonging to this session no longer exists.', 401),

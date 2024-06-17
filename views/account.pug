@@ -4,7 +4,6 @@ mixin navItem(link, text, icon, active)
   li(class=`${active ? 'side-nav--active' : ''}`)
     a(href=`${link}`)
       svg
-        use(xlink:href=`img/icons.svg#icon-${icon}`)
       | #{text}
 
 block content
@@ -41,7 +40,7 @@ block content
               input#name.form__input(type='text', value=`${user.firstName}`, required, name='name')
             .form__group.ma-bt-md
               label.form__label(for='email') Email address
-              input#email.form__input(type='email', value=`${getEmailAddress.UserLogin}`, required, name='email')
+              input#email.form__input(type='email', value=`${emailAddress}`, required, name='email')
             .form__group.form__photo-upload
               img.form__user-photo(src=`/images/users/${user.image}`, alt='User photo')
               input.form__upload(type='file', accept='image/*', id='photo', name='photo')

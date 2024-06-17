@@ -85,7 +85,7 @@ app.use('/api/v1/users', userRoutes);
 // app.use('/api/v1/bookings', bookingRoutes);
 
 app.all('*', (req, res, next) => {
-  next(new AppError((`Can't find ${req.originalUrl} on this server!`, 404)));
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 app.use(globalErrorHandler);

@@ -399,7 +399,7 @@ module.exports.login = catchAsync(async (req, res, next) => {
   res.status(200).render('login');
 });
 
-module.exports.me = catchAsync(async (req, res, next) => {
+module.exports.getAccount = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
   const getEmailAddress = await UserLogin.findOne({
     where: {
@@ -408,6 +408,8 @@ module.exports.me = catchAsync(async (req, res, next) => {
     attributes: ['emailAddress'],
   });
 
-  console.log(getEmailAddress);
-  res.status(200).render('account', { getEmailAddress });
+  res.status(200).render('account', {
+    title: 'Your account',
+    emailAddress: getEmailAddress.dataValues.emailAddress,
+  });
 });

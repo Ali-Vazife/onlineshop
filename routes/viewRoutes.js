@@ -8,7 +8,9 @@ router.get('/', authController.isLoggedIn, viewController.getOverview);
 
 router.get('/signup', authController.isLoggedIn, viewController.signup);
 router.get('/login', authController.isLoggedIn, viewController.login);
-router.get('/me', authController.protect, viewController.me);
+
+router.get('/me', authController.protect, viewController.getAccount);
+// router.post('/me', authController.protect, viewController.getAccount);
 
 router.get(
   '/products',

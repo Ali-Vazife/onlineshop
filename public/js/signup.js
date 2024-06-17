@@ -1,5 +1,18 @@
 const signupForm = document.querySelector('.form--signup');
-import { hideAlert, showAlert } from './alert';
+// import { hideAlert, showAlert } from './alert';
+
+const hideAlert = () => {
+  const el = document.querySelector('.alert');
+  if (el) el.parentElement.removeChild(el);
+};
+
+// type is 'success' or 'error'
+const showAlert = (type, msg, time = 5) => {
+  hideAlert();
+  const markup = `<div class="alert alert--${type}">${msg}</div>`;
+  document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+  window.setTimeout(hideAlert, time * 1000);
+};
 
 const signup = async (
   firstName,
@@ -22,8 +35,8 @@ const signup = async (
     });
 
     if (res.data.status === 'success') {
-      // showAlert('success', 'Logged in successfully!');
-      console.log('success', 'registered in successfully!');
+      showAlert('success', 'Logged in successfully!');
+      // console.log('success', 'registered in successfully!');
       window.setTimeout(() => {
         location.assign('/');
       }, 1500);
