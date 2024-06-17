@@ -36,14 +36,16 @@ header.header(data-header='')
               ion-icon(name='person-outline' aria-hidden='true')
               span.nav-action-text Register
         li
-          button.nav-action-btn
-            ion-icon(name='heart-outline' aria-hidden='true')
-            span.nav-action-text Wishlist
-            data.nav-action-badge(value='5' aria-hidden='true') 5
+          if user
+            button.nav-action-btn
+              ion-icon(name='heart-outline' aria-hidden='true')
+              span.nav-action-text Wishlist
+              data.nav-action-badge(value='5' aria-hidden='true') 5
         li
-          button.nav-action-btn
-            ion-icon(name='bag-outline' aria-hidden='true')
-            data.nav-action-text(value='318.00')
-              | Basket: 
-              strong $318.00
-            data.nav-action-badge(value='4' aria-hidden='true') 4
+          if user
+            button.nav-action-btn
+              ion-icon(name='bag-outline' aria-hidden='true')
+              data.nav-action-text(value='318.00')
+                | Basket: 
+                strong $318.00
+              data.nav-action-badge(value='4' aria-hidden='true') 7

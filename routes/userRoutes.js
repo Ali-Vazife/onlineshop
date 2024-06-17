@@ -18,6 +18,7 @@ router.post(
   expressValidator.checkSchema(loginValidationSchema),
   authController.login,
 );
-router.post('/logout', authController.logout);
+
+router.get('/logout', authController.logout);
 
 module.exports = router;

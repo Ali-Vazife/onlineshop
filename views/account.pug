@@ -1,8 +1,8 @@
 extends base
 
-mixin navItem(link, text, icon, active)
+mixin navItem(link, text, active)
   li(class=`${active ? 'side-nav--active' : ''}`)
-    a(href=`${link}`)
+    a(href=`${link}`) 
       svg
       | #{text}
 
@@ -12,20 +12,20 @@ block content
     .user-view
       nav.user-view__menu
         ul.side-nav
-          +navItem('#', 'Settings', 'settings', true)
-          +navItem('/my-tours', 'My bookings', 'briefcase')
-          +navItem('#', 'My likes', 'star')
-          +navItem('#', 'My Basket', 'credit-card')
+          +navItem('#','Settings', true)
+          +navItem('/','My bookings')
+          +navItem('/','My favorite products')
+          +navItem('/','My Basket')
+          //- +navItem('/','Logout')
 
         - if (user.role === 'admin')
           .admin-nav
             h5.admin-nav__heading Admin
             ul.side-nav
-              +navItem('#', 'Manage products', 'map')
-              +navItem('#', 'Manage users', 'users')
-              +navItem('#', 'Manage baskets', 'star')
-              +navItem('#', 'Manage orders', 'briefcase')
-
+              +navItem('/','Manage products')
+              +navItem('/','Manage users')
+              +navItem('/','Manage baskets')
+              +navItem('/','Manage orders')
       .user-view__content
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Your account settings
@@ -46,9 +46,9 @@ block content
               input.form__upload(type='file', accept='image/*', id='photo', name='photo')
               label(for='photo') Choose new photo
               
-            .form__group.right
-              button.btn.btn--small.btn--green Save settings
-              
+            .form__group.right.form__group_btns
+              button.btn.btn--small.btn--green Save settings              
+              p.btn__logout.btn.btn--small.btn--red Logout              
         .line &nbsp;
         
         .user-view__form-container
@@ -65,3 +65,4 @@ block content
               input#password-confirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
             .form__group.right
               button.btn.btn--small.btn--green.btn--save-password Save password
+  script(src='/js/account.js')

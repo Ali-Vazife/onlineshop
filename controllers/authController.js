@@ -73,8 +73,13 @@ exports.logout = catchAsync(async (req, res, next) => {
     if (err) {
       return next(new AppError('There is a problem for logout', 400));
     }
-    res.clearCookie('sid');
-    res.redirect('/');
+
+    // res.clearCookie('sid');
+    res.cookie('sid', 'loggedout', {
+      expires: new Date(Date.now() + 3 * 1000),
+      httpOnly: true,
+    });
+
     res.status(200).json({ status: 'success' });
   });
 });
