@@ -30,6 +30,6 @@ router.patch(
   userController.resizeUserPhoto,
 );
 
-router.patch('/updateMyPassword', userController.updatePassword);
+router.patch('/updateMyPassword', authController.updatePassword);
 
 module.exports = router;

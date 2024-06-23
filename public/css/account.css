@@ -186,10 +186,10 @@
     linear,
     left top,
     right bottom,
-    from(#7dd56f),
-    to(#28b487)
+    from(#8bbff0),
+    to(#9e62fe)
   );
-  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background-image: linear-gradient(to right bottom, #8bbff0, #9e62fe);
   padding: 4rem 0;
 }
 .user-view__content {

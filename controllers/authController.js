@@ -147,3 +147,33 @@ exports.isLoggedIn = async (req, res, next) => {
   }
   next();
 };
+
+module.exports.updatePassword = catchAsync(async (req, res, next) => {
+  const { passwordCurrent, password, passwordConfirm } = req.body;
+
+  if (password !== passwordConfirm) {
+    return next(
+      new AppError('Password confirmation does not match password', 401),
+    );
+  }
+  const userId = req.user.id;
+  const user = await UserLogin.findOne({
+    where: { UserAccountId: userId },
+  });
+
+  if (!user || !(await user.comparePassword(passwordCurrent, user.password))) {
+    return next(
+      new AppError('Incorrect password or user does not exist!', 401),
+    );
+  }
+
+  user.password = password;
+  await user.save();
+
+  const sessionData = req.session;
+  req.session.regenerate((err) => {
+    Object.assign(req.session, sessionData);
+  });
+
+  res.status(200).json({ status: 'success' });
+});

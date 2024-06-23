@@ -26,8 +26,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
-      createdAt: 'UserAccountCreatedAt', // Change the default createdAt column name
-      updatedAt: 'UserAccountUpdatedAt', // Change the default updatedAt column name
+      createdAt: 'UserAccountCreatedAt',
+      updatedAt: 'UserAccountUpdatedAt',
     },
   );
 
@@ -67,8 +67,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
-      createdAt: 'loginCreatedAt', // Change the default createdAt column name
-      updatedAt: 'loginUpdatedAt', // Change the default updatedAt column name
+      createdAt: 'loginCreatedAt',
+      updatedAt: 'loginUpdatedAt',
     },
   );
 
@@ -81,6 +81,12 @@ const defineModels = (sequelize) => {
 
   UserLogin.beforeCreate(async (user) => {
     user.password = await bcrypt.hash(user.password, 12);
+  });
+
+  UserLogin.beforeUpdate(async (user) => {
+    if (user.changed('password')) {
+      user.password = await bcrypt.hash(user.password, 12);
+    }
   });
 
   const UserRole = sequelize.define(
@@ -119,8 +125,8 @@ const defineModels = (sequelize) => {
     },
     {
       freezeTableName: true,
-      createdAt: 'addressCreatedAt', // Change the default createdAt column name
-      updatedAt: 'addressUpdatedAt', // Change the default updatedAt column name
+      createdAt: 'addressCreatedAt',
+      updatedAt: 'addressUpdatedAt',
     },
   );
 
