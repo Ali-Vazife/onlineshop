@@ -35,7 +35,7 @@ const signup = async (
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'Logged in successfully!');
+      showAlert('success', 'registered successfully!');
       // console.log('success', 'registered in successfully!');
       window.setTimeout(() => {
         location.assign('/');
