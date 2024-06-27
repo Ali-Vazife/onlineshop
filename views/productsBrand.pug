@@ -15,15 +15,16 @@ block content
                     //- .card-badge New
                     ul.card-action-list
                       li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-2')
-                          ion-icon(name='heart-outline')
-                        #card-label-2.card-action-tooltip
-                          | Add to Whishlist
-                      li.card-action-item
-                        button.card-action-btn(aria-labelledby='card-label-4')
-                          ion-icon(name='repeat-outline')
-                        #card-label-4.card-action-tooltip
-                          | Compare
+                        if user
+                          button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`, class= likedProducts.map(lp => lp.ProductId).includes(p.id) ? 'likeBtn' : '')
+                            ion-icon(name='heart-outline')
+                          #card-label-2.card-action-tooltip
+                            | Add to Whishlist
+                        else
+                          button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`)
+                            ion-icon(name='heart-outline')
+                          #card-label-2.card-action-tooltip
+                            | Add to Whishlist
                   .card-content
                     .card-cat
                       a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
@@ -34,3 +35,4 @@ block content
                       data.card-price= `$ ${p.minPrice}`
                     - else 
                       data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`
+  script(src='/js/likeProduct.js')

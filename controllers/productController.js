@@ -14,11 +14,11 @@ const {
   Variant,
   VariantAttribute,
   Attribute,
+  UserLike,
 } = require('../sequelize/db');
 
 // Product
 module.exports.getProductsAllBrands = catchAsync(async (req, res, next) => {
-
   const products = await Product.findAll({
     attributes: [
       'id',
@@ -60,7 +60,17 @@ module.exports.getProductsAllBrands = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this brand!', 404));
   }
 
-  res.status(200).json({ products });
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
+  res.status(200).json({ products, likedProducts });
 });
 
 module.exports.getSelectedProductsBrand = catchAsync(async (req, res, next) => {
@@ -108,7 +118,17 @@ module.exports.getSelectedProductsBrand = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this brand!', 404));
   }
 
-  res.status(200).json({ products });
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
+  res.status(200).json({ products, likedProducts });
 });
 
 module.exports.getSizes = catchAsync(async (req, res, next) => {
@@ -201,7 +221,17 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
     return next(new AppError('No price found for this product!', 404));
   }
 
-  res.status(200).json({ status: 'success', price: variant });
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
+  res.status(200).json({ status: 'success', price: variant, likedProducts });
 });
 
 //    factory

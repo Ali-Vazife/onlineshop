@@ -138,10 +138,10 @@ exports.isLoggedIn = async (req, res, next) => {
       //   return next();
       // }
 
-      // THERE IS A LOGGED IN USER
       res.locals.user = currentUser;
       return next();
     } catch (err) {
+      console.log('Current user error', err);
       return next();
     }
   }
@@ -173,6 +173,9 @@ module.exports.updatePassword = catchAsync(async (req, res, next) => {
   const sessionData = req.session;
   req.session.regenerate((err) => {
     Object.assign(req.session, sessionData);
+    if (err) {
+      return next(new AppError('Failed to regenerate session.', 500));
+    }
   });
 
   res.status(200).json({ status: 'success' });

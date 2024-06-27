@@ -1,6 +1,42 @@
 const allBrands = document.querySelectorAll('.brand-li');
+let likeBtns = document.querySelectorAll('.like-action__btn');
+// const likeBtn = document.querySelectorAll('.like-action__btn');
+// const removeLikeBtn = document.querySelectorAll('.likeBtn');
+const isLogged = document.querySelector('.user__span').dataset.user;
 
-function renderProducts(productsArr) {
+const hideAlert = () => {
+  const el = document.querySelector('.alert');
+  if (el) el.parentElement.removeChild(el);
+};
+
+// type is 'success' or 'error'
+const showAlert = (type, msg, time = 1.7) => {
+  hideAlert();
+  const markup = `<div class="alert alert--${type}">${msg}</div>`;
+  document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+  window.setTimeout(hideAlert, time * 1000);
+};
+
+const handleLike = async (btn, isLiked) => {
+  const productId = btn.dataset.productid;
+  console.log('productId', productId);
+  try {
+    const url = isLiked ? '/api/v1/likes/unlike' : '/api/v1/likes/like';
+    const method = isLiked ? 'DELETE' : 'POST';
+    const data = { productId };
+    const response = await axios({ method, url, data });
+    if (response.data.status === 'success') {
+      btn.classList.toggle('likeBtn');
+      const msg = isLiked ? 'Removed from wishlist!' : 'Added to wishlist!';
+      showAlert('success', msg);
+    }
+  } catch (err) {
+    showAlert('error', 'Something went wrong!');
+    console.error('error', 'Something went wrong!');
+  }
+};
+
+function renderProducts(productsArr, likedProducts) {
   const productContainer = document.querySelector('.product-list');
   productContainer.innerHTML = '';
 
@@ -26,32 +62,30 @@ function renderProducts(productsArr) {
     const cardActionList = document.createElement('ul');
     cardActionList.classList.add('card-action-list');
 
-    const actions = [
-      { name: 'heart-outline', label: 'Add to Wishlist' },
-      { name: 'repeat-outline', label: 'Compare' },
-    ];
+    const actionItem = document.createElement('li');
+    actionItem.classList.add('card-action-item');
 
-    actions.forEach((action, index) => {
-      const actionItem = document.createElement('li');
-      actionItem.classList.add('card-action-item');
+    const actionBtn = document.createElement('button');
 
-      const actionBtn = document.createElement('button');
-      actionBtn.classList.add('card-action-btn');
-      actionBtn.setAttribute('aria-labelledby', `card-label-${index + 1}`);
+    actionBtn.className = likedProducts.map((lp) => lp.ProductId).includes(p.id)
+      ? 'likeBtn'
+      : '';
+    actionBtn.classList.add('card-action-btn', 'like-action__btn');
+    actionBtn.setAttribute('data-productId', p.id);
+    actionBtn.setAttribute('aria-labelledby', 'card-label-2');
 
-      const ionIcon = document.createElement('ion-icon');
-      ionIcon.setAttribute('name', action.name);
+    const ionIcon = document.createElement('ion-icon');
+    ionIcon.setAttribute('name', 'heart-outline');
 
-      const actionLabel = document.createElement('div');
-      actionLabel.id = `card-label-${index + 1}`;
-      actionLabel.classList.add('card-action-tooltip');
-      actionLabel.textContent = action.label;
+    const actionLabel = document.createElement('div');
+    actionLabel.id = 'card-label-2';
+    actionLabel.classList.add('card-action-tooltip');
+    actionLabel.textContent = 'Add to Wishlist';
 
-      actionBtn.appendChild(ionIcon);
-      actionItem.appendChild(actionBtn);
-      actionItem.appendChild(actionLabel);
-      cardActionList.appendChild(actionItem);
-    });
+    actionBtn.appendChild(ionIcon);
+    actionItem.appendChild(actionBtn);
+    actionItem.appendChild(actionLabel);
+    cardActionList.appendChild(actionItem);
 
     cardBanner.appendChild(img);
     cardBanner.appendChild(cardActionList);
@@ -101,6 +135,19 @@ function renderProducts(productsArr) {
     productItem.appendChild(productCard);
     productContainer.appendChild(productItem);
   });
+
+  likeBtns = document.querySelectorAll('.like-action__btn');
+  likeBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (isLogged === 'notlogged') {
+        showAlert('error', 'You are not logged in!');
+        setTimeout(() => location.assign('/login'), 1000);
+        return;
+      }
+      const isLiked = btn.classList.contains('likeBtn');
+      handleLike(btn, isLiked);
+    });
+  });
 }
 
 async function fetchProducts(brandId, typeOfFilter) {
@@ -115,10 +162,9 @@ async function fetchProducts(brandId, typeOfFilter) {
       url: url,
     });
 
-    const { products } = response.data;
-    // console.log(products);
+    const { products, likedProducts } = response.data;
 
-    renderProducts(products);
+    renderProducts(products, likedProducts);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -138,5 +184,20 @@ allBrands.forEach((el) => {
     const typeOfFilter = brandId === 'allBrands' ? 'all' : brandId;
     // console.log(typeOfFilter);
     fetchProducts(brandId, typeOfFilter);
+    likeBtns = document.querySelectorAll('.like-action__btn');
+  });
+});
+
+likeBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    console.log(likeBtns);
+    if (isLogged === 'notlogged') {
+      showAlert('error', 'You are not logged in!');
+      setTimeout(() => location.assign('/login'), 1000);
+      return;
+    }
+    console.log('test 1');
+    const isLiked = btn.classList.contains('likeBtn');
+    handleLike(btn, isLiked);
   });
 });

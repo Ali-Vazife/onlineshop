@@ -30,11 +30,11 @@ header.header(data-header='')
           if user
             a.nav-action-btn(href='/me')
               img.nav__user-img(src=`/images/users/${user.image}` alt=`Photo of ${user.firstName}`)
-              span.nav-action-text me
+              span.nav-action-text.user__span(data-user='logged') me
           else
             a.nav-action-btn(href='/signup')
               ion-icon(name='person-outline' aria-hidden='true')
-              span.nav-action-text Register
+              span.nav-action-text.user__span(data-user='notlogged') Register
         li
           if user
             button.nav-action-btn

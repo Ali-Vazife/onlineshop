@@ -11,6 +11,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const likeRoutes = require('./routes/likeRoutes');
 // const bookingRoutes = require('./routes/bookingRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 
@@ -82,6 +83,8 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/', viewRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/likes', likeRoutes);
+
 // app.use('/api/v1/bookings', bookingRoutes);
 
 app.all('*', (req, res, next) => {

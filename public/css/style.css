@@ -144,6 +144,32 @@ body {
   background: hsl(0, 0%, 70%);
 }
 
+/* alert */
+.alert {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 9999;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 400;
+  text-align: center;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 1.6rem 15rem;
+  -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+}
+.alert--success {
+  background-color: #20bf6b;
+}
+.alert--error {
+  background-color: #eb4d4b;
+}
+/*  */
+
 /*-----------------------------------*\
  * #REUSED STYLE
 \*-----------------------------------*/
@@ -326,7 +352,7 @@ body {
 }
 
 .card-action-btn:is(:hover, :focus) {
-  background: var(--bittersweet);
+  /* background: var(--bittersweet); */
   color: var(--white);
 }
 
@@ -347,9 +373,9 @@ body {
   transition: var(--transition-1);
 }
 
-.card-action-btn:is(:hover, :focus) + .card-action-tooltip {
+/* .card-action-btn:is(:hover, :focus) + .card-action-tooltip {
   opacity: 1;
-}
+} */
 
 .card-content {
   padding: 24px 15px 0;
@@ -796,6 +822,9 @@ body {
   color: var(--bittersweet);
 }
 
+.likeBtn {
+  background-color: rgb(223, 62, 56);
+}
 /*-----------------------------------*\
  * #INSTA POST
 \*-----------------------------------*/

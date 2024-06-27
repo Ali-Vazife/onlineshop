@@ -12,6 +12,7 @@ const { sequelize,
   Attribute,
   UserLogin,
   UserAccount,
+  UserLike,
 } = require('../sequelize/db');
 
 const AppError = require('../utils/appError');
@@ -61,9 +62,20 @@ module.exports.getAllProducts = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found!', 404));
   }
 
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
   res.status(200).render('allProducts', {
     products: allProducts,
     brands,
+    likedProducts,
   });
 });
 
@@ -73,12 +85,11 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
 
   if (!brands || !brands.length === 0) {
     return next(new AppError('No brand found!', 404));
-  };
+  }
 
   if (!categories || !categories.length === 0) {
     return next(new AppError('No cayegory found!', 404));
-  };
-
+  }
 
   const AllProducts = await Product.findAll({
     attributes: [
@@ -165,11 +176,22 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this category!', 404));
   }
 
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
   res.status(200).render('overview', {
     categories,
     products: AllProducts,
     trendsProducts,
     brands,
+    likedProducts,
   });
 });
 
@@ -233,7 +255,17 @@ module.exports.getProductsCategory = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this category!', 404));
   }
 
-  res.status(200).render('productsCategory', { products });
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
+  res.status(200).render('productsCategory', { products, likedProducts });
 });
 
 module.exports.getProductsBrand = catchAsync(async (req, res, next) => {
@@ -281,7 +313,17 @@ module.exports.getProductsBrand = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this brand!', 404));
   }
 
-  res.status(200).render('productsBrand', { products });
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
+  res.status(200).render('productsBrand', { products, likedProducts });
 });
 
 module.exports.getProductsGender = catchAsync(async (req, res, next) => {
@@ -329,7 +371,17 @@ module.exports.getProductsGender = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this Gender!', 404));
   }
 
-  res.status(200).render('productsGender', { products });
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
+  res.status(200).render('productsGender', { products, likedProducts });
 });
 
 module.exports.getProduct = catchAsync(async (req, res, next) => {
@@ -385,9 +437,20 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   ];
   // console.log('uniqueColors', uniqueColors);
 
+  const currentUser = res.locals.user || null;
+  let likedProducts = [];
+  if (currentUser) {
+    likedProducts = await UserLike.findAll({
+      where: { UserAccountId: currentUser.id },
+      attributes: ['ProductId'],
+      raw: true,
+    });
+  }
+
   res.status(200).render('productDetail', {
     product,
     uniqueColors,
+    likedProducts,
   });
 });
 

@@ -21,15 +21,12 @@ router.post(
 );
 
 router.use(authController.protect);
-
 router.get('/logout', authController.logout);
-
 router.patch(
   '/updateMe',
   userController.uploadUserPhoto,
   userController.resizeUserPhoto,
 );
-
 router.patch('/updateMyPassword', authController.updatePassword);
 
 module.exports = router;
