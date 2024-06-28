@@ -62,6 +62,42 @@ exports.deleteOne = (Model) =>
     res.status(204).json({ status: 'deleted!' });
   });
 
+exports.addOneLikeBasket = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const UserAccountId = req.user.id;
+    const ProductId = req.body.productId;
+    if (!UserAccountId || !ProductId) {
+      return next(new AppError('User ID or Product ID does not exist!', 401));
+    }
+
+    const isExist = await Model.findOne({
+      where: { UserAccountId, ProductId },
+    });
+
+    if (isExist) {
+      return res.status(200).json({ status: 'Already exist in your account!' });
+    }
+
+    const newDoc = await Model.create({ UserAccountId, ProductId });
+    res.status(200).json({ status: 'success', data: newDoc });
+  });
+
+exports.deleteOneLikeBasket = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const UserAccountId = req.user.id;
+    const ProductId = req.body.productId;
+
+    if (!UserAccountId || !ProductId) {
+      return next(new AppError('User ID or Product ID does not exist!', 401));
+    }
+
+    await Model.destroy({
+      where: { UserAccountId, ProductId },
+    });
+
+    res.status(200).json({ status: 'success' });
+  });
+
 // Junction
 exports.junctionGetOne = (Model, fk1, fk2) =>
   catchAsync(async (req, res, next) => {

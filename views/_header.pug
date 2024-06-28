@@ -40,7 +40,7 @@ header.header(data-header='')
             button.nav-action-btn
               ion-icon(name='heart-outline' aria-hidden='true')
               span.nav-action-text Wishlist
-              data.nav-action-badge(value='5' aria-hidden='true') 5
+              data.nav-action-badge(value='7' aria-hidden='true') 7
         li
           if user
             button.nav-action-btn
@@ -48,4 +48,4 @@ header.header(data-header='')
               data.nav-action-text(value='318.00')
                 | Basket: 
                 strong $318.00
-              data.nav-action-badge(value='4' aria-hidden='true') 7
+              data.nav-action-badge(value=`${basket}` aria-hidden='true')= `${basket}`

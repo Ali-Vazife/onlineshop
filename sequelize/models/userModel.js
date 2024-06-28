@@ -139,6 +139,14 @@ const defineModels = (sequelize) => {
     },
   );
 
+  const UserBasket = sequelize.define(
+    'UserBasket',
+    {},
+    {
+      freezeTableName: true,
+    },
+  );
+
   const UserSession = sequelize.define(
     'UserSession',
     {
@@ -169,6 +177,7 @@ const defineModels = (sequelize) => {
     UserRole,
     UserAddress,
     UserLike,
+    UserBasket,
   };
 };
 

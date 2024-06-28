@@ -1,8 +1,16 @@
 const { matchedData, validationResult } = require('express-validator');
 
-const { UserAccount, UserLogin, UserRole } = require('../sequelize/db');
+const {
+  UserAccount,
+  UserLogin,
+  UserRole,
+  Product,
+  UserLike,
+  UserBasket,
+} = require('../sequelize/db');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const { where } = require('sequelize');
 
 exports.signup = catchAsync(async (req, res, next) => {
   const errResult = validationResult(req);
@@ -107,7 +115,12 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
+  const basketCount = await UserBasket.count({
+    where: { UserAccountId: currentUser.id },
+  });
+
   req.user = currentUser;
+  res.locals.basket = basketCount;
   res.locals.user = currentUser;
   next();
 });
@@ -133,15 +146,19 @@ exports.isLoggedIn = async (req, res, next) => {
         return next();
       }
 
-      // Check if user changed password after the token was issued
+      const basketCount = await UserBasket.count({
+        where: { UserAccountId: currentUser.id },
+      });
+
+      // Check if user changed password after the token was issue
       // if (currentUser.changedPasswordAfter(decoded.iat)) {
       //   return next();
       // }
-
       res.locals.user = currentUser;
+      res.locals.basket = basketCount;
       return next();
     } catch (err) {
-      console.log('Current user error', err);
+      console.log('Logged user error 😤', err);
       return next();
     }
   }

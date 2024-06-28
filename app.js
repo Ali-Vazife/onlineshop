@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const likeRoutes = require('./routes/likeRoutes');
+const basketRoutes = require('./routes/basketRoutes');
 // const bookingRoutes = require('./routes/bookingRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 
@@ -84,6 +85,7 @@ app.use('/', viewRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/likes', likeRoutes);
+app.use('/api/v1/baskets', basketRoutes);
 
 // app.use('/api/v1/bookings', bookingRoutes);
 

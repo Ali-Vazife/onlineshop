@@ -10,7 +10,7 @@ block content
     .right
       .product-info
         .product-name
-          h1 #{product.name}
+          h1.productHeader #{product.name}
           i.fa.fa-search
           i.fa.fa-user
           i.fa.fa-shopping-cart
@@ -31,11 +31,11 @@ block content
           li.li.li_size SIZE:
         ul.cart-buy
           button.buynow Buy now
-          button.addtocart Add to cart
-        //- span.foot
-        //-   i.fa.fa-shopping-bag
-        //-   | Buy Now
-        //- span.foot
-        //-   i.fa.fa-shopping-cart
-        //-   | Add TO Cart
+          if user
+            if productBasket.includes(product.id)
+              button.addRemoveCart.addedToBasket Remove from basket
+            else
+              button.addRemoveCart Add to basket 
+          else
+            button.addRemoveCart.NotLogged Add to cart
   script(src='/js/productDetail.js')

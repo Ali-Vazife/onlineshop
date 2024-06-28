@@ -1,7 +1,5 @@
-const allBrands = document.querySelectorAll('.brand-li');
 let likeBtns = document.querySelectorAll('.like-action__btn');
-// const likeBtn = document.querySelectorAll('.like-action__btn');
-// const removeLikeBtn = document.querySelectorAll('.likeBtn');
+const allBrands = document.querySelectorAll('.brand-li');
 const isLogged = document.querySelector('.user__span').dataset.user;
 
 const hideAlert = () => {
@@ -190,13 +188,11 @@ allBrands.forEach((el) => {
 
 likeBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
-    console.log(likeBtns);
     if (isLogged === 'notlogged') {
       showAlert('error', 'You are not logged in!');
       setTimeout(() => location.assign('/login'), 1000);
       return;
     }
-    console.log('test 1');
     const isLiked = btn.classList.contains('likeBtn');
     handleLike(btn, isLiked);
   });

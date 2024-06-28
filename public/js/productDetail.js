@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const liElem = document.querySelector('.li_size');
   const productId = document.querySelector('.li-color.selected').dataset.productid;
+  const cartBtn = document.querySelector('.addRemoveCart');
 
   const colorButtons = document.querySelectorAll('.li-color');
   let selectedColor =
@@ -11,6 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const priceDisplay = document.querySelector('.details h4 span');
   const quantityDisplay = document.querySelector('.quantity');
+
+  const hideAlert = () => {
+    const el = document.querySelector('.alert');
+    if (el) el.parentElement.removeChild(el);
+  };
+
+  const showAlert = (type, msg, time = 1.7) => {
+    hideAlert();
+    const markup = `<div class="alert alert--${type}">${msg}</div>`;
+    document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+    window.setTimeout(hideAlert, time * 1000);
+  };
 
   const updatePrice = async () => {
     try {
@@ -83,5 +96,34 @@ document.addEventListener('DOMContentLoaded', () => {
       updateSize();
     });
   });
+
+  const handleCart = async (isAdded) => {
+    try {
+      const url = isAdded
+        ? '/api/v1/baskets/removeFromBasket'
+        : '/api/v1/baskets/addtoBasket';
+      const method = isAdded ? 'DELETE' : 'POST';
+      const data = { productId };
+      const response = await axios({ method, url, data });
+      if (response.data.status === 'success') {
+        cartBtn.classList.toggle('addedToBasket');
+        // eslint-disable-next-line no-unused-expressions
+        isAdded
+          ? (cartBtn.innerHTML = 'Add to basket')
+          : (cartBtn.innerHTML = 'Remove from basket');
+        const msg = isAdded ? 'Removed from basket!' : 'Added to basket!';
+        showAlert('success', msg);
+      }
+    } catch (err) {
+      showAlert('error', 'Something went wrong!');
+      console.error('error', err);
+    }
+  };
+
+  cartBtn.addEventListener('click', () => {
+    const isAdded = cartBtn.classList.contains('addedToBasket');
+    handleCart(isAdded);
+  });
+
   updateSize();
 });

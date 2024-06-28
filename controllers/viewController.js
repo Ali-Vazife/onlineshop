@@ -13,6 +13,7 @@ const { sequelize,
   UserLogin,
   UserAccount,
   UserLike,
+  UserBasket,
 } = require('../sequelize/db');
 
 const AppError = require('../utils/appError');
@@ -438,19 +439,20 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   // console.log('uniqueColors', uniqueColors);
 
   const currentUser = res.locals.user || null;
-  let likedProducts = [];
+  const productBasket = [];
   if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
+    const userBasket = await UserBasket.findOne({
+      where: { UserAccountId: currentUser.id, ProductId: productId },
       attributes: ['ProductId'],
       raw: true,
     });
+    if (userBasket) productBasket.push(userBasket.ProductId);
   }
 
   res.status(200).render('productDetail', {
     product,
     uniqueColors,
-    likedProducts,
+    productBasket,
   });
 });
 

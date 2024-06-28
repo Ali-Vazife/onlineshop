@@ -6,6 +6,7 @@ module.exports.applyAssociations = (userModel, productModel) => {
     UserRole,
     UserAddress,
     UserLike,
+    UserBasket,
   } = userModel;
   const {
     Product,
@@ -50,8 +51,20 @@ module.exports.applyAssociations = (userModel, productModel) => {
   Product.belongsToMany(Category, { through: ProductCategory });
   Category.belongsToMany(Product, { through: ProductCategory });
 
-  UserAccount.belongsToMany(Product, { through: UserLike });
-  Product.belongsToMany(UserAccount, { through: UserLike });
+  UserAccount.belongsToMany(Product, {
+    through: UserLike,
+    as: 'LikedProducts',
+  });
+  Product.belongsToMany(UserAccount, { through: UserLike, as: 'LikedByUsers' });
+
+  UserAccount.belongsToMany(Product, {
+    through: UserBasket,
+    as: 'BasketProducts',
+  });
+  Product.belongsToMany(UserAccount, {
+    through: UserBasket,
+    as: 'BasketByUsers',
+  });
 
   Variant.belongsToMany(Attribute, { through: VariantAttribute });
   Attribute.belongsToMany(Variant, { through: VariantAttribute });

@@ -180,6 +180,18 @@ module.exports.getSizes = catchAsync(async (req, res, next) => {
     return next(new AppError('No sizes found for this color!', 404));
   }
 
+  // const currentUser = res.locals.user || null;
+  // let basket = [];
+  // if (currentUser) {
+  //   basket = await UserBasket.findAll({
+  //     where: { UserAccountId: currentUser.id, productId: id },
+  //     attributes: ['ProductId'],
+  //     raw: true,
+  //   });
+  // }
+
+  // console.log(currentUser);
+
   res.status(200).json({
     status: 'success',
     sizes: sizes.map((size) => size.Attributes.value),
@@ -221,17 +233,17 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
     return next(new AppError('No price found for this product!', 404));
   }
 
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  // const currentUser = res.locals.user || null;
+  // let likedProducts = [];
+  // if (currentUser) {
+  //   likedProducts = await UserLike.findAll({
+  //     where: { UserAccountId: currentUser.id },
+  //     attributes: ['ProductId'],
+  //     raw: true,
+  //   });
+  // }
 
-  res.status(200).json({ status: 'success', price: variant, likedProducts });
+  res.status(200).json({ status: 'success', price: variant });
 });
 
 //    factory
