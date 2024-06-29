@@ -16,7 +16,6 @@ const showAlert = (type, msg, time = 1) => {
 };
 
 const handleLike = async (btn, isLiked) => {
-  console.log('handleLike readed.');
   const productId = btn.dataset.productid;
   try {
     const url = isLiked ? '/api/v1/likes/unlike' : '/api/v1/likes/like';
@@ -34,7 +33,6 @@ const handleLike = async (btn, isLiked) => {
 };
 
 likeBtns.forEach((btn) => {
-  console.log('likeBtns readed.');
   btn.addEventListener('click', () => {
     if (isLogged === 'notlogged') {
       showAlert('error', 'You are not logged in!');

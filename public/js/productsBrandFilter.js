@@ -17,7 +17,6 @@ const showAlert = (type, msg, time = 1.7) => {
 
 const handleLike = async (btn, isLiked) => {
   const productId = btn.dataset.productid;
-  console.log('productId', productId);
   try {
     const url = isLiked ? '/api/v1/likes/unlike' : '/api/v1/likes/like';
     const method = isLiked ? 'DELETE' : 'POST';
@@ -29,8 +28,8 @@ const handleLike = async (btn, isLiked) => {
       showAlert('success', msg);
     }
   } catch (err) {
-    showAlert('error', 'Something went wrong!');
-    console.error('error', 'Something went wrong!');
+    showAlert('error', err.response.data.message);
+    // console.error('error', err.response.data.message);
   }
 };
 
@@ -163,8 +162,9 @@ async function fetchProducts(brandId, typeOfFilter) {
     const { products, likedProducts } = response.data;
 
     renderProducts(products, likedProducts);
-  } catch (error) {
-    console.error('Error fetching products:', error);
+  } catch (err) {
+    showAlert('error', 'Somthing went wrong');
+    // console.error('Error fetching products:', error);
   }
 }
 

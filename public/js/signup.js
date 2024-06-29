@@ -43,7 +43,7 @@ const signup = async (
     }
   } catch (err) {
     showAlert('error', err.response.data.message);
-    console.log('error', err.response.data.message);
+    // console.log('error', err.response.data.message);
   }
 };
 

@@ -118,7 +118,7 @@ exports.junctionUpdateOne = (Model, fk1, fk2) =>
   catchAsync(async (req, res, next) => {
     const { vari, attr } = req.params;
     const updates = req.body;
-    console.log(updates);
+
     const [updatedRowsCount, updatedDoc] = await Model.update(updates, {
       where: { [fk1]: vari, [fk2]: attr },
       returning: true,

@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const { price } = response.data.price[0];
-      console.log('data', response.data);
 
       priceDisplay.textContent = `$ ${price}`;
       quantityDisplay.textContent = `Quantity in stock: ${response.data.price[0].qtyInStock}`;
-    } catch (error) {
-      console.error('Error fetching price:', error);
+    } catch (err) {
+      showAlert('error', 'Error fetching price');
+      // console.error('Error fetching price:', err);
     }
   };
 
@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       createSizeElements(sizes);
     } catch (error) {
-      console.error('Error fetching Size:', error);
+      showAlert('error', 'Error fetching Size:');
+      // console.error('Error fetching Size:', error);
     }
   };
 
@@ -115,8 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showAlert('success', msg);
       }
     } catch (err) {
-      showAlert('error', 'Something went wrong!');
-      console.error('error', err);
+      showAlert('error', err.response.data.message);
+      // console.error('error', err.response.data.message);
     }
   };
 

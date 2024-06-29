@@ -1,20 +1,16 @@
-const { where, Op, Sequelize } = require('sequelize');
-const { QueryTypes } = require('sequelize'); // Import QueryTypes
-
-const { sequelize,
+const {
+  sequelize,
   Product,
   Category,
   ProductCategory,
   ProductGender,
   Brand,
-  Discount,
   Variant,
   Attribute,
   UserLogin,
-  UserAccount,
-  UserLike,
   UserBasket,
 } = require('../sequelize/db');
+const currentUserLikedProducts = require('../utils/userLikedProducts');
 
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -63,15 +59,7 @@ module.exports.getAllProducts = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found!', 404));
   }
 
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
 
   res.status(200).render('allProducts', {
     products: allProducts,
@@ -177,15 +165,7 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this category!', 404));
   }
 
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
 
   res.status(200).render('overview', {
     categories,
@@ -256,15 +236,8 @@ module.exports.getProductsCategory = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this category!', 404));
   }
 
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
+
 
   res.status(200).render('productsCategory', { products, likedProducts });
 });
@@ -314,15 +287,8 @@ module.exports.getProductsBrand = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this brand!', 404));
   }
 
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
+
 
   res.status(200).render('productsBrand', { products, likedProducts });
 });
@@ -372,15 +338,8 @@ module.exports.getProductsGender = catchAsync(async (req, res, next) => {
     return next(new AppError('No products found for this Gender!', 404));
   }
 
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
+
 
   res.status(200).render('productsGender', { products, likedProducts });
 });
@@ -420,23 +379,10 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   if (!variantColors || variantColors.length === 0) {
     return next(new AppError('No colors found for this product!', 404));
   }
-  // console.log('variantColors', variantColors);
 
-  // Pick up one of them for default
-  // const selectedColor = variantColors[0].Attributes.value;
-  // console.log('selectedColor', selectedColor);
-
-  // Get colors vId
-  // const variantIdArr = variantColors
-  //   .filter(el => el.Attributes.value === selectedColor)
-  //   .map(el => el.id);
-  // console.log('variantIdArr', variantIdArr);
-
-  // Remove duplicate ones
   const uniqueColors = [
     ...new Set(variantColors.map((uniq) => uniq.Attributes.value)),
   ];
-  // console.log('uniqueColors', uniqueColors);
 
   const currentUser = res.locals.user || null;
   const productBasket = [];

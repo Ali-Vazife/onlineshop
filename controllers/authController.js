@@ -4,13 +4,10 @@ const {
   UserAccount,
   UserLogin,
   UserRole,
-  Product,
-  UserLike,
   UserBasket,
 } = require('../sequelize/db');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const { where } = require('sequelize');
 
 exports.signup = catchAsync(async (req, res, next) => {
   const errResult = validationResult(req);
@@ -154,11 +151,12 @@ exports.isLoggedIn = async (req, res, next) => {
       // if (currentUser.changedPasswordAfter(decoded.iat)) {
       //   return next();
       // }
+
       res.locals.user = currentUser;
       res.locals.basket = basketCount;
       return next();
     } catch (err) {
-      console.log('Logged user error 😤', err);
+      console.error('Logged user error 😤', err);
       return next();
     }
   }
@@ -174,6 +172,11 @@ module.exports.updatePassword = catchAsync(async (req, res, next) => {
     );
   }
   const userId = req.user.id;
+
+  if (!userId) {
+    return next(new AppError('Something went wrong! Try again later.', 500));
+  }
+
   const user = await UserLogin.findOne({
     where: { UserAccountId: userId },
   });

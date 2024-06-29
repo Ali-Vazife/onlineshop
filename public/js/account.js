@@ -67,7 +67,6 @@ if (userDataForm)
     ev.preventDefault();
     const form = new FormData();
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log(form);
 
     updateSettings(form, 'data');
   });

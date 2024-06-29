@@ -1,8 +1,9 @@
-const { where, Op, Sequelize } = require('sequelize');
 const { QueryTypes } = require('sequelize');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
+const currentUserLikedProducts = require('../utils/userLikedProducts');
+
 const {
   sequelize,
   Product,
@@ -14,7 +15,6 @@ const {
   Variant,
   VariantAttribute,
   Attribute,
-  UserLike,
 } = require('../sequelize/db');
 
 // Product
@@ -59,16 +59,7 @@ module.exports.getProductsAllBrands = catchAsync(async (req, res, next) => {
   if (!products || products.length === 0) {
     return next(new AppError('No products found for this brand!', 404));
   }
-
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
 
   res.status(200).json({ products, likedProducts });
 });
@@ -117,16 +108,7 @@ module.exports.getSelectedProductsBrand = catchAsync(async (req, res, next) => {
   if (!products || products.length === 0) {
     return next(new AppError('No products found for this brand!', 404));
   }
-
-  const currentUser = res.locals.user || null;
-  let likedProducts = [];
-  if (currentUser) {
-    likedProducts = await UserLike.findAll({
-      where: { UserAccountId: currentUser.id },
-      attributes: ['ProductId'],
-      raw: true,
-    });
-  }
+  const likedProducts = await currentUserLikedProducts(req, res);
 
   res.status(200).json({ products, likedProducts });
 });
@@ -151,13 +133,10 @@ module.exports.getSizes = catchAsync(async (req, res, next) => {
     nest: true,
   });
 
-  // console.log('varSizeId', varSizeId);
-
   // Get colors vId
   const UniqueSize = varSizeId
     .filter(el => el.Attributes.value === color)
     .map(el => el.id);
-  // console.log('UniqueSize', UniqueSize);
 
   const sizes = await Variant.findAll({
     where: { id: UniqueSize },
@@ -174,23 +153,9 @@ module.exports.getSizes = catchAsync(async (req, res, next) => {
     nest: true,
   });
 
-  // console.log(sizes);
-
   if (!sizes || sizes.length === 0) {
     return next(new AppError('No sizes found for this color!', 404));
   }
-
-  // const currentUser = res.locals.user || null;
-  // let basket = [];
-  // if (currentUser) {
-  //   basket = await UserBasket.findAll({
-  //     where: { UserAccountId: currentUser.id, productId: id },
-  //     attributes: ['ProductId'],
-  //     raw: true,
-  //   });
-  // }
-
-  // console.log(currentUser);
 
   res.status(200).json({
     status: 'success',
@@ -201,7 +166,6 @@ module.exports.getSizes = catchAsync(async (req, res, next) => {
 module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const { color, size } = req.query;
-  // console.log('id,color,size:', id, color, size);
 
   const sqlQuery = `
   SELECT v.id, v.price, v."ProductId", v."qtyInStock"
@@ -223,7 +187,6 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   )
 `;
 
-  // Execute the SQL query with replacements for placeholders
   const variant = await sequelize.query(sqlQuery, {
     replacements: { productId: id, color, size },
     type: QueryTypes.SELECT,
@@ -232,16 +195,6 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   if (!variant || variant.length === 0) {
     return next(new AppError('No price found for this product!', 404));
   }
-
-  // const currentUser = res.locals.user || null;
-  // let likedProducts = [];
-  // if (currentUser) {
-  //   likedProducts = await UserLike.findAll({
-  //     where: { UserAccountId: currentUser.id },
-  //     attributes: ['ProductId'],
-  //     raw: true,
-  //   });
-  // }
 
   res.status(200).json({ status: 'success', price: variant });
 });
