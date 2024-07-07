@@ -2,7 +2,7 @@ const { QueryTypes } = require('sequelize');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
-const currentUserLikedProducts = require('../utils/userLikedProducts');
+const { currentUserLikedProducts } = require('../utils/userLikedProducts');
 
 const {
   sequelize,
@@ -195,7 +195,6 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   if (!variant || variant.length === 0) {
     return next(new AppError('No price found for this product!', 404));
   }
-
   res.status(200).json({ status: 'success', price: variant });
 });
 

@@ -1,0 +1,53 @@
+extends base
+
+mixin navItem(link, text, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`) 
+      svg
+      | #{text}
+
+block content
+  link(rel='stylesheet' href='/css/account.css')
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me','Settings')
+          +navItem('/myOrder','My Orders')
+          +navItem('/myBasket','My Basket')
+          +navItem('/myFavoriteProduct','My favorite products', true)
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/','Manage products')
+              +navItem('/','Manage users')
+              +navItem('/','Manage baskets')
+              +navItem('/','Manage orders')
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Your Favorite Products
+        .line &nbsp;
+        ul.product-list
+          each p in products
+            li.product-item
+              .product-card(tabindex='0')
+                figure.card-banner
+                  img.image-contain(src=`/images/${p.coverImage}` width='312' height='350' loading='lazy' alt=`${p.name}`)
+                  ul.card-action-list
+                    li.card-action-item
+                      button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`, class= likedProducts.map(lp => lp.ProductId).includes(p.id) ? 'likeBtn' : '')
+                        ion-icon(name='heart-outline')
+                      #card-label-2.card-action-tooltip
+                        | Add to Whishlist
+                .card-content
+                  .card-cat
+                    a.card-cat-link(href=`/productsGender/${p.ProductGenderId}`)= `${p.genderName}`
+                    a.card-cat-link(href=`/productsBrand/${p.BrandId}`)= `${p.brandName}`
+                  h3.h3.card-title
+                    a(href= `/products/${p.id}`)= `${p.name}`
+                  - if (`${p.min}` === `${p.max}`)  
+                    data.card-price= `$ ${p.min}`
+                  - else 
+                    data.card-price= `$ ${p.min} - ${p.max}`
+  script(src='/js/productsBrandFilter.js')

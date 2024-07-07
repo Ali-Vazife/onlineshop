@@ -1,0 +1,50 @@
+extends base
+
+mixin navItem(link, text, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`) 
+      svg
+      | #{text}
+
+block content
+  link(rel='stylesheet' href='/css/account.css')
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me','Settings')
+          +navItem('/myOrder','My Orders')
+          +navItem('/myBasket','My Basket',true)
+          +navItem('/myFavoriteProduct','My favorite products')
+
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/','Manage products')
+              +navItem('/','Manage users')
+              +navItem('/','Manage baskets')
+              +navItem('/','Manage orders')
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Your Basket
+          ul.product-list
+            each p in products
+              li.product-item
+                .product-card(tabindex='0')
+                  figure.card-banner
+                    img.image-contain(src=`/images/${p.coverImage}` width='312' height='350' loading='lazy' alt=`${p.name}`)
+                    ul.card-action-list
+                      li.card-action-item
+                        button.card-action-btn.remove-basket__btn(aria-labelledby='card-label-2' data-variantId=`${p.VariantId}`)
+                          ion-icon(name='close-outline')
+                        #card-label-2.card-action-tooltip
+                          | remove from basket
+                  .card-content
+                    .card-cat
+                      a.card-cat-link(href=`/productsGender/${p.productgenderid}`)= `${p.gender}`
+                      a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brand}`
+                    h3.h3.card-title
+                      a(href= `/products/${p.id}`)= `${p.name}`
+                      data.card-price= `$ ${p.price}`
+  script(src='/js/basket.js')

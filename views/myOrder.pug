@@ -1,0 +1,34 @@
+extends base
+
+mixin navItem(link, text, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`) 
+      svg
+      | #{text}
+
+block content
+  link(rel='stylesheet' href='/css/account.css')
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me','Settings', )
+          +navItem('/myOrder','My Orders', true)
+          +navItem('/myBasket','My Basket')
+          +navItem('/myFavoriteProduct','My favorite products')
+          //- +navItem('/','Logout')
+
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/','Manage products')
+              +navItem('/','Manage users')
+              +navItem('/','Manage baskets')
+              +navItem('/','Manage orders')
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Your Booking
+
+        .line &nbsp;
+  script(src='/js/account.js')

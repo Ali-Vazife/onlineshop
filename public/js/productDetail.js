@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const liElem = document.querySelector('.li_size');
-  const productId = document.querySelector('.li-color.selected').dataset.productid;
+  let colorBtn = document.querySelector('.li-color.selected');
+  const productId = colorBtn.dataset.productid;
   const cartBtn = document.querySelector('.addRemoveCart');
+  const isLogged = document.querySelector('.user__span').dataset.user;
 
   const colorButtons = document.querySelectorAll('.li-color');
   let selectedColor =
@@ -25,18 +27,44 @@ document.addEventListener('DOMContentLoaded', () => {
     window.setTimeout(hideAlert, time * 1000);
   };
 
+  const handleBasketBtn = async (variantId) => {
+    const addToBasketBtn = document.querySelector('.addRemoveCart');
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: `/api/v1/baskets/isInTheBasket/${variantId}`,
+      });
+
+      if (response.data.data === 'y') {
+        addToBasketBtn.classList.add('addedToBasket');
+        addToBasketBtn.innerHTML = 'Remove from basket';
+      } else if (response.data.data === 'n') {
+        addToBasketBtn.classList.remove('addedToBasket');
+        addToBasketBtn.innerHTML = 'Add to basket';
+      }
+    } catch (err) {
+      showAlert('error', err);
+      // console.error('Error fetching price:', err);
+    }
+  };
+
   const updatePrice = async () => {
     try {
+      colorBtn = document.querySelector('.selected');
       // console.log('selectedColor,selectedSize', selectedColor, selectedSize);
       const response = await axios({
         method: 'GET',
         url: `/api/v1/products/${productId}/price?color=${selectedColor}&size=${selectedSize}`,
       });
 
-      const { price } = response.data.price[0];
-
+      const { price, id } = response.data.price[0];
       priceDisplay.textContent = `$ ${price}`;
+      colorBtn.setAttribute('data-variantId', id);
       quantityDisplay.textContent = `Quantity in stock: ${response.data.price[0].qtyInStock}`;
+
+      if (isLogged !== 'notlogged') {
+        handleBasketBtn(id);
+      }
     } catch (err) {
       showAlert('error', 'Error fetching price');
       // console.error('Error fetching price:', err);
@@ -80,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         url: `/api/v1/products/${productId}/size?color=${selectedColor}`,
       });
       const { sizes } = response.data;
-      // console.log(sizes);
 
       createSizeElements(sizes);
     } catch (error) {
@@ -94,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       colorButtons.forEach(btn => btn.classList.remove('selected'));
       event.target.classList.add('selected');
       selectedColor = event.target.getAttribute('data-color');
+      colorBtn = document.querySelector('.selected');
       updateSize();
     });
   });
@@ -102,13 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const url = isAdded
         ? '/api/v1/baskets/removeFromBasket'
-        : '/api/v1/baskets/addtoBasket';
+        : '/api/v1/baskets/addToBasket';
+      const variantId =
+        document.querySelector('.li-color.selected').dataset.variantid;
       const method = isAdded ? 'DELETE' : 'POST';
-      const data = { productId };
+      const data = { variantId };
       const response = await axios({ method, url, data });
       if (response.data.status === 'success') {
         cartBtn.classList.toggle('addedToBasket');
-        // eslint-disable-next-line no-unused-expressions
         isAdded
           ? (cartBtn.innerHTML = 'Add to basket')
           : (cartBtn.innerHTML = 'Remove from basket');

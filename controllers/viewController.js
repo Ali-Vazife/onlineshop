@@ -10,7 +10,7 @@ const {
   UserLogin,
   UserBasket,
 } = require('../sequelize/db');
-const currentUserLikedProducts = require('../utils/userLikedProducts');
+const { currentUserLikedProducts } = require('../utils/userLikedProducts');
 
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -238,7 +238,6 @@ module.exports.getProductsCategory = catchAsync(async (req, res, next) => {
 
   const likedProducts = await currentUserLikedProducts(req, res);
 
-
   res.status(200).render('productsCategory', { products, likedProducts });
 });
 
@@ -288,7 +287,6 @@ module.exports.getProductsBrand = catchAsync(async (req, res, next) => {
   }
 
   const likedProducts = await currentUserLikedProducts(req, res);
-
 
   res.status(200).render('productsBrand', { products, likedProducts });
 });
@@ -371,7 +369,7 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
         attributes: ['value'],
       },
     ],
-    attributes: ['id'],
+    attributes: ['id', 'ProductId'],
     raw: true,
     nest: true,
   });
@@ -388,17 +386,21 @@ module.exports.getProduct = catchAsync(async (req, res, next) => {
   const productBasket = [];
   if (currentUser) {
     const userBasket = await UserBasket.findOne({
-      where: { UserAccountId: currentUser.id, ProductId: productId },
-      attributes: ['ProductId'],
+      where: {
+        UserAccountId: currentUser.id,
+        VariantId: variantColors[0].id,
+      },
+      attributes: ['VariantId'],
       raw: true,
     });
-    if (userBasket) productBasket.push(userBasket.ProductId);
+    if (userBasket) productBasket.push(userBasket.VariantId);
   }
 
   res.status(200).render('productDetail', {
     product,
     uniqueColors,
     productBasket,
+    variantId: variantColors[0].id,
   });
 });
 
@@ -422,5 +424,110 @@ module.exports.getAccount = catchAsync(async (req, res, next) => {
   res.status(200).render('account', {
     title: 'Your account',
     emailAddress: getEmailAddress.dataValues.emailAddress,
+  });
+});
+
+module.exports.myOrder = catchAsync(async (req, res, next) => {
+  res.status(200).render('myOrder', {
+    title: 'Your Booking',
+  });
+});
+
+module.exports.myFavoriteProduct = catchAsync(async (req, res, next) => {
+  const query = `
+  SELECT 
+    prod.id, 
+    prod.name, 
+    prod."coverImage", 
+    prod."ShortDescription",
+    brd.id AS "BrandId", 
+    brd.name AS "brandName",  
+    gndr.id AS "ProductGenderId",
+    gndr.name AS "genderName",
+    MIN(vari.price),
+    MAX(vari.price)
+  FROM 
+    "UserLike" AS ul
+  INNER JOIN 
+    "Product" AS prod ON prod.id = ul."ProductId" 
+  INNER JOIN  
+    "Variant" AS vari ON vari."ProductId" = prod.id
+  INNER JOIN 
+    "Brand" AS brd ON brd.id = prod."BrandId"
+  INNER JOIN 
+    "ProductGender" AS gndr ON gndr.id = prod."ProductGenderId"
+  WHERE 
+    ul."UserAccountId" = :userId
+  GROUP BY 
+    prod.id, brd.id, gndr.id;
+`;
+
+  const allBasket = await sequelize.query(query, {
+    replacements: { userId: req.user.id },
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  if (!allBasket || allBasket.length === 0) {
+    return next(new AppError('No products found!', 404));
+  }
+
+  const likedProducts = await currentUserLikedProducts(req, res);
+
+  res.status(200).render('myFavoriteProds', {
+    title: 'Your favorite products',
+    products: allBasket,
+    likedProducts,
+  });
+});
+
+module.exports.myBasket = catchAsync(async (req, res, next) => {
+  const query = `
+  SELECT 
+    prod.id, 
+    prod.name, 
+    prod."coverImage", 
+    prod."ShortDescription",
+    ub."VariantId",
+    vari.price, 
+    vari."qtyInStock", 
+    brd.id AS BrandId,
+    brd.name AS brand,
+    gndr.id AS ProductGenderId, 
+    gndr.name AS gender,
+    STRING_AGG(atr.value, ',') AS attributes  FROM 
+    "UserBasket" AS ub
+  INNER JOIN 
+    "Variant" AS vari ON vari.id = ub."VariantId"
+  INNER JOIN 
+    "Product" AS prod ON prod.id = vari."ProductId"
+  INNER JOIN 
+    "Brand" AS brd ON brd.id = prod."BrandId"
+  INNER JOIN 
+    "ProductGender" AS gndr ON gndr.id = prod."ProductGenderId"
+  INNER JOIN 
+    "VariantAttribute" AS vat ON vat."VariantId" = vari.id
+  INNER JOIN 
+    "Attribute" AS atr ON atr.id = vat."AttributeId"
+  WHERE 
+    ub."UserAccountId" = :userId
+  GROUP BY 
+    prod.id, ub."VariantId", vari.id, brd.id, gndr.id;
+`;
+
+  const allBasket = await sequelize.query(query, {
+    replacements: { userId: req.user.id },
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  if (!allBasket || allBasket.length === 0) {
+    return next(new AppError('No products found!', 404));
+  }
+
+  const likedProducts = await currentUserLikedProducts(req, res);
+
+  res.status(200).render('MyBasket', {
+    title: 'Your basket',
+    products: allBasket,
+    likedProducts,
   });
 });

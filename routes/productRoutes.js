@@ -25,7 +25,6 @@ router
     productController.getProduct,
   );
 
-
 router.route('/createProduct').post(productController.createProduct);
 router.route('/updateProduct/:id').patch(productController.updateProduct);
 router.route('/deleteProduct/:id').delete(productController.deleteProduct);

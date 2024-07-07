@@ -544,3 +544,8 @@
   margin-right: 2rem;
   background: #0fa2c7;
 }
+
+/* Account Products - (Like, Order, Basket) */
+.product-list {
+  grid-template-columns: repeat(2, 1fr);
+}

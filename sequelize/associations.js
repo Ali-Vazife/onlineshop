@@ -57,13 +57,11 @@ module.exports.applyAssociations = (userModel, productModel) => {
   });
   Product.belongsToMany(UserAccount, { through: UserLike, as: 'LikedByUsers' });
 
-  UserAccount.belongsToMany(Product, {
+  UserAccount.belongsToMany(Variant, {
     through: UserBasket,
-    as: 'BasketProducts',
   });
-  Product.belongsToMany(UserAccount, {
+  Variant.belongsToMany(UserAccount, {
     through: UserBasket,
-    as: 'BasketByUsers',
   });
 
   Variant.belongsToMany(Attribute, { through: VariantAttribute });

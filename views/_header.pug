@@ -37,15 +37,9 @@ header.header(data-header='')
               span.nav-action-text.user__span(data-user='notlogged') Register
         li
           if user
-            button.nav-action-btn
-              ion-icon(name='heart-outline' aria-hidden='true')
-              span.nav-action-text Wishlist
-              data.nav-action-badge(value='7' aria-hidden='true') 7
-        li
-          if user
-            button.nav-action-btn
+            a(href='/myBasket').nav-action-btn
               ion-icon(name='bag-outline' aria-hidden='true')
-              data.nav-action-text(value='318.00')
+              data.nav-action-text
                 | Basket: 
-                strong $318.00
+                strong 
               data.nav-action-badge(value=`${basket}` aria-hidden='true')= `${basket}`

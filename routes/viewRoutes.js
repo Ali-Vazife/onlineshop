@@ -8,7 +8,13 @@ router.get('/', authController.isLoggedIn, viewController.getOverview);
 router.get('/signup', authController.isLoggedIn, viewController.signup);
 router.get('/login', authController.isLoggedIn, viewController.login);
 router.get('/me', authController.protect, viewController.getAccount);
-// router.post('/me', authController.protect, viewController.getAccount);
+router.get('/myBasket', authController.protect, viewController.myBasket);
+router.get(
+  '/myFavoriteProduct',
+  authController.protect,
+  viewController.myFavoriteProduct,
+);
+router.get('/myOrder', authController.protect, viewController.myOrder);
 
 router.use(authController.isLoggedIn);
 router.get('/products', viewController.getAllProducts);

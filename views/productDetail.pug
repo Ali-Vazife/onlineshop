@@ -32,7 +32,7 @@ block content
         ul.cart-buy
           button.buynow Buy now
           if user
-            if productBasket.includes(product.id)
+            if productBasket.includes(variantId)
               button.addRemoveCart.addedToBasket Remove from basket
             else
               button.addRemoveCart Add to basket 

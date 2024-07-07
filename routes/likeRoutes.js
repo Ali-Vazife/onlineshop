@@ -10,5 +10,6 @@ const router = express.Router();
 router.use(authController.protect);
 router.post('/like', likeController.like);
 router.delete('/unlike', likeController.unlike);
+router.delete('/myFavoriteProduct', likeController.myFavoriteProduct);
 
 module.exports = router;

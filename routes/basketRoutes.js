@@ -5,7 +5,9 @@ const authController = require('../controllers/authController');
 const router = express.Router();
 
 router.use(authController.protect);
-router.post('/addtoBasket', basketController.addToBasket);
+router.get('/isInTheBasket/:id', basketController.isInTheBasket);
+router.post('/addToBasket', basketController.addToBasket);
 router.delete('/removeFromBasket', basketController.removeFromBasket);
+router.get('/myBasket', authController.protect, basketController.myBasket);
 
 module.exports = router;

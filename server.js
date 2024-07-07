@@ -7,12 +7,9 @@ const port = process.env.PORT || 3000;
 
 dotenv.config({ path: 'config.env' });
 
-process.on('uncaughtException', (err, source) => {
+process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! Shutting down... 🤐');
   console.log(err.name, err.message);
-
-  const filePath = './log/error.log';
-  fs.writeFileSync(filePath, `${err}:${source}\n`, { flag: 'a' });
 
   process.exit(1);
 });

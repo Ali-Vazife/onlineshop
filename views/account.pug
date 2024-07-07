@@ -12,10 +12,10 @@ block content
     .user-view
       nav.user-view__menu
         ul.side-nav
-          +navItem('#','Settings', true)
-          +navItem('/','My bookings')
-          +navItem('/','My favorite products')
-          +navItem('/','My Basket')
+          +navItem('/me','Settings', true)
+          +navItem('/myOrder','My Orders')
+          +navItem('/myBasket','My Basket')
+          +navItem('/myFavoriteProduct','My favorite products')
           //- +navItem('/','Logout')
 
         - if (user.role === 'admin')
