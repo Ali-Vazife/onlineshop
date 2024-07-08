@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to the **E-commerce Shoes Shop** project! This is a comprehensive backend system for an online shoe store where users can sign up, log in, update their profiles, change passwords, like products, add products to their basket, and view their liked products or items in their basket.
+Welcome to the **E-commerce Shoes Shop** project! This is a comprehensive backend system for an online shoe store.
 
 ## Features
 
@@ -86,6 +86,9 @@ The database design for this E-commerce Shoes Shop project showcases several key
 - **3NF**: Transitive dependencies are eliminated, ensuring that related information is stored in the appropriate tables.
 
 This design ensures an efficient, consistent, and scalable database for the E-commerce Shoes Shop application.
+
+ 
+Please note that the purchasing functionality is not yet implemented in this project. While users can add products to their basket and like products, the checkout process to complete the purchase is still under development.
 
 ## Installation
 
