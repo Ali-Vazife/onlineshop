@@ -58,6 +58,31 @@ module.exports.removeFromBasket = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success' });
 });
 
+module.exports.myBasketTotalPrice = catchAsync(async (req, res, next) => {
+  const query = `
+  SELECT 
+    sum(vari."price")
+    FROM 
+    "UserBasket" AS ub
+  INNER JOIN 
+    "Variant" AS vari ON vari.id = ub."VariantId"
+  WHERE 
+    ub."UserAccountId" = :userId
+`;
+
+  const totalPrice = await sequelize.query(query, {
+    replacements: { userId: req.user.id },
+    type: sequelize.QueryTypes.SELECT,
+  });
+
+  if (!totalPrice || totalPrice.length === 0) {
+    return res
+      .status(200)
+      .json({ status: 'no product found', totalPrice: '-' });
+  }
+
+  res.status(200).json({ status: 'success', totalPrice: totalPrice[0].sum });
+});
 module.exports.myBasket = catchAsync(async (req, res, next) => {
   const query = `
   SELECT 

@@ -23,7 +23,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   const checkEmail = await UserLogin.findOne({
     where: { emailAddress },
   });
-  // console.log('checkEmail', checkEmail);
 
   if (checkEmail) {
     return next(new AppError('This email already registered', 400));
@@ -33,7 +32,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     firstName,
     lastName,
   });
-  // console.log('newUserAcc', newUserAcc);
 
   await UserLogin.create({
     emailAddress: emailAddress,
@@ -79,7 +77,6 @@ exports.logout = catchAsync(async (req, res, next) => {
       return next(new AppError('There is a problem for logout', 400));
     }
 
-    // res.clearCookie('sid');
     res.cookie('sid', 'loggedout', {
       expires: new Date(Date.now() + 3 * 1000),
       httpOnly: true,

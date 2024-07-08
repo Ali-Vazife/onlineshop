@@ -1,4 +1,6 @@
 const removeFromBasketBtn = document.querySelectorAll('.remove-basket__btn');
+const totalPriceBtn = document.querySelector('.totalPrice');
+const emptyPage = document.querySelector('.empty-page');
 
 const hideAlert = () => {
   const el = document.querySelector('.alert');
@@ -12,9 +14,22 @@ const showAlert = (type, msg, time = 5) => {
   window.setTimeout(hideAlert, time * 1000);
 };
 
+const fetchPrice = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: '/api/v1/baskets/myBasketTotalPrice',
+    });
+    totalPriceBtn.innerHTML = `Total Price: $${res.data.totalPrice}`;
+  } catch (err) {
+    showAlert('error', 'Something went wrong!');
+    console.log(err);
+  }
+};
+
 const handleCart = async (variantId) => {
   try {
-    const response = await axios({
+    const res = await axios({
       method: 'DELETE',
       url: '/api/v1/baskets/removeFromBasket',
       data: {
@@ -22,7 +37,13 @@ const handleCart = async (variantId) => {
       },
     });
 
-    showAlert('success', 'Removed from basket!');
+    if (res.data.status === 'success') {
+      showAlert('success', 'Removed from basket!');
+      fetchPrice();
+      window.setTimeout(() => {
+        location.assign('/myBasket');
+      }, 1500);
+    }
   } catch (err) {
     showAlert('error', 'Something went wrong!');
     // console.error('error', err.response.data.message);
@@ -35,3 +56,5 @@ removeFromBasketBtn.forEach(el => {
     handleCart(variantId);
   });
 });
+
+if (!emptyPage) fetchPrice();

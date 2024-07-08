@@ -20,13 +20,14 @@ block content
       section.section.collection
         .container
           ul.collection-list.has-scrollbar
-            each c in categories
-              li
-                .collection-card(style=`background-image: url(/images/${c.coverImage})`)
-                  h3.h4.card-title= `${c.name} Collections`
-                  a.btn.btn-secondary(href=`/productsCategory/${c.id}`)
-                    span Explore All
-                    ion-icon(name='arrow-forward-outline' aria-hidden='true')
+            if categories
+              each c in categories
+                li
+                  .collection-card(style=`background-image: url(/images/${c.coverImage})`)
+                    h3.h4.card-title= `${c.name} Collections`
+                    a.btn.btn-secondary(href=`/productsCategory/${c.id}`)
+                      span Explore All
+                      ion-icon(name='arrow-forward-outline' aria-hidden='true')
       //
         - #PRODUCT
       section.section.product
@@ -35,59 +36,67 @@ block content
           ul.filter-list
             li.brand-li.active-brand-btn
                 button(class='filter-btn' data-brand-id='allBrands') All
-            each b in brands
-              li.brand-li.filter-li-brands
-                button(class='filter-btn' data-brand-id=`${b.id}`)= `${b.name}`
-                //- a(href=`/productsBrand/${b.id}`)
-                //-   button.filter-btn= `${b.name}`
+            if brands
+              each b in brands
+                li.brand-li.filter-li-brands
+                  button(class='filter-btn' data-brand-id=`${b.id}`)= `${b.name}`
+                  //- a(href=`/productsBrand/${b.id}`)
+                  //-   button.filter-btn= `${b.name}`
           ul.product-list
-            each p in products
-              li.product-item
-                .product-card(tabindex='0')
-                  figure.card-banner
-                    img.image-contain(src=`/images/${p.imagecover}` width='312' height='350' loading='lazy' alt=`${p.name}`)
-                    //- .card-badge New
-                    ul.card-action-list
-                      li.card-action-item
-                        if user
-                          button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`, class= likedProducts.map(lp => lp.ProductId).includes(p.id) ? 'likeBtn' : '')
-                            ion-icon(name='heart-outline')
-                          #card-label-2.card-action-tooltip
-                            | Add to Whishlist
-                        else 
-                          button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`)
-                            ion-icon(name='heart-outline')
-                          #card-label-2.card-action-tooltip
-                            | Add to Whishlist
-                  .card-content
-                    .card-cat
-                      a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
-                      a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brandname}`
-                    h3.h3.card-title
-                      a(href= `/products/${p.id}`)= `${p.name}`
-                    - if (`${p.minPrice}` === `${p.maxPrice}`)  
-                      data.card-price= `$ ${p.minPrice}`
-                    - else 
-                      data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`
+            if !products
+              .empty-page.container-fluid
+                h3 There is no product!
+                br
+                img(src='/images/undraw_emptyCart.svg', alt='notavailable')
+            else
+              each p in products
+                li.product-item
+                  .product-card(tabindex='0')
+                    figure.card-banner
+                      img.image-contain(src=`/images/${p.imagecover}` width='312' height='350' loading='lazy' alt=`${p.name}`)
+                      //- .card-badge New
+                      ul.card-action-list
+                        li.card-action-item
+                          if user
+                            button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`, class= likedProducts.map(lp => lp.ProductId).includes(p.id) ? 'likeBtn' : '')
+                              ion-icon(name='heart-outline')
+                            #card-label-2.card-action-tooltip
+                              | Add to Whishlist
+                          else 
+                            button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${p.id}`)
+                              ion-icon(name='heart-outline')
+                            #card-label-2.card-action-tooltip
+                              | Add to Whishlist
+                    .card-content
+                      .card-cat
+                        a.card-cat-link(href=`/productsGender/${p.genderid}`)= `${p.gendername}`
+                        a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brandname}`
+                      h3.h3.card-title
+                        a(href= `/products/${p.id}`)= `${p.name}`
+                      - if (`${p.minPrice}` === `${p.maxPrice}`)  
+                        data.card-price= `$ ${p.minPrice}`
+                      - else 
+                        data.card-price= `$ ${p.minPrice} - ${p.maxPrice}`
       //
         - #CTA
       section.section.cta
         .container
           ul.cta-list
-            li
-              .cta-card(style="background-image: url('/images/cta-1.jpg')")
-                p.card-subtitle Adidas Shoes
-                h3.h2.card-title The Summer Sale Off 50%
-                a.btn.btn-link(href='#')
-                  span Shop Now
-                  ion-icon(name='arrow-forward-outline' aria-hidden='true')
-            li
-              .cta-card(style="background-image: url('/images/cta-2.jpg')")
-                p.card-subtitle #{brands[0].name}
-                h3.h2.card-title Makes Yourself Keep Sporty
-                a.btn.btn-link(href=`/productsBrand/${brands[0].id}`)
-                  span Shop Now
-                  ion-icon(name='arrow-forward-outline' aria-hidden='true')
+            if brands[0]
+              li
+                .cta-card(style="background-image: url('/images/cta-1.jpg')")
+                  p.card-subtitle #{brands[1].name}
+                  h3.h2.card-title Special one for speacials
+                  a.btn.btn-link(href=`/productsBrand/${brands[1].id}`)
+                    span Shop Now
+                    ion-icon(name='arrow-forward-outline' aria-hidden='true')
+              li
+                .cta-card(style="background-image: url('/images/cta-2.jpg')")
+                  p.card-subtitle #{brands[0].name}
+                  h3.h2.card-title Makes Yourself Keep Sporty
+                  a.btn.btn-link(href=`/productsBrand/${brands[0].id}`)
+                    span Shop Now
+                    ion-icon(name='arrow-forward-outline' aria-hidden='true')
       //
         - #SPECIAL
       section.section.special
@@ -102,39 +111,45 @@ block content
               span.text New Trends
               span.line
             ul.has-scrollbar
-              each newp in trendsProducts
-                li.product-item
-                  .product-card(tabindex='0')
-                    figure.card-banner
-                      img.image-contain(src=`/images/${newp.imagecover}` width='312' height='350' loading='lazy' alt=`${newp.name}`)
-                      .card-badge New
-                      ul.card-action-list
-                        li.card-action-item
-                          if user
-                            button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${newp.id}`, class= likedProducts.map(lp => lp.ProductId).includes(newp.id) ? 'likeBtn' : '')
-                              ion-icon(name='heart-outline')
-                            #card-label-2.card-action-tooltip
-                              | Add to Whishlist
-                          else
-                            button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${newp.id}`)
-                              ion-icon(name='heart-outline')
-                            #card-label-2.card-action-tooltip
-                              | Add to Whishlist
-                        li.card-action-item
-                          button.card-action-btn(aria-labelledby='card-label-4')
-                            ion-icon(name='repeat-outline')
-                          #card-label-4.card-action-tooltip
-                            | Compare
-                    .card-content
-                      .card-cat
-                        a.card-cat-link(href=`/productsGender/${newp.genderid}`)= `${newp.gendername}`
-                        a.card-cat-link(href=`/productsBrand/${newp.brandid}`)= `${newp.brandname}`
-                      h3.h3.card-title
-                        a(href=`/products/${newp.id}`)= `${newp.name}`
-                      - if (`${newp.minPrice}` === `${newp.maxPrice}`)  
-                        data.card-price= `$ ${newp.minPrice}`
-                      - else 
-                        data.card-price= `$ ${newp.minPrice} - ${newp.maxPrice}`
+              if !trendsProducts
+                .empty-page.container-fluid
+                  h3 There is no product!
+                  br
+                  img(src='/images/undraw_emptyCart.svg', alt='notavailable')
+              else
+                each newp in trendsProducts
+                  li.product-item
+                    .product-card(tabindex='0')
+                      figure.card-banner
+                        img.image-contain(src=`/images/${newp.imagecover}` width='312' height='350' loading='lazy' alt=`${newp.name}`)
+                        .card-badge New
+                        ul.card-action-list
+                          li.card-action-item
+                            if user
+                              button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${newp.id}`, class= likedProducts.map(lp => lp.ProductId).includes(newp.id) ? 'likeBtn' : '')
+                                ion-icon(name='heart-outline')
+                              #card-label-2.card-action-tooltip
+                                | Add to Whishlist
+                            else
+                              button.card-action-btn.like-action__btn(aria-labelledby='card-label-2', data-productId=`${newp.id}`)
+                                ion-icon(name='heart-outline')
+                              #card-label-2.card-action-tooltip
+                                | Add to Whishlist
+                          li.card-action-item
+                            button.card-action-btn(aria-labelledby='card-label-4')
+                              ion-icon(name='repeat-outline')
+                            #card-label-4.card-action-tooltip
+                              | Compare
+                      .card-content
+                        .card-cat
+                          a.card-cat-link(href=`/productsGender/${newp.genderid}`)= `${newp.gendername}`
+                          a.card-cat-link(href=`/productsBrand/${newp.brandid}`)= `${newp.brandname}`
+                        h3.h3.card-title
+                          a(href=`/products/${newp.id}`)= `${newp.name}`
+                        - if (`${newp.minPrice}` === `${newp.maxPrice}`)  
+                          data.card-price= `$ ${newp.minPrice}`
+                        - else 
+                          data.card-price= `$ ${newp.minPrice} - ${newp.maxPrice}`
       //
         - #SERVICE
       section.section.service

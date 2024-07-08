@@ -1494,3 +1494,17 @@ a.footer-link:is(:hover, :focus) {
   max-width: 50rem;
   margin: 0 auto;
 }
+
+.empty-page {
+  display: flex;
+  flex-direction: column;
+}
+.empty-page img {
+  justify-self: center;
+  align-self: center;
+  width: 70%;
+}
+
+.empty-page__Favproduct {
+  align-items: center;
+}

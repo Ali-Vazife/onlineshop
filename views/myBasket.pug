@@ -16,7 +16,6 @@ block content
           +navItem('/myOrder','My Orders')
           +navItem('/myBasket','My Basket',true)
           +navItem('/myFavoriteProduct','My favorite products')
-
         - if (user.role === 'admin')
           .admin-nav
             h5.admin-nav__heading Admin
@@ -29,6 +28,12 @@ block content
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Your Basket
           ul.product-list
+          if !products
+            .empty-page.container-fluid
+              h3 Basket is empty.
+              br
+              img(src='/images/undraw_emptyCart.svg', alt='notavailable')
+          else
             each p in products
               li.product-item
                 .product-card(tabindex='0')
@@ -46,5 +51,11 @@ block content
                       a.card-cat-link(href=`/productsBrand/${p.brandid}`)= `${p.brand}`
                     h3.h3.card-title
                       a(href= `/products/${p.id}`)= `${p.name}`
+                      p.attribute= `attributes: ${p.attributes}`
                       data.card-price= `$ ${p.price}`
+            .line &nbsp;
+              .total 
+                h3.heading-secondary.ma-bt-md Price Section
+                p.totalPrice
+  script(src='/scripts/axios/dist/axios.min.js')
   script(src='/js/basket.js')

@@ -198,7 +198,9 @@ module.exports.getProductPrice = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', price: variant });
 });
 
-//    factory
+//////////////////////////////////////////////
+//    factory //
+//////////////////////////////////////////////
 exports.getAllProducts = factory.getAll(Product);
 exports.getProduct = factory.getOne(Product);
 exports.createProduct = factory.createOne(Product);

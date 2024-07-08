@@ -28,7 +28,14 @@ block content
               +navItem('/','Manage orders')
       .user-view__content
         .user-view__form-container
-          h2.heading-secondary.ma-bt-md Your Booking
+          h2.heading-secondary.ma-bt-md Your Orders
 
         .line &nbsp;
+        ul.product-list
+          if !products
+              .empty-page.empty-page__Favproduct.container-fluid
+                h3 You haven't ordered any products.
+                br
+                img(src='/images/undraw_no_data.svg', alt='notavailable')
+          else
   script(src='/js/account.js')

@@ -162,7 +162,7 @@ module.exports.getOverview = catchAsync(async (req, res, next) => {
   });
 
   if (!trendsProducts || trendsProducts.length === 0) {
-    return next(new AppError('No products found for this category!', 404));
+    return next(new AppError('No products found!', 404));
   }
 
   const likedProducts = await currentUserLikedProducts(req, res);
@@ -233,7 +233,9 @@ module.exports.getProductsCategory = catchAsync(async (req, res, next) => {
   });
 
   if (!products || products.length === 0) {
-    return next(new AppError('No products found for this category!', 404));
+    return res.status(200).render('productsCategory', {
+      title: 'Products Categories',
+    });
   }
 
   const likedProducts = await currentUserLikedProducts(req, res);
@@ -283,7 +285,9 @@ module.exports.getProductsBrand = catchAsync(async (req, res, next) => {
   });
 
   if (!products || products.length === 0) {
-    return next(new AppError('No products found for this brand!', 404));
+    return res.status(200).render('productsBrand', {
+      title: 'Product Brands',
+    });
   }
 
   const likedProducts = await currentUserLikedProducts(req, res);
@@ -333,11 +337,11 @@ module.exports.getProductsGender = catchAsync(async (req, res, next) => {
   });
 
   if (!products || products.length === 0) {
-    return next(new AppError('No products found for this Gender!', 404));
+    return res.status(200).render('productsGender', {
+      title: 'Product Gender',
+    });
   }
-
   const likedProducts = await currentUserLikedProducts(req, res);
-
 
   res.status(200).render('productsGender', { products, likedProducts });
 });
@@ -468,7 +472,9 @@ module.exports.myFavoriteProduct = catchAsync(async (req, res, next) => {
   });
 
   if (!allBasket || allBasket.length === 0) {
-    return next(new AppError('No products found!', 404));
+    return res.status(200).render('myFavoriteProds', {
+      title: 'Your favorite products',
+    });
   }
 
   const likedProducts = await currentUserLikedProducts(req, res);
@@ -520,7 +526,9 @@ module.exports.myBasket = catchAsync(async (req, res, next) => {
   });
 
   if (!allBasket || allBasket.length === 0) {
-    return next(new AppError('No products found!', 404));
+    return res.status(200).render('MyBasket', {
+      title: 'Your basket',
+    });
   }
 
   const likedProducts = await currentUserLikedProducts(req, res);

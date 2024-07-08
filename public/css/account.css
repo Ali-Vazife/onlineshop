@@ -549,3 +549,8 @@
 .product-list {
   grid-template-columns: repeat(2, 1fr);
 }
+
+.attribute {
+  font-size: 14px;
+  color: rgb(132, 204, 194);
+}
