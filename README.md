@@ -6,7 +6,7 @@ Welcome to the **E-commerce Shoes Shop** project! This is a comprehensive backen
 
 ## Features
 
-- **User Authentication**: Secure session-based authentication for logging in and signing up.
+- **User Authentication**: Secure session-based authentication.
 - **Profile Management**: Users can update their profiles and change their passwords.
 - **Product Interaction**: Users can like products and add them to their basket.
 - **Basket Management**: Users can view and manage the products in their basket.
@@ -63,7 +63,7 @@ project-root/
 
 The database is designed with best practices and normalization rules in mind. Below is the Entity-Relationship Diagram (ERD):
 
-![Database ER Diagram](Database%20ER%20diagram%20(crow's%20foot)%20(13).png)
+![Database ER Diagram](<Database%20ER%20diagram%20(crow's%20foot)%20(13).png>)
 
 The database design for this E-commerce Shoes Shop project showcases several key advantages due to its adherence to normalization principles:
 
@@ -81,26 +81,27 @@ The database design for this E-commerce Shoes Shop project showcases several key
 
 ### Normalization
 
-- **1NF**: Each table has a primary key, and columns contain atomic values.
-- **2NF**: All non-key attributes are fully functionally dependent on the primary key.
-- **3NF**: Transitive dependencies are eliminated, ensuring that related information is stored in the appropriate tables.
+- **1NF**
+- **2NF**
+- **3NF**
 
 This design ensures an efficient, consistent, and scalable database for the E-commerce Shoes Shop application.
 
- 
-Please note that the purchasing functionality is not yet implemented in this project. While users can add products to their basket and like products, the checkout process to complete the purchase is still under development.
+Please note that the purchasing functionality is not yet implemented in this project.
 
 ## Installation
 
 To set up the project locally, follow these steps:
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/yourusername/ecommerce-shop.git
    cd ecommerce-shop
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
@@ -117,6 +118,7 @@ To set up the project locally, follow these steps:
 ### Running the Project
 
 - **Development Mode**:
+
   ```bash
   npm run dev
   ```
@@ -129,6 +131,7 @@ To set up the project locally, follow these steps:
 ### Example Commands
 
 - **Starting the server**:
+
   ```bash
   npm start
   ```

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const liElem = document.querySelector('.li_size');
   let colorBtn = document.querySelector('.li-color.selected');
+  const buyBtn = document.querySelector('.buynow');
   const productId = colorBtn.dataset.productid;
   const cartBtn = document.querySelector('.addRemoveCart');
   const isLogged = document.querySelector('.user__span').dataset.user;
@@ -153,6 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
   cartBtn.addEventListener('click', () => {
     const isAdded = cartBtn.classList.contains('addedToBasket');
     handleCart(isAdded);
+  });
+
+  buyBtn.addEventListener('click', () => {
+    showAlert('success', 'Purchasing functionality is not yet implemented.');
   });
 
   updateSize();

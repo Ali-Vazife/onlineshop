@@ -23,15 +23,6 @@ sequelize
     console.error('Unable to connect to the database: ', err);
   });
 
-// sequelize
-//   .sync({ force: true })
-//   .then(() => {
-//     console.log('tables created successfully!');
-//   })
-//   .catch((err) => {
-//     console.error('Unable to create table : ', err);
-//   });
-
 console.log(`Env:${process.env.NODE_ENV}`);
 
 const server = app.listen(port, () => {
