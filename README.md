@@ -4,6 +4,10 @@
 
 Welcome to the **E-commerce Shoes Shop** project! This is a comprehensive backend system for an online shoe store.
 
+## Demo
+
+https://github.com/Ali-Vazife/onlineshop/assets/124176120/9461a66a-437a-42f7-a8a7-9724f9a1d404
+
 ## Features
 
 - **User Authentication**: Secure session-based authentication.
@@ -140,27 +144,3 @@ To set up the project locally, follow these steps:
   ```bash
   node ./dev-data/mockData.js
   ```
-
-## Technologies Used
-
-- **Node.js**
-- **Express.js**
-- **Sequelize (for database ORM)**
-- **Session-based authentication**
-- **Database normalization**
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and create a pull request for any improvements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License.
-
-## Contact
-
-If you have any questions or feedback, feel free to contact me at [your-email@example.com].
-
----
-
-Feel free to customize the placeholders (like `path-to-your-image` and `yourusername`) and make any adjustments as needed!
