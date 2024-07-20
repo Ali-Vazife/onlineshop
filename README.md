@@ -113,7 +113,7 @@ To set up the project locally, follow these steps:
 
 3. **Set up environment variables**: Create a `.env` file in the root directory and add the necessary environment variables.
 
-4. **Run the mock data script** (optional):
+4. **Run the mock data script**:
    ```bash
    node ./dev-data/mockData.js
    ```
@@ -131,17 +131,4 @@ To set up the project locally, follow these steps:
 - **Production Mode**:
   ```bash
   npm run start:prod
-  ```
-
-### Example Commands
-
-- **Starting the server**:
-
-  ```bash
-  npm start
-  ```
-
-- **Adding mock data**:
-  ```bash
-  node ./dev-data/mockData.js
   ```
