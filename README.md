@@ -3,7 +3,8 @@
 ## Overview
 
 Welcome to the **E-commerce Shoes Shop** project! This is a comprehensive backend system for an online shoe store.
-- NodeJS - Express - PostgreSQL - Sequelize 
+
+- NodeJS - Express - PostgreSQL - Sequelize
 
 ## Demo
 
@@ -98,6 +99,26 @@ project-root/
 
 To set up the project locally, follow these steps:
 
+### With Docker:
+
+To set up the project using Docker, follow these steps:
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/yourusername/ecommerce-shop.git
+   cd ecommerce-shop
+   ```
+
+2. **Build and start the Docker containers:**
+   ```bash
+   docker-compose up --build
+   ```
+
+Set up environment variables: Create a config.env file in the root directory and add the necessary environment variables. Ensure the DB_HOST is set to db.
+
+### Normal Way:
+
 1. **Clone the repository**:
 
    ```bash
@@ -111,7 +132,7 @@ To set up the project locally, follow these steps:
    npm install
    ```
 
-3. **Set up environment variables**: Create a `.env` file in the root directory and add the necessary environment variables.
+3. **Set up environment variables**: Create a `config.env` file in the root directory and add the necessary environment variables.
 
 4. **Run the mock data script**:
    ```bash
@@ -121,6 +142,10 @@ To set up the project locally, follow these steps:
 ## Usage
 
 ### Running the Project
+
+```bash
+npm start
+```
 
 - **Development Mode**:
 

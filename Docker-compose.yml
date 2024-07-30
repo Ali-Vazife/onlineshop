@@ -1,0 +1,13 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ecc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: db
+  app:
+    image: eccweb
+    ports:
+      - 13000:3000
