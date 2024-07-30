@@ -4,7 +4,7 @@
 
 Welcome to the **E-commerce Shoes Shop** project! This is a comprehensive backend system for an online shoe store.
 
-- NodeJS - Express - PostgreSQL - Sequelize
+- NodeJS - Express - PostgreSQL - Sequelize -Dockerize
 
 ## Demo
 
@@ -115,7 +115,7 @@ To set up the project using Docker, follow these steps:
    docker-compose up --build
    ```
 
-Set up environment variables: Create a config.env file in the root directory and add the necessary environment variables. Ensure the DB_HOST is set to db.
+Set up environment variables: Create a `config.env` file in the root directory and add the necessary environment variables. Ensure the DB_HOST is set to db.
 
 ### Normal Way:
 
